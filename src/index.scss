@@ -5,16 +5,48 @@
     grid-template:
         [row1-start] 'header header header' 60px [row1-end] [row2-start] 'nav main main' 1fr [row2-end] / 300px 1fr 1fr;
     height: 100%;
+    font-family: $font;
 
     &-header {
         grid-area: header;
+        background-color: $bg-color-header;
+        z-index: 0;
     }
 
     &-nav {
         grid-area: nav;
+        background-color: $bg-color-nav;
+
+        display: grid;
+        grid-template-columns: 1fr;
+        grid-auto-rows: 40px;
+        align-items: center;
+        padding: 10px 15px 0 50px;
+
+        &_section {
+            display: flex;
+            justify-content: space-between;
+        }
     }
 
     &-main {
         grid-area: main;
+        margin: 10px auto;
+        width: 50vw;
+        display: grid;
+        align-items: center;
+        grid-template-rows: 40px;
+        grid-template-columns: 1fr;
+
+
+
+        &_addTask {
+            font-size: 1.5rem;
+            height: min-content;
+
+            &::before {
+                content: '+ ';
+            }
+        }
     }
 }
