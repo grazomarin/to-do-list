@@ -16,7 +16,23 @@
             <li class="container-nav_section"><span>Inbox</span><span>0</span></li>
         </ul>
         <div class="container-main">
+            <div class="container-main-task">
+                <h1 class="container-main-task_title">Title</h1>
+                <p class="container-main-task_body">Body</p>
+            </div>
             <div class="container-main_addTask">add task</div>
+            <form action="" class="container-main-taskForm">
+                <div class="container-main-taskForm-inputs">
+                    <input class="container-main-taskForm-inputs_title" type="text" placeholder="Title">
+                    <textarea class="container-main-taskForm-inputs_description" type="text" placeholder="Description"
+                        rows="3" multiline="false"></textarea>
+                </div>
+                <div class="container-main-taskForm-buttons">
+                    <button type="button" class="container-main-taskForm-buttons_cancel">Cancel</button>
+                    <button type="reset" class="container-main-taskForm-buttons_submit">Submit</button>
+                </div>
+            </form>
+
         </div>
     </div>
 </body>
