@@ -5,17 +5,17 @@
     grid-template:
         [row1-start] 'header header header' 60px [row1-end] [row2-start] 'nav main main' 1fr [row2-end] / 300px 1fr 1fr;
     height: 100%;
-    font-family: $font;
+    font-family: $font-family;
 
     &-header {
         grid-area: header;
-        background-color: $bg-color-header;
+        background-color: $blue-color;
         z-index: 0;
     }
 
     &-nav {
         grid-area: nav;
-        background-color: $bg-color-nav;
+        background-color: $grey-color;
 
         display: grid;
         grid-template-columns: 1fr;
@@ -33,19 +33,86 @@
         grid-area: main;
         margin: 10px auto;
         width: 50vw;
-        display: grid;
-        align-items: center;
-        grid-template-rows: 40px;
-        grid-template-columns: 1fr;
-
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
 
 
         &_addTask {
-            font-size: 1.5rem;
+            font-size: $font-big;
             height: min-content;
 
             &::before {
                 content: '+ ';
+            }
+        }
+
+        &-task {
+            padding: 10px 0 10px 0;
+            border: 0px solid $grey-dark-color;
+            border-width: 0px 0px 1px 0px;
+
+            &_title {
+                font-size: $font-big;
+            }
+
+            &_body {
+                font-size: $font-small;
+            }
+        }
+
+        &-taskForm {
+            display: none;
+
+            &-inputs {
+                display: flex;
+                flex-direction: column;
+                border: 2px solid $grey-dark-color;
+                border-radius: $border-radius;
+
+                &_title,
+                &_description {
+                    border: none;
+                    outline: none;
+                    border-radius: $border-radius;
+                    padding: 5px;
+                    font-size: $font-small;
+                    font-family: $font-family;
+                }
+
+                &_title {
+                    font-size: $font-medium;
+                }
+
+                &_description {
+                    resize: none;
+                    font-family: $font-family;
+                }
+            }
+
+            &-buttons {
+                display: flex;
+                justify-content: end;
+                margin-top: 5px;
+                gap: 10px;
+
+                &_cancel,
+                &_submit {
+                    background-color: white;
+                    border: none;
+                    box-shadow: none;
+                    padding: 5px 12px;
+                    border-radius: $border-radius;
+                    font-family: $font-family;
+                }
+
+                &_cancel {
+                    background-color: $grey-dark-color;
+                }
+
+                &_submit {
+                    background-color: $red-color;
+                }
             }
         }
     }
