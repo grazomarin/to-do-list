@@ -48,17 +48,36 @@
         }
 
         &-task {
+            display: flex;
+            align-items: center;
+            gap: 10px;
             padding: 10px 0 10px 0;
             border: 0px solid $grey-dark-color;
             border-width: 0px 0px 1px 0px;
 
-            &_title {
-                font-size: $font-big;
+            &_checkbox {
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                flex: 0 0 auto;
+                width: 25px;
+                height: 25px;
+                border-radius: 50%;
+                border: 2px solid $blue-color;
+                background-color: $blue-color-trans;
             }
 
-            &_body {
-                font-size: $font-small;
+            &-info {
+                &_title {
+                    font-size: $font-big;
+                }
+
+                &_body {
+                    font-size: $font-small;
+                }
             }
+
+            &--disabled {}
         }
 
         &-taskForm {
