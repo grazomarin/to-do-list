@@ -65,6 +65,12 @@
                 border-radius: 50%;
                 border: 2px solid $blue-color;
                 background-color: $blue-color-trans;
+
+                &:hover {
+                    img {
+                        opacity: 50%;
+                    }
+                }
             }
 
             &-info {
@@ -77,7 +83,7 @@
                 }
             }
 
-            &--disabled {}
+            &--done {}
         }
 
         &-taskForm {

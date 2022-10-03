@@ -2,62 +2,51 @@ import './index.scss';
 import checkImgSrc from './images/icons/check.svg'
 
 const main = document.querySelector('.container-main')
-const addTask = document.querySelector('.container-main_addTask')
+const addTaskButton = document.querySelector('.container-main_addTask')
 const taskForm = document.querySelector('.container-main-taskForm')
 const taskTitle = document.querySelector('.container-main-taskForm-inputs_title')
 const taskDescr = document.querySelector('.container-main-taskForm-inputs_description')
-const submitTask = document.querySelector('.container-main-taskForm-buttons_submit')
+const submitTaskButton = document.querySelector('.container-main-taskForm-buttons_submit')
 const task = document.querySelector('.container-main-task')
 
 
-const TaskManipulator = (() => {
+const TaskDOMManipulation = (() => {
     const closeTaskInput = () => {
         taskForm.style.display = 'none'
-        addTask.style.display = 'block'
+        addTaskButton.style.display = 'block'
     }
 
     const displayTaskInput = () => {
         taskForm.style.display = 'block'
-        addTask.style.display = 'none'
+        addTaskButton.style.display = 'none'
     }
 
-    const changeCompletion = () => {
-        taskForm.classList.toggle('.container-main-task--disabled')
+    const checkboxClick = (task, image, clicked) => {
+
     }
 
-    const checkboxInteraction = (checkbox, image) => {
-        let clicked = false;
-        let active = false;
+    const checkboxMouseOver = (image, clicked) => {
+        if (!clicked) image.style.display = 'block'
+    }
 
+    const checkboxMouseOut = (image, clicked) => {
+        if (!clicked) image.style.display = 'none'
+    }
 
-        checkbox.addEventListener('mouseover', () => {
-            if (!clicked) image.style.display = 'block'
-        })
-
-        checkbox.addEventListener('mouseout', () => {
-            if (!clicked) image.style.display = 'none'
-        })
-
+    const initializeTaskEventListeners = (task, checkbox, image) => {
+        //get rid of clicked
+        let clicked = false
         checkbox.addEventListener('click', () => {
-            !clicked ? image.style.display = 'block' : image.style.display = 'block';
+            TaskDataManipulation.changeCompletion(task)
+            console.log(TaskDataManipulation.myTasks);
+            !clicked ? image.style.display = 'block' : image.style.display = 'none'
             clicked = !clicked
         })
-
+        checkbox.addEventListener('mouseover', () => { TaskDOMManipulation.checkboxMouseOver(image, clicked) })
+        checkbox.addEventListener('mouseout', () => { TaskDOMManipulation.checkboxMouseOut(image, clicked) })
     }
 
-
-    return { displayTaskInput, closeTaskInput, changeCompletion, checkboxInteraction }
-
-})()
-
-
-
-const TaskFactory = (titleVal, bodyVal) => {
-    const title = titleVal
-    const body = bodyVal
-    const completion = false
-
-    const createTaskTemplate = () => {
+    const displayTask = (task) => {
         const taskContainer = document.createElement('div')
         taskContainer.classList = 'container-main-task'
 
@@ -70,36 +59,66 @@ const TaskFactory = (titleVal, bodyVal) => {
         const checkImg = new Image(13, 13)
         checkImg.src = checkImgSrc
         checkImg.style.display = 'none'
-        TaskManipulator.checkboxInteraction(checkbox, checkImg)
 
         const titleElem = document.createElement('h1')
         titleElem.classList = 'container-main-task_title'
-        titleElem.textContent = title
+        titleElem.textContent = task.title
 
         const bodyElem = document.createElement('p')
         bodyElem.classList = 'container-main-task_body'
-        bodyElem.textContent = body
+        bodyElem.textContent = task.body
 
+        TaskDOMManipulation.initializeTaskEventListeners(task, checkbox, checkImg)
         checkbox.append(checkImg)
         taskInfo.append(titleElem, bodyElem)
         taskContainer.append(checkbox, taskInfo)
-        return taskContainer
+        main.prepend(taskContainer)
     }
 
-    const changeCompletion = () => {
-        completion = completion ? false : true;
-        TaskManipulator.changeCompletion()
+    return {
+        displayTaskInput,
+        closeTaskInput,
+        displayTask,
+        initializeTaskEventListeners,
+        checkboxClick,
+        checkboxMouseOver,
+        checkboxMouseOut
     }
 
-    return { createTaskTemplate }
+})()
+
+
+const TaskDataManipulation = (() => {
+    const myTasks = []
+
+    const addTask = (task) => {
+        myTasks.push(task)
+    }
+
+    const changeCompletion = (task) => {
+        task.completion = !task.completion
+    }
+
+    return { myTasks, addTask, changeCompletion }
+})()
+
+const TaskFactory = (titleVal, bodyVal) => {
+    const title = titleVal
+    const body = bodyVal
+    const completion = false
+
+    return { title, body, completion }
 }
 
-addTask.addEventListener('click', () => {
-    TaskManipulator.displayTaskInput()
+addTaskButton.addEventListener('click', () => {
+    TaskDOMManipulation.displayTaskInput()
 })
 
-submitTask.addEventListener('click', () => {
-    const newTask = TaskFactory(taskTitle.value, taskDescr.value).createTaskTemplate()
-    main.prepend(newTask)
-    TaskManipulator.closeTaskInput()
+submitTaskButton.addEventListener('click', () => {
+    const newTask = TaskFactory(taskTitle.value, taskDescr.value)
+    TaskDOMManipulation.displayTask(task)
+    TaskDataManipulation.addTask(newTask)
+    TaskDOMManipulation.closeTaskInput()
 })
+
+
