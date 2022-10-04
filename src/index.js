@@ -7,6 +7,7 @@ const taskForm = document.querySelector('.container-main-taskForm')
 const taskTitle = document.querySelector('.container-main-taskForm-inputs_title')
 const taskDescr = document.querySelector('.container-main-taskForm-inputs_description')
 const submitTaskButton = document.querySelector('.container-main-taskForm-buttons_submit')
+const closeTaskButton = document.querySelector('.container-main-taskForm-buttons_cancel')
 const task = document.querySelector('.container-main-task')
 
 
@@ -118,6 +119,10 @@ submitTaskButton.addEventListener('click', () => {
     const newTask = TaskFactory(taskTitle.value, taskDescr.value)
     TaskDOMManipulation.displayTask(task)
     TaskDataManipulation.addTask(newTask)
+    TaskDOMManipulation.closeTaskInput()
+})
+
+closeTaskButton.addEventListener('click', () => {
     TaskDOMManipulation.closeTaskInput()
 })
 
