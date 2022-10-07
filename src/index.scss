@@ -78,7 +78,7 @@
 
     &-main {
         grid-area: main;
-        margin: 10px auto;
+        margin: 20px auto;
         width: 50vw;
         display: flex;
         flex-direction: column;
@@ -98,7 +98,7 @@
             display: flex;
             align-items: center;
             gap: 10px;
-            padding: 10px 0 10px 0;
+            padding: 0 0 10px 0;
             border: 0px solid $grey-dark-color;
             border-width: 0px 0px 1px 0px;
 

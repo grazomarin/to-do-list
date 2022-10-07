@@ -2,81 +2,227 @@ import './index.scss';
 import checkImgSrc from './images/icons/check.svg'
 
 const main = document.querySelector('.container-main')
-const addTaskButton = document.querySelector('.container-main_addTask')
-const taskForm = document.querySelector('.container-main-taskForm')
-const submitTaskButton = document.querySelector('.container-main-taskForm-buttons_submit')
-const closeTaskButton = document.querySelector('.container-main-taskForm-buttons_cancel')
-const taskTitle = document.querySelector('.container-main-taskForm-inputs_title')
-const taskDescr = document.querySelector('.container-main-taskForm-inputs_description')
-const task = document.querySelector('.container-main-task')
-
 const nav = document.querySelector('.container-nav')
-const addProjectButton = document.querySelector('.container-nav_addProject')
-const projectForm = document.querySelector('.container-nav-projectForm')
-const submitProjectButton = document.querySelector('.container-nav-projectForm-buttons_submit')
-const closeProjectButton = document.querySelector('.container-nav-projectForm-buttons_cancel')
-const projectTitle = document.querySelector('.container-nav-projectForm_title')
 
+const UI = (() => {
 
-const TaskDOMManipulation = (() => {
-    const closeTaskInput = () => {
-        taskForm.style.display = 'none'
-        addTaskButton.style.display = 'block'
+    const ProjectList = []
+
+    function initProject() {
+        const index = ProjectFactory('Index')
+        const indexTaskForm = TaskFormFactory(index)
+        UI.resetMain()
+        ProjectList.push(index)
+        UI.displayProjectList()
+        indexTaskForm.buildAddTask()
+
+        index.displayProjectTasks()
     }
 
-    const displayTaskInput = () => {
+    const resetMain = () => {
+        while (main.children.length != 0) {
+            container.children[0].remove()
+        }
+    }
+
+    const buildNav = () => {
+        nav.innerHTML = `
+        <li class="container-nav_addProject">add new project</li>
+        <form action="" class="container-nav-projectForm">
+        <input class="container-nav-projectForm_title" type="text" placeholder="Title">
+        <div class="container-nav-projectForm-buttons">
+        <button type="reset" class="container-nav-projectForm-buttons_cancel">Cancel</button>
+        <button type="reset" class="container-nav-projectForm-buttons_submit">Submit</button>
+        </div>
+        </form>
+        `
+    }
+
+    const displayProjectList = () => {
+        ProjectList.forEach(project => {
+            project.displayProject()
+        })
+    }
+
+    const addTaskEventListener = (project) => {
+        const addTaskButton = document.querySelector('.container-main_addTask')
+        addTaskButton.addEventListener('click', () => {
+
+        })
+    }
+
+
+    return {
+        resetMain,
+        buildNav,
+        initProject,
+        displayProjectList,
+    }
+})()
+
+const ProjectFactory = (titleValue) => {
+    const myTasks = []
+    const title = titleValue
+
+    const addTask = (task) => {
+        myTasks.push(task)
+    }
+
+    const removeTask = () => {
+
+    }
+
+    const displayProjectTasks = () => {
+        //reset main
+        myTasks.forEach(task => {
+            task = TaskFactory(task.title, task.description)
+            task.displayTask()
+        });
+    }
+
+    const displayProject = () => {
+        const projectCont = document.createElement('li')
+        projectCont.classList = 'container-nav_project'
+        const projectName = document.createElement('span')
+        projectName.textContent = title
+        const projectTaskCount = document.createElement('span')
+        projectTaskCount.textContent = myTasks.length
+        projectCont.append(projectName, projectTaskCount)
+        nav.prepend(projectCont)
+    }
+    return {
+        title,
+        myTasks,
+        addTask,
+        removeTask,
+        displayProjectTasks,
+        displayProject,
+    }
+
+
+}
+
+const TaskFormFactory = (parentProject) => {
+
+    const addTaskLine = document.createElement('div')
+    const taskForm = document.createElement('form')
+    const inputs = document.createElement('div')
+    const title = document.createElement('input')
+    const body = document.createElement('textarea')
+    const buttons = document.createElement('div')
+    const cancel = document.createElement('button')
+    const submit = document.createElement('button')
+
+    const buildAddTask = () => {
+        addTaskLine.classList = 'container-main_addTask'
+        taskForm.classList = 'container-main-taskForm'
+        inputs.classList = 'container-main-taskForm-inputs'
+        title.classList = 'container-main-taskForm-inputs_title'
+        body.classList = 'container-main-taskForm-inputs_description'
+        buttons.classList = 'container-main-taskForm-buttons'
+        cancel.classList = 'container-main-taskForm-buttons_cancel'
+        submit.classList = 'container-main-taskForm-buttons_submit'
+
+        addTaskLine.textContent = 'add task'
+        cancel.textContent = 'cancel'
+        submit.textContent = 'submit'
+
+        title.setAttribute('placeholder', 'Title')
+        body.setAttribute('rows', '3')
+        body.setAttribute('multiline', 'false')
+        body.setAttribute('placeholder', 'Description')
+        cancel.setAttribute('type', 'reset')
+        submit.setAttribute('type', 'reset')
+
+        buttons.append(cancel, submit)
+        inputs.append(title, body)
+        taskForm.append(inputs, buttons)
+        main.append(addTaskLine, taskForm)
+        initAddTaskEventListeners()
+    }
+
+    const initAddTaskEventListeners = () => {
+        addTaskLine.addEventListener('click', () => { showAddTask() })
+        cancel.addEventListener('click', () => { hideAddTask() })
+        submit.addEventListener('click', () => { submitTask() })
+    }
+
+    const submitTask = () => {
+        const newTask = TaskFactory(title.value, body.value, false)
+        parentProject.myTasks.push(newTask)
+        newTask.displayTask()
+        hideAddTask()
+    }
+
+    const showAddTask = () => {
+        addTaskLine.style.display = 'none'
         taskForm.style.display = 'block'
-        addTaskButton.style.display = 'none'
     }
 
-    const checkboxClick = (task, image, clicked) => {
+    const hideAddTask = () => {
+        addTaskLine.style.display = 'block'
+        taskForm.style.display = 'none'
+    }
 
+
+    return {
+        buildAddTask,
+        hideAddTask,
+        showAddTask,
+        submitTask,
+        initAddTaskEventListeners,
+    }
+}
+
+
+
+
+const TaskFactory = (titleVal, bodyVal, completionVal) => {
+    const title = titleVal
+    const body = bodyVal
+    let completion = completionVal === undefined ? false : completionVal
+    let clicked = false
+
+    const taskContainer = document.createElement('div')
+    const taskInfo = document.createElement('div')
+    const checkbox = document.createElement('button')
+    const checkImg = new Image(13, 13)
+    const titleElem = document.createElement('h1')
+    const bodyElem = document.createElement('p')
+
+    const checkboxClick = () => {
+        completion = !completion
+        !clicked ? checkImg.style.display = 'block' : checkImg.style.display = 'none'
+        clicked = !clicked
     }
 
     const checkboxMouseOver = (image) => {
-        if (image.style.display = 'none') image.style.display = 'block'
+        if (!clicked) image.style.display = 'block'
     }
 
-    const checkboxMouseOut = (image, clicked) => {
+    const checkboxMouseOut = (image) => {
         if (!clicked) image.style.display = 'none'
     }
 
-    const initializeTaskEventListeners = (task, checkbox, image) => {
-        //get rid of clicked
-        let clicked = false
-        checkbox.addEventListener('click', () => {
-            TaskDataManipulation.changeCompletion(task)
-            console.log(TaskDataManipulation.myTasks);
-            !clicked ? image.style.display = 'block' : image.style.display = 'none'
-            clicked = !clicked
-        })
-        checkbox.addEventListener('mouseover', () => { TaskDOMManipulation.checkboxMouseOver(image) })
-        checkbox.addEventListener('mouseout', () => { TaskDOMManipulation.checkboxMouseOut(image, clicked) })
+    const initializeTaskEventListeners = (checkbox, image) => {
+        checkbox.addEventListener('click', () => { checkboxClick() })
+        checkbox.addEventListener('mouseover', () => { checkboxMouseOver(image) })
+        checkbox.addEventListener('mouseout', () => { checkboxMouseOut(image) })
     }
 
-    const displayTask = (task) => {
-        const taskContainer = document.createElement('div')
+    function displayTask() {
         taskContainer.classList = 'container-main-task'
-
-        const taskInfo = document.createElement('div')
         taskInfo.classList = 'container-main-task-info'
-
-        const checkbox = document.createElement('button')
         checkbox.classList = 'container-main-task_checkbox'
-
-        const checkImg = new Image(13, 13)
-        checkImg.src = checkImgSrc
-        checkImg.style.display = 'none'
-
-        const titleElem = document.createElement('h1')
         titleElem.classList = 'container-main-task_title'
-        titleElem.textContent = task.title
-
-        const bodyElem = document.createElement('p')
         bodyElem.classList = 'container-main-task_body'
-        bodyElem.textContent = task.body
+        checkImg.style.display = completion ? 'block' : 'none'
+        titleElem.textContent = title ? title : 'No Title'
+        bodyElem.textContent = body
+        checkImg.src = checkImgSrc
 
-        TaskDOMManipulation.initializeTaskEventListeners(task, checkbox, checkImg)
+
+        initializeTaskEventListeners(checkbox, checkImg)
         checkbox.append(checkImg)
         taskInfo.append(titleElem, bodyElem)
         taskContainer.append(checkbox, taskInfo)
@@ -84,126 +230,21 @@ const TaskDOMManipulation = (() => {
     }
 
     return {
-        displayTaskInput,
-        closeTaskInput,
+        title,
+        body,
+        completion,
         displayTask,
-        initializeTaskEventListeners,
         checkboxClick,
         checkboxMouseOver,
         checkboxMouseOut
     }
-
-})()
-
-
-const TaskDataManipulation = (() => {
-    const myTasks = []
-
-    const addTask = (task) => {
-        myTasks.push(task)
-    }
-
-    const changeCompletion = (task) => {
-        task.completion = !task.completion
-    }
-
-    //do not return mytasks
-    return { myTasks, addTask, changeCompletion }
-})()
-
-
-
-const TaskFactory = (titleVal, bodyVal) => {
-    const title = titleVal
-    const body = bodyVal
-    const completion = false
-
-    return { title, body, completion }
 }
 
-
-
-addTaskButton.addEventListener('click', () => {
-    TaskDOMManipulation.displayTaskInput()
-})
-
-submitTaskButton.addEventListener('click', () => {
-    const newTask = TaskFactory(taskTitle.value, taskDescr.value)
-    TaskDOMManipulation.displayTask(newTask)
-    TaskDataManipulation.addTask(newTask)
-    TaskDOMManipulation.closeTaskInput()
-})
-
-closeTaskButton.addEventListener('click', () => {
-    TaskDOMManipulation.closeTaskInput()
-})
+//reset main
+UI.buildNav()
+UI.initProject()
 
 
 
 
-const ProjectFactory = (titleValue) => {
-    const myTasks = [] //implement this
-    const title = titleValue
-    return { title }
-}
-
-const ProjectDOMManipulation = (() => {
-    const closeProjectInput = () => {
-        projectForm.style.display = 'none'
-        addProjectButton.style.display = 'block'
-    }
-
-    const displayProjectInput = () => {
-        projectForm.style.display = 'flex'
-        addProjectButton.style.display = 'none'
-    }
-
-    const displayProject = (project) => {
-        const projectCont = document.createElement('li')
-        projectCont.classList = 'container-nav_project'
-
-        const title = document.createElement('span')
-        title.textContent = project.title
-
-        projectCont.append(title)
-        nav.insertBefore(projectCont, addProjectButton)
-    }
-
-    return {
-        closeProjectInput,
-        displayProjectInput,
-        displayProject
-    }
-
-})()
-
-const ProjectDataManipulation = (() => {
-    const myProjects = []
-
-    const addProject = (project) => {
-        myProjects.push(project)
-    }
-
-    return { addProject }
-})()
-
-
-addProjectButton.addEventListener('click', () => {
-    ProjectDOMManipulation.displayProjectInput()
-})
-
-closeTaskButton.addEventListener('click', () => {
-    ProjectDOMManipulation.closeProjectInput()
-})
-
-
-submitProjectButton.addEventListener('click', () => {
-    const newProject = ProjectFactory(projectTitle.value)
-    ProjectDOMManipulation.displayProject(newProject)
-    ProjectDataManipulation.addProject(newProject)
-    ProjectDOMManipulation.closeProjectInput()
-})
-
-
-
-
+// make add project work
