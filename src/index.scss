@@ -25,6 +25,10 @@
         &_project {
             display: flex;
             justify-content: space-between;
+
+            &--active {
+                background-color: grey;
+            }
         }
 
         &_addProject {
