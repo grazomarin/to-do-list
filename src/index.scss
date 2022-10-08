@@ -25,9 +25,12 @@
         &_project {
             display: flex;
             justify-content: space-between;
+            padding: 2px 8px;
+            border-radius: $border-radius;
+            transition: all .1s $transition-curve;
 
             &--active {
-                background-color: grey;
+                background-color: $grey-dark-color;
             }
         }
 
@@ -110,9 +113,10 @@
                 display: flex;
                 align-items: center;
                 justify-content: center;
+                position: relative;
                 flex: 0 0 auto;
-                width: 25px;
-                height: 25px;
+                width: 20px;
+                height: 20px;
                 border-radius: 50%;
                 border: 2px solid $blue-color;
                 background-color: $blue-color-trans;

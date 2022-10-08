@@ -10,18 +10,19 @@ const UI = (() => {
 
     function initProject() {
         const index = ProjectFactory('Index')
-        const indexTaskForm = TaskFormFactory(index)
-        UI.resetMain()
+        const indexTaskForm = TaskFormFactory(index.myTasks)
         myProjects.push(index)
-        UI.displayProjectList()
-        indexTaskForm.buildAddTask()
-
+        UI.resetMain()
+        index.displayProject()
         index.displayProjectTasks()
+        indexTaskForm.buildAddTask()
     }
 
-    const resetMain = () => {
-        while (main.children.length != 0) {
-            container.children[0].remove()
+    function resetMain() {
+        if (main.children.length != 0) {
+            Array.from(main.children).forEach(child => {
+                child.remove()
+            })
         }
     }
 
@@ -29,18 +30,18 @@ const UI = (() => {
         myProjects.push(project)
     }
 
-    const displayProjectList = () => {
-        myProjects.forEach(project => {
-            project.displayProject()
-        })
-    }
+    // const displayProjectList = () => {
+    //     myProjects.forEach(project => {
+    //         project.displayProject()
+    //     })
+    // }
 
     return {
         myProjects,
         resetMain,
         initProject,
         addProject,
-        displayProjectList,
+        // displayProjectList,
     }
 })()
 
@@ -48,6 +49,10 @@ const UI = (() => {
 const ProjectFactory = (titleValue) => {
     const myTasks = []
     const title = titleValue
+
+    const projectCont = document.createElement('li')
+    const projectTitle = document.createElement('span')
+    const projectTaskCount = document.createElement('span')
 
     const addTask = (task) => {
         myTasks.push(task)
@@ -58,7 +63,6 @@ const ProjectFactory = (titleValue) => {
     }
 
     const displayProjectTasks = () => {
-        //reset main
         myTasks.forEach(task => {
             task = TaskFactory(task.title, task.description)
             task.displayTask()
@@ -66,19 +70,38 @@ const ProjectFactory = (titleValue) => {
     }
 
     const displayProject = () => {
-        const projectCont = document.createElement('li')
         projectCont.classList = 'container-nav_project'
-        const projectName = document.createElement('span')
-        projectName.textContent = title
-        const projectTaskCount = document.createElement('span')
+        projectTitle.textContent = title
         projectTaskCount.textContent = myTasks.length
-        projectCont.append(projectName, projectTaskCount)
+        projectCont.append(projectTitle, projectTaskCount)
         nav.prepend(projectCont)
+        initEventListeners()
+    }
+
+    const initEventListeners = () => {
+        projectCont.addEventListener('click', () => {
+            UI.resetMain()
+            makeActive()
+            initialize()
+        })
+    }
+
+    const initialize = () => {
+        displayProjectTasks()
+        makeActive()
+        const myForm = TaskFormFactory(myTasks)
+        myForm.buildAddTask()
+    }
+
+    const makeActive = () => {
+        Array.from(nav.children).forEach(project => { project.classList.remove('container-nav_project--active') });
+        projectCont.classList.add('container-nav_project--active')
     }
 
     return {
         title,
         myTasks,
+        initialize,
         addTask,
         removeTask,
         displayProjectTasks,
@@ -124,8 +147,8 @@ const TaskFactory = (titleVal, bodyVal, completionVal) => {
         taskContainer.classList = 'container-main-task'
         taskInfo.classList = 'container-main-task-info'
         checkbox.classList = 'container-main-task_checkbox'
-        titleElem.classList = 'container-main-task_title'
-        bodyElem.classList = 'container-main-task_body'
+        titleElem.classList = 'container-main-task-info_title'
+        bodyElem.classList = 'container-main-task-info_body'
         checkImg.style.display = completion ? 'block' : 'none'
         titleElem.textContent = title ? title : 'No Title'
         bodyElem.textContent = body
@@ -139,6 +162,8 @@ const TaskFactory = (titleVal, bodyVal, completionVal) => {
         main.prepend(taskContainer)
     }
 
+    console.log(UI.myProjects);
+
     return {
         title,
         body,
@@ -151,7 +176,7 @@ const TaskFactory = (titleVal, bodyVal, completionVal) => {
 }
 
 
-const TaskFormFactory = (parentProject) => {
+const TaskFormFactory = (projectTasks) => {
 
     const addTaskLine = document.createElement('div')
     const taskForm = document.createElement('form')
@@ -198,7 +223,7 @@ const TaskFormFactory = (parentProject) => {
 
     const submitTask = () => {
         const newTask = TaskFactory(title.value, body.value, false)
-        parentProject.myTasks.push(newTask)
+        projectTasks.push(newTask)
         newTask.displayTask()
         hideAddTask()
     }
@@ -266,6 +291,8 @@ const navFormFactory = () => {
         const newProject = ProjectFactory(title.value)
         UI.addProject(newProject)
         newProject.displayProject()
+        UI.resetMain()
+        newProject.initialize()
         hideAddTask()
     }
 
@@ -294,4 +321,3 @@ UI.initProject()
 
 
 
-// make add project work`
