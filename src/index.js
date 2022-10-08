@@ -10,12 +10,10 @@ const UI = (() => {
 
     function initProject() {
         const index = ProjectFactory('Index')
-        const indexTaskForm = TaskFormFactory(index.myTasks)
         myProjects.push(index)
         UI.resetMain()
         index.displayProject()
-        index.displayProjectTasks()
-        indexTaskForm.buildAddTask()
+        index.initialize()
     }
 
     function resetMain() {
@@ -64,7 +62,7 @@ const ProjectFactory = (titleValue) => {
 
     const displayProjectTasks = () => {
         myTasks.forEach(task => {
-            task = TaskFactory(task.title, task.description)
+            task = TaskFactory(task.title, task.description, task.completion)
             task.displayTask()
         });
     }
@@ -110,10 +108,10 @@ const ProjectFactory = (titleValue) => {
 }
 
 
-const TaskFactory = (titleVal, bodyVal, completionVal) => {
+const TaskFactory = (titleVal, bodyVal, completionVal, projectTasks) => {
     const title = titleVal
     const body = bodyVal
-    let completion = completionVal === undefined ? false : completionVal
+    let completion = completionVal
     let clicked = false
 
     const taskContainer = document.createElement('div')
@@ -123,7 +121,8 @@ const TaskFactory = (titleVal, bodyVal, completionVal) => {
     const titleElem = document.createElement('h1')
     const bodyElem = document.createElement('p')
 
-    const checkboxClick = () => {
+    const changeCompletion = () => {
+        projectTasks.find(task => { if (task.title === title) task.completion = !task.completion })
         completion = !completion
         !clicked ? checkImg.style.display = 'block' : checkImg.style.display = 'none'
         clicked = !clicked
@@ -138,7 +137,7 @@ const TaskFactory = (titleVal, bodyVal, completionVal) => {
     }
 
     const initializeTaskEventListeners = (checkbox, image) => {
-        checkbox.addEventListener('click', () => { checkboxClick() })
+        checkbox.addEventListener('click', () => { changeCompletion() })
         checkbox.addEventListener('mouseover', () => { checkboxMouseOver(image) })
         checkbox.addEventListener('mouseout', () => { checkboxMouseOut(image) })
     }
@@ -169,9 +168,6 @@ const TaskFactory = (titleVal, bodyVal, completionVal) => {
         body,
         completion,
         displayTask,
-        checkboxClick,
-        checkboxMouseOver,
-        checkboxMouseOut
     }
 }
 
@@ -222,7 +218,7 @@ const TaskFormFactory = (projectTasks) => {
     }
 
     const submitTask = () => {
-        const newTask = TaskFactory(title.value, body.value, false)
+        const newTask = TaskFactory(title.value, body.value, false, projectTasks)
         projectTasks.push(newTask)
         newTask.displayTask()
         hideAddTask()
@@ -290,8 +286,8 @@ const navFormFactory = () => {
     const submitTask = () => {
         const newProject = ProjectFactory(title.value)
         UI.addProject(newProject)
-        newProject.displayProject()
         UI.resetMain()
+        newProject.displayProject()
         newProject.initialize()
         hideAddTask()
     }
