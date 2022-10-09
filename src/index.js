@@ -1,5 +1,6 @@
 import './index.scss';
 import checkImgSrc from './images/icons/check.svg'
+import closeImgSrc from './images/icons/close.svg'
 
 const main = document.querySelector('.container-main')
 const nav = document.querySelector('.container-nav')
@@ -62,7 +63,7 @@ const ProjectFactory = (titleValue) => {
 
     const displayProjectTasks = () => {
         myTasks.forEach(task => {
-            task = TaskFactory(task.title, task.description, task.completion)
+            task = TaskFactory(task.title, task.description, task.completion, myTasks)
             task.displayTask()
         });
     }
@@ -117,47 +118,61 @@ const TaskFactory = (titleVal, bodyVal, completionVal, projectTasks) => {
     const taskContainer = document.createElement('div')
     const taskInfo = document.createElement('div')
     const checkbox = document.createElement('button')
-    const checkImg = new Image(13, 13)
-    const titleElem = document.createElement('h1')
+    const checkImg = new Image(11, 11)
+    const closeImg = new Image(18, 18)
+    const titleCont = document.createElement('div')
+    const titleElem = document.createElement('p')
     const bodyElem = document.createElement('p')
 
     const changeCompletion = () => {
-        projectTasks.find(task => { if (task.title === title) task.completion = !task.completion })
+        projectTasks.find(task => { if (task.title === title && task.body === body) task.completion = !task.completion })
         completion = !completion
         !clicked ? checkImg.style.display = 'block' : checkImg.style.display = 'none'
         clicked = !clicked
     }
 
-    const checkboxMouseOver = (image) => {
-        if (!clicked) image.style.display = 'block'
+    const remove = () => {
+        taskContainer.remove()
+        projectTasks.find(task => { if (task.title === title && task.body === body) projectTasks.splice(projectTasks.indexOf(task), 1) })
     }
 
-    const checkboxMouseOut = (image) => {
-        if (!clicked) image.style.display = 'none'
+    const checkboxMouseOver = () => {
+        if (!clicked) checkImg.style.display = 'block'
     }
 
-    const initializeTaskEventListeners = (checkbox, image) => {
+    const checkboxMouseOut = () => {
+        if (!clicked) checkImg.style.display = 'none'
+    }
+
+    const initializeTaskEventListeners = () => {
         checkbox.addEventListener('click', () => { changeCompletion() })
-        checkbox.addEventListener('mouseover', () => { checkboxMouseOver(image) })
-        checkbox.addEventListener('mouseout', () => { checkboxMouseOut(image) })
+        checkbox.addEventListener('mouseover', () => { checkboxMouseOver() })
+        checkbox.addEventListener('mouseout', () => { checkboxMouseOut() })
+        closeImg.addEventListener('click', () => { remove() })
     }
 
     function displayTask() {
         taskContainer.classList = 'container-main-task'
         taskInfo.classList = 'container-main-task-info'
-        checkbox.classList = 'container-main-task_checkbox'
-        titleElem.classList = 'container-main-task-info_title'
+        checkbox.classList = 'container-main-task-info-titleCont_checkbox'
+        closeImg.classList = 'container-main-task-title_close'
+        titleCont.classList = 'container-main-task-info-titleCont'
+        titleElem.classList = 'container-main-task-info-titleCont_title'
         bodyElem.classList = 'container-main-task-info_body'
+
         checkImg.style.display = completion ? 'block' : 'none'
         titleElem.textContent = title ? title : 'No Title'
         bodyElem.textContent = body
+
+        closeImg.src = closeImgSrc
         checkImg.src = checkImgSrc
 
 
         initializeTaskEventListeners(checkbox, checkImg)
         checkbox.append(checkImg)
-        taskInfo.append(titleElem, bodyElem)
-        taskContainer.append(checkbox, taskInfo)
+        titleCont.append(checkbox, titleElem, closeImg)
+        taskInfo.append(titleCont, bodyElem)
+        taskContainer.append(taskInfo)
         main.prepend(taskContainer)
     }
 
