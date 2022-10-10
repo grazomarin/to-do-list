@@ -1,6 +1,7 @@
 import './index.scss';
 import checkImgSrc from './images/icons/check.svg'
 import closeImgSrc from './images/icons/close.svg'
+import arrowDownImgSrc from './images/icons/arrow-down.svg'
 
 const main = document.querySelector('.container-main')
 const nav = document.querySelector('.container-nav')
@@ -120,6 +121,7 @@ const TaskFactory = (titleVal, bodyVal, completionVal, projectTasks) => {
     const checkbox = document.createElement('button')
     const checkImg = new Image(11, 11)
     const closeImg = new Image(18, 18)
+    const arrowDownImg = new Image(18, 18)
     const titleCont = document.createElement('div')
     const titleElem = document.createElement('p')
     const bodyElem = document.createElement('p')
@@ -133,7 +135,7 @@ const TaskFactory = (titleVal, bodyVal, completionVal, projectTasks) => {
 
     const remove = () => {
         taskContainer.remove()
-        projectTasks.find(task => { if (task.title === title && task.body === body) projectTasks.splice(projectTasks.indexOf(task), 1) })
+        projectTasks.find(task => { if (task.title === title || task.body === body) projectTasks.splice(projectTasks.indexOf(task), 1) })
     }
 
     const checkboxMouseOver = () => {
@@ -144,18 +146,36 @@ const TaskFactory = (titleVal, bodyVal, completionVal, projectTasks) => {
         if (!clicked) checkImg.style.display = 'none'
     }
 
+    const displayIcons = () => {
+        closeImg.style.display = 'block'
+        arrowDownImg.style.display = 'block'
+    }
+
+    const hideIcons = () => {
+        closeImg.style.display = 'none'
+        arrowDownImg.style.display = 'none'
+    }
+
+    const changeBodyVisibility = () => {
+        bodyElem.style.display === 'block' ? bodyElem.style.display = 'none' : bodyElem.style.display = 'block'
+    }
+
     const initializeTaskEventListeners = () => {
+        taskContainer.addEventListener('mouseover', () => { displayIcons() })
+        taskContainer.addEventListener('mouseout', () => { hideIcons() })
         checkbox.addEventListener('click', () => { changeCompletion() })
         checkbox.addEventListener('mouseover', () => { checkboxMouseOver() })
         checkbox.addEventListener('mouseout', () => { checkboxMouseOut() })
         closeImg.addEventListener('click', () => { remove() })
+        arrowDownImg.addEventListener('click', () => { changeBodyVisibility() })
     }
 
     function displayTask() {
         taskContainer.classList = 'container-main-task'
         taskInfo.classList = 'container-main-task-info'
         checkbox.classList = 'container-main-task-info-titleCont_checkbox'
-        closeImg.classList = 'container-main-task-title_close'
+        closeImg.classList = 'container-main-task-info-titleCont_close'
+        arrowDownImg.classList = 'container-main-task-info-titleCont_arrowDown'
         titleCont.classList = 'container-main-task-info-titleCont'
         titleElem.classList = 'container-main-task-info-titleCont_title'
         bodyElem.classList = 'container-main-task-info_body'
@@ -166,11 +186,12 @@ const TaskFactory = (titleVal, bodyVal, completionVal, projectTasks) => {
 
         closeImg.src = closeImgSrc
         checkImg.src = checkImgSrc
+        arrowDownImg.src = arrowDownImgSrc
 
 
         initializeTaskEventListeners(checkbox, checkImg)
         checkbox.append(checkImg)
-        titleCont.append(checkbox, titleElem, closeImg)
+        titleCont.append(checkbox, titleElem, arrowDownImg, closeImg)
         taskInfo.append(titleCont, bodyElem)
         taskContainer.append(taskInfo)
         main.prepend(taskContainer)
