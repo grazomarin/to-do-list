@@ -54,14 +54,6 @@ const ProjectFactory = (titleValue) => {
     const projectTitle = document.createElement('span')
     const projectTaskCount = document.createElement('span')
 
-    const addTask = (task) => {
-        myTasks.push(task)
-    }
-
-    const removeTask = () => {
-
-    }
-
     const displayProjectTasks = () => {
         myTasks.forEach(task => {
             task = TaskFactory(task.title, task.description, task.completion, myTasks)
@@ -89,7 +81,7 @@ const ProjectFactory = (titleValue) => {
     const initialize = () => {
         displayProjectTasks()
         makeActive()
-        const myForm = TaskFormFactory(myTasks)
+        const myForm = TaskFormFactory(myTasks, projectTaskCount)
         myForm.buildAddTask()
     }
 
@@ -102,15 +94,13 @@ const ProjectFactory = (titleValue) => {
         title,
         myTasks,
         initialize,
-        addTask,
-        removeTask,
         displayProjectTasks,
         displayProject,
     }
 }
 
 
-const TaskFactory = (titleVal, bodyVal, completionVal, projectTasks) => {
+const TaskFactory = (titleVal, bodyVal, completionVal, projectTasks, taskCount) => {
     const title = titleVal
     const body = bodyVal
     let completion = completionVal
@@ -136,6 +126,7 @@ const TaskFactory = (titleVal, bodyVal, completionVal, projectTasks) => {
     const remove = () => {
         taskContainer.remove()
         projectTasks.find(task => { if (task.title === title || task.body === body) projectTasks.splice(projectTasks.indexOf(task), 1) })
+        taskCount.textContent = projectTasks.length
     }
 
     const checkboxMouseOver = () => {
@@ -208,7 +199,7 @@ const TaskFactory = (titleVal, bodyVal, completionVal, projectTasks) => {
 }
 
 
-const TaskFormFactory = (projectTasks) => {
+const TaskFormFactory = (projectTasks, taskCount) => {
 
     const addTaskLine = document.createElement('div')
     const taskForm = document.createElement('form')
@@ -254,10 +245,11 @@ const TaskFormFactory = (projectTasks) => {
     }
 
     const submitTask = () => {
-        const newTask = TaskFactory(title.value, body.value, false, projectTasks)
+        const newTask = TaskFactory(title.value, body.value, false, projectTasks, taskCount)
         projectTasks.push(newTask)
         newTask.displayTask()
         hideAddTask()
+        taskCount.textContent = projectTasks.length
     }
 
     const showAddTask = () => {
