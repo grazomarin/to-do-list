@@ -10,9 +10,10 @@ const UI = (() => {
 
     const myProjects = []
 
+
     function initProject() {
         const index = ProjectFactory('Index')
-        myProjects.push(index)
+        UI.addProject(index)
         UI.resetMain()
         index.displayProject()
         index.initialize(index)
@@ -30,6 +31,14 @@ const UI = (() => {
         myProjects.push(project)
     }
 
+    const removeProject = (children) => {
+        UI.myProjects.forEach(project => {
+            if (project.myTasks === children) {
+                UI.myProjects.splice(UI.myProjects.indexOf(project), 1)
+            }
+        });
+    }
+
     // const displayProjectList = () => {
     //     myProjects.forEach(project => {
     //         project.displayProject()
@@ -41,6 +50,7 @@ const UI = (() => {
         resetMain,
         initProject,
         addProject,
+        removeProject,
         // displayProjectList,
     }
 })()
@@ -50,29 +60,51 @@ const ProjectFactory = (titleValue) => {
     const myTasks = []
     const title = titleValue
 
-    const projectCont = document.createElement('li')
+    const projectContainer = document.createElement('li')
     const projectTitle = document.createElement('span')
     const projectTaskCount = document.createElement('span')
+    const closeImg = title !== 'Index' ? new Image(13, 13) : new Image(0, 0)
+
 
     const displayProjectTasks = () => {
         myTasks.forEach(task => { task.displayTask() });
     }
 
     const displayProject = () => {
-        projectCont.classList = 'container-nav_project'
+        projectContainer.classList = 'container-nav-project'
+        closeImg.classList = 'container-nav-project_close'
+        projectTaskCount.classList = 'container-nav-project_count'
+        closeImg.src = closeImgSrc
         projectTitle.textContent = title
         projectTaskCount.textContent = myTasks.length
-        projectCont.append(projectTitle, projectTaskCount)
-        nav.prepend(projectCont)
+
+        projectContainer.append(projectTitle, closeImg, projectTaskCount)
+        nav.prepend(projectContainer)
         initEventListeners()
     }
 
+    const displayClose = () => {
+        closeImg.style.display = 'block'
+    }
+
+    const hideClose = () => {
+        closeImg.style.display = 'none'
+    }
+
+    const remove = () => {
+        UI.removeProject(myTasks)
+        projectContainer.remove()
+    }
+
     const initEventListeners = () => {
-        projectCont.addEventListener('click', () => {
+        projectContainer.addEventListener('click', () => {
             UI.resetMain()
             makeActive()
             initialize()
         })
+        closeImg.addEventListener('click', () => { remove() })
+        projectContainer.addEventListener('mouseover', () => { displayClose() })
+        projectContainer.addEventListener('mouseout', () => { hideClose() })
     }
 
     const initialize = (self) => {
@@ -83,8 +115,8 @@ const ProjectFactory = (titleValue) => {
     }
 
     const makeActive = () => {
-        Array.from(nav.children).forEach(project => { project.classList.remove('container-nav_project--active') });
-        projectCont.classList.add('container-nav_project--active')
+        Array.from(nav.children).forEach(project => { project.classList.remove('container-nav-project--active') });
+        projectContainer.classList.add('container-nav-project--active')
     }
 
     const submitTask = (task) => {
@@ -349,10 +381,11 @@ const navFormFactory = () => {
 
 }
 
-//reset main
 const navForm = navFormFactory()
 navForm.buildNav()
 UI.initProject()
+
+
 
 
 

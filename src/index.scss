@@ -15,22 +15,37 @@
 
     &-nav {
         grid-area: nav;
-        background-color: $grey-color;
+        background-color: $grey-light-color;
 
         display: flex;
         flex-flow: column;
         gap: 10px;
         padding: 20px 30px 0 30px;
 
-        &_project {
-            display: flex;
-            justify-content: space-between;
+        &-project {
+            display: grid;
+            grid-template-columns: max-content 1fr min-content;
             padding: 5px 16px;
             border-radius: $border-radius-small;
             transition: all .1s $transition-curve;
 
+            &_count {
+                justify-self: right;
+            }
+
+            &_close {
+                display: none;
+                justify-self: right;
+                align-self: center;
+                margin-right: 10px;
+            }
+
+            &:hover {
+                background-color: $grey-color;
+            }
+
             &--active {
-                background-color: $grey-dark-color;
+                background-color: $grey-dark-color !important;
             }
         }
 
@@ -84,6 +99,8 @@
         }
     }
 
+
+
     &-main {
         grid-area: main;
         margin: 20px auto;
@@ -118,9 +135,10 @@
                 &-titleCont {
                     width: $task-width;
                     display: grid;
-                    grid-template-columns: min-content min-content 1fr min-content;
+                    grid-template-columns: max-content min-content 1fr min-content;
                     gap: 10px;
                     align-items: center;
+                    white-space: nowrap;
 
                     &>img,
                     &_checkbox {
