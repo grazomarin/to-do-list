@@ -15,7 +15,7 @@ const UI = (() => {
         myProjects.push(index)
         UI.resetMain()
         index.displayProject()
-        index.initialize()
+        index.initialize(index)
     }
 
     function resetMain() {
@@ -55,10 +55,7 @@ const ProjectFactory = (titleValue) => {
     const projectTaskCount = document.createElement('span')
 
     const displayProjectTasks = () => {
-        myTasks.forEach(task => {
-            task = TaskFactory(task.title, task.description, task.completion, myTasks)
-            task.displayTask()
-        });
+        myTasks.forEach(task => { task.displayTask() });
     }
 
     const displayProject = () => {
@@ -78,10 +75,10 @@ const ProjectFactory = (titleValue) => {
         })
     }
 
-    const initialize = () => {
+    const initialize = (self) => {
         displayProjectTasks()
         makeActive()
-        const myForm = TaskFormFactory(myTasks, projectTaskCount)
+        const myForm = TaskFormFactory(self)
         myForm.buildAddTask()
     }
 
@@ -90,17 +87,34 @@ const ProjectFactory = (titleValue) => {
         projectCont.classList.add('container-nav_project--active')
     }
 
+    const submitTask = (task) => {
+        myTasks.push(task)
+        projectTaskCount.textContent = myTasks.length
+    }
+
+    const changeTaskCompletion = (title, body) => {
+        myTasks.find(task => { if (task.title === title && task.body === body) task.completion = !task.completion })
+    }
+
+    const removeTask = (title, body) => {
+        projectTasks.find(task => { if (task.title === title || task.body === body) projectTasks.splice(projectTasks.indexOf(task), 1) })
+        projectTaskCount.textContent = myTasks.length
+    }
+
     return {
         title,
         myTasks,
         initialize,
         displayProjectTasks,
         displayProject,
+        submitTask,
+        changeTaskCompletion,
+        removeTask,
     }
 }
 
 
-const TaskFactory = (titleVal, bodyVal, completionVal, projectTasks, taskCount) => {
+const TaskFactory = (titleVal, bodyVal, completionVal, project) => {
     const title = titleVal
     const body = bodyVal
     let completion = completionVal
@@ -117,16 +131,15 @@ const TaskFactory = (titleVal, bodyVal, completionVal, projectTasks, taskCount) 
     const bodyElem = document.createElement('p')
 
     const changeCompletion = () => {
-        projectTasks.find(task => { if (task.title === title && task.body === body) task.completion = !task.completion })
+        project.changeTaskCompletion(title, body)
         completion = !completion
         !clicked ? checkImg.style.display = 'block' : checkImg.style.display = 'none'
         clicked = !clicked
     }
 
     const remove = () => {
+        project.removeTask(title, body)
         taskContainer.remove()
-        projectTasks.find(task => { if (task.title === title || task.body === body) projectTasks.splice(projectTasks.indexOf(task), 1) })
-        taskCount.textContent = projectTasks.length
     }
 
     const checkboxMouseOver = () => {
@@ -199,7 +212,7 @@ const TaskFactory = (titleVal, bodyVal, completionVal, projectTasks, taskCount) 
 }
 
 
-const TaskFormFactory = (projectTasks, taskCount) => {
+const TaskFormFactory = (project) => {
 
     const addTaskLine = document.createElement('div')
     const taskForm = document.createElement('form')
@@ -245,11 +258,10 @@ const TaskFormFactory = (projectTasks, taskCount) => {
     }
 
     const submitTask = () => {
-        const newTask = TaskFactory(title.value, body.value, false, projectTasks, taskCount)
-        projectTasks.push(newTask)
-        newTask.displayTask()
+        const task = TaskFactory(title.value, body.value, false, project)
+        project.submitTask(task)
+        task.displayTask()
         hideAddTask()
-        taskCount.textContent = projectTasks.length
     }
 
     const showAddTask = () => {
@@ -316,7 +328,7 @@ const navFormFactory = () => {
         UI.addProject(newProject)
         UI.resetMain()
         newProject.displayProject()
-        newProject.initialize()
+        newProject.initialize(newProject)
         hideAddTask()
     }
 
