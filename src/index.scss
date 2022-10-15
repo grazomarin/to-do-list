@@ -78,22 +78,12 @@
                 margin-top: 5px;
                 gap: 10px;
 
-                &_cancel,
-                &_submit {
-                    background-color: white;
-                    border: none;
-                    box-shadow: none;
-                    padding: 5px 12px;
-                    border-radius: $border-radius-big;
-                    font-family: $font-family;
-                }
-
                 &_cancel {
-                    background-color: $grey-dark-color;
+                    @include button($grey-dark-color, $border-radius-big, $font-family)
                 }
 
                 &_submit {
-                    background-color: $red-color;
+                    @include button($red-color, $border-radius-big, $font-family)
                 }
             }
         }
@@ -123,73 +113,81 @@
         &-task {
             width: $task-width;
             display: flex;
-            align-items: center;
-            gap: 10px;
-            padding: 0 0 10px 0;
+            flex-direction: column;
+            gap: 8px;
+            padding: 0 0 8px 0;
             border: 0px solid $grey-dark-color;
             border-width: 0px 0px 1px 0px;
 
 
-            &-info {
+            &-titleCont {
+                width: $task-width;
+                display: grid;
+                grid-template-columns: min-content 1fr min-content max-content;
+                grid-auto-flow: column;
+                align-items: center;
+                white-space: nowrap;
 
-                &-titleCont {
-                    width: $task-width;
-                    display: grid;
-                    grid-template-columns: max-content min-content 1fr min-content;
-                    gap: 10px;
+                &>img,
+                &_checkbox {
+                    margin-top: 5px;
+                }
+
+                &>img {
+                    display: none;
+                    cursor: pointer;
+                    justify-self: end;
+                }
+
+                &_arrowDown {
+                    justify-self: end;
+                    margin-right: $gap;
+                }
+
+
+                &_checkbox {
+                    display: flex;
                     align-items: center;
-                    white-space: nowrap;
+                    justify-content: center;
+                    flex: 0 0 auto;
+                    width: 20px;
+                    height: 20px;
+                    border-radius: 50%;
+                    border: 2px solid $blue-color;
+                    background-color: $blue-color-trans;
+                    cursor: pointer;
+                    margin-right: $gap;
 
-                    &>img,
-                    &_checkbox {
-                        margin-top: 5px;
-                    }
-
-                    &>img {
-                        display: none;
-                        cursor: pointer;
-                        justify-self: end;
-                    }
-
-                    &_arrowDown,
-                    &_close {
-                        justify-self: end;
-                    }
-
-
-                    &_checkbox {
-                        display: flex;
-                        align-items: center;
-                        justify-content: center;
-                        flex: 0 0 auto;
-                        width: 20px;
-                        height: 20px;
-                        border-radius: 50%;
-                        border: 2px solid $blue-color;
-                        background-color: $blue-color-trans;
-                        cursor: pointer;
-
-                        &:hover {
-                            img {
-                                opacity: 50%;
-                            }
+                    &:hover {
+                        img {
+                            opacity: 50%;
                         }
-                    }
-
-                    &_title {
-                        font-size: $font-big;
                     }
                 }
 
-                &_body {
-                    display: none;
-                    font-size: $font-small;
-                    margin-left: 30px;
+                &_title {
+                    font-size: $font-big;
+                }
+            }
+
+            &_body {
+                display: none;
+                font-size: $font-small;
+            }
+
+
+            &-buttons {
+                display: none;
+                justify-content: right;
+
+                &_delete {
+                    @include button($red-color, $border-radius-big, $font-family);
                 }
             }
 
             &--done {}
         }
+
 
         &-taskForm {
             display: none;
@@ -220,6 +218,14 @@
                     resize: none;
                     font-family: $font-family;
                 }
+
+                &_date {
+                    @include button(white, $border-radius-big, $font-family);
+                    width: 80px;
+                    border: 2px solid $grey-dark-color;
+                    margin: 5px;
+
+                }
             }
 
             &-buttons {
@@ -228,22 +234,12 @@
                 margin-top: 5px;
                 gap: 10px;
 
-                &_cancel,
-                &_submit {
-                    background-color: white;
-                    border: none;
-                    box-shadow: none;
-                    padding: 5px 12px;
-                    border-radius: $border-radius-big;
-                    font-family: $font-family;
-                }
-
                 &_cancel {
-                    background-color: $grey-dark-color;
+                    @include button($grey-dark-color, $border-radius-big, $font-family)
                 }
 
                 &_submit {
-                    background-color: $red-color;
+                    @include button($red-color, $border-radius-big, $font-family)
                 }
             }
         }
