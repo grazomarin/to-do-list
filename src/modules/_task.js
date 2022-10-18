@@ -81,8 +81,8 @@ const TaskFactory = (titleVal, bodyVal, completionVal, dateVal, project) => {
         bodyElem.classList = 'container-main-task_body'
 
         checkImg.style.display = completion ? 'block' : 'none'
-        titleElem.textContent = title ? title : 'No title'
-        bodyElem.textContent = body ? body : 'No description'  //create a seperate function for this
+        titleElem.textContent = title || 'No title'
+        bodyElem.textContent = body || 'No description'  //create a seperate function for this
         dateText.textContent = date ? `due ${date}` : 'No date'
         deleteBtn.textContent = 'Delete'
 
@@ -104,6 +104,7 @@ const TaskFactory = (titleVal, bodyVal, completionVal, dateVal, project) => {
         title,
         body,
         completion,
+        date,
         displayTask,
     }
 }

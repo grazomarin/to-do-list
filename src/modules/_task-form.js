@@ -27,7 +27,7 @@ const TaskFormFactory = (project) => {
             const day = date.getDate();
             const month = date.getMonth() + 1;
             const year = date.getFullYear();
-            return `${day}/${month}/${year}`;
+            return `${day}.${month}.${year}`;
         },
     });
 
@@ -62,28 +62,28 @@ const TaskFormFactory = (project) => {
         initEventListeners()
     }
 
+    const initKeyboardListener = (event) => {
+        if (event.key === "Enter") {
+            event.preventDefault();
+            submit.click();
+        } else if (event.key === 'Space') {
+            event.preventDefault()
+            cancel.click()
+        }
+    }
+
     const initEventListeners = () => {
         addTaskLine.addEventListener('click', () => { showAddTask() })
-        cancel.addEventListener('click', () => { hideAddTask() })
-        submit.addEventListener('click', () => { submitTask() })
-        title.addEventListener('keypress', (event) => {
-            if (event.key === "Enter") {
-                event.preventDefault();
-                submit.click();
-            } else if (event.key === 'Esc') {
-                event.preventDefault()
-                cancel.click()
-            }
+        cancel.addEventListener('click', () => {
+            hideAddTask()
+            resetInputs()
         })
-        body.addEventListener('keypress', (event) => {
-            if (event.key === "Enter") {
-                event.preventDefault();
-                submit.click();
-            } else if (event.key === 'Esc') {
-                event.preventDefault()
-                cancel.click()
-            }
+        submit.addEventListener('click', () => {
+            submitTask()
+            resetInputs()
         })
+        title.addEventListener('keypress', (event) => { initKeyboardListener(event) })
+        body.addEventListener('keypress', (event) => { initKeyboardListener(event) })
     }
 
     const submitTask = () => {
@@ -91,7 +91,10 @@ const TaskFormFactory = (project) => {
         project.submitTask(task)
         task.displayTask()
         hideAddTask()
-        checkSelectedDate()
+    }
+
+    const resetInputs = () => {
+        dateBtn.textContent = 'set date'
     }
 
     const showAddTask = () => {
@@ -102,10 +105,6 @@ const TaskFormFactory = (project) => {
     const hideAddTask = () => {
         addTaskLine.style.display = 'block'
         taskForm.style.display = 'none'
-    }
-
-    const checkSelectedDate = () => {
-        console.log(datePicker.toString());
     }
 
     console.log(UI.myProjects);
