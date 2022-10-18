@@ -9,10 +9,11 @@ import { main, nav } from '../index'
 
 const ProjectFactory = (titleValue) => {
     const myTasks = []
-    const title = titleValue
+    let title = titleValue
 
     const projectContainer = document.createElement('li')
-    const projectTitle = document.createElement('span')
+    let projectTitle = document.createElement('span')
+    const projectTitleInput = document.createElement('input')
     const projectTaskCount = document.createElement('span')
     const closeImg = title !== 'Index' ? new Image(13, 13) : new Image(0, 0)
 
@@ -25,11 +26,13 @@ const ProjectFactory = (titleValue) => {
         projectContainer.classList = 'container-nav-project'
         closeImg.classList = 'container-nav-project_close'
         projectTaskCount.classList = 'container-nav-project_count'
+        projectTitleInput.classList = 'container-nav-project_input'
+
         closeImg.src = closeImgSrc
-        projectTitle.textContent = title ? title : 'No name'
+        projectTitle.textContent = title || 'No name'
         projectTaskCount.textContent = myTasks.length
 
-        projectContainer.append(projectTitle, closeImg, projectTaskCount)
+        projectContainer.append(projectTitle, projectTitleInput, closeImg, projectTaskCount)
         nav.prepend(projectContainer)
         initEventListeners()
     }
@@ -47,18 +50,42 @@ const ProjectFactory = (titleValue) => {
         projectContainer.remove()
     }
 
+    const enableTitleEditor = () => {
+        projectTitle.style.display = 'none'
+        projectTitleInput.style.display = 'block'
+        projectTitleInput.setAttribute('value', title)
+    }
+
+    const disableTitleEditor = () => {
+        projectTitle.style.display = 'block'
+        projectTitleInput.style.display = 'none'
+    }
+
+    const enableTitleEditorInteraction = (event) => {
+        if (event.key === "Enter") {
+            event.preventDefault()
+            title = projectTitleInput.value || title
+            projectTitle.textContent = title
+            disableTitleEditor()
+        } else if (event.key === 'Esc') {
+            event.preventDefault()
+            disableTitleEditor()
+        }
+    }
+
     const initEventListeners = () => {
         projectContainer.addEventListener('click', () => {
-            UI.resetMain()
-            makeActive()
-            initialize()
+            if (!projectContainer.classList.contains("container-nav-project--active")) { initialize() }
         })
         closeImg.addEventListener('click', () => { remove() })
         projectContainer.addEventListener('mouseover', () => { displayClose() })
         projectContainer.addEventListener('mouseout', () => { hideClose() })
+        projectTitle.addEventListener('click', () => { enableTitleEditor() })
+        projectTitleInput.addEventListener('keypress', (event) => { enableTitleEditorInteraction(event) })
     }
 
     const initialize = (self) => {
+        UI.resetMain()
         displayProjectTasks()
         makeActive()
         const myForm = TaskFormFactory(self)

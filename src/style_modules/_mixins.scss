@@ -1,11 +1,11 @@
-@mixin button($color, $b-radius, $font) {
-    background-color: $color;
+@mixin button($colorMX, $border-radMX, $font-familyMX) {
+    background-color: $colorMX;
     border: none;
     box-shadow: none;
     width: 70px;
     height: 25px;
     padding: 0 10px;
-    border-radius: $b-radius;
-    font-family: $font;
+    border-radius: $border-radMX;
+    font-family: $font-familyMX;
     cursor: pointer;
 }

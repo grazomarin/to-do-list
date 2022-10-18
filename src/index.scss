@@ -25,7 +25,7 @@
         &-project {
             display: grid;
             grid-template-columns: max-content 1fr min-content;
-            padding: 5px 16px;
+            padding: 5px 14px;
             border-radius: $border-radius-small;
             transition: all .1s $transition-curve;
 
@@ -38,6 +38,17 @@
                 justify-self: right;
                 align-self: center;
                 margin-right: 10px;
+            }
+
+            &_input {
+                display: none;
+                padding: 0px 5px 2px;
+                margin: 0px -5px -2px;
+                border-radius: $border-radius-small;
+                font-size: $font-small;
+                width: 100%;
+                height: 20px; //set a variable that calculates value from project container size
+                font-family: $font-family;
             }
 
             &:hover {
@@ -64,9 +75,8 @@
             flex-flow: column;
 
             &_title {
-                border: 2px solid $grey-dark-color;
+                border: $border-style;
                 border-radius: $border-radius-big;
-                outline: none;
                 padding: 5px;
                 font-size: $font-small;
                 font-family: $font-family;
@@ -184,8 +194,6 @@
                     @include button($red-color, $border-radius-big, $font-family);
                 }
             }
-
-            &--done {}
         }
 
 
@@ -195,13 +203,11 @@
             &-inputs {
                 display: flex;
                 flex-direction: column;
-                border: 2px solid $grey-dark-color;
+                border: $border-style;
                 border-radius: $border-radius-big;
 
                 &_title,
                 &_description {
-                    border: none;
-                    outline: none;
                     border-radius: $border-radius-big;
                     padding: 5px;
                     font-size: $font-small;
@@ -222,7 +228,7 @@
                 &_date {
                     @include button(white, $border-radius-big, $font-family);
                     width: 80px;
-                    border: 2px solid $grey-dark-color;
+                    border: $border-style;
                     margin: 5px;
 
                 }
