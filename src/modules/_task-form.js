@@ -26,7 +26,7 @@ const TaskFormFactory = (project) => {
         toString: function (date) {
             const day = date.getDate();
             const month = date.getMonth() + 1;
-            const year = date.getFullYear();
+            const year = date.getFullYear().toString().slice(-2);
             return `${day}.${month}.${year}`;
         },
     });
@@ -87,7 +87,7 @@ const TaskFormFactory = (project) => {
     }
 
     const submitTask = () => {
-        const task = TaskFactory(title.value, body.value, false, datePicker.toString(), project)
+        const task = TaskFactory(title.value, body.value, false, datePicker, project)
         project.submitTask(task)
         task.displayTask()
         hideAddTask()

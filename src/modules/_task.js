@@ -6,14 +6,17 @@ import ProjectFactory from './_project'
 import TaskFormFactory from './_task-form'
 import navFormFactory from './_nav-form'
 import { main, nav } from '../index'
+import Pikaday from 'pikaday'
 
 
-const TaskFactory = (titleVal, bodyVal, completionVal, dateVal, project) => {
+const TaskFactory = (titleVal, bodyVal, completionVal, dateObj, project) => {
     const title = titleVal
     const body = bodyVal
-    const date = dateVal
+    const date = dateObj.toString()
     let completion = completionVal
     let clicked = false
+
+    const ID = Math.random()
 
     const taskContainer = document.createElement('div')
     const checkbox = document.createElement('button')
@@ -22,19 +25,73 @@ const TaskFactory = (titleVal, bodyVal, completionVal, dateVal, project) => {
     const titleCont = document.createElement('div')
     const titleElem = document.createElement('p')
     const bodyElem = document.createElement('p')
-    const dateText = document.createElement('p')
     const buttonCont = document.createElement('div')
     const deleteBtn = document.createElement('button')
+    const dateText = document.createElement('p')
+    const dateTextEditor = new Pikaday({
+        field: dateText,
+        format: 'D.M.YYYY',
+        minDate: new Date(),
+        onSelect: function () {
+            dateText.textContent = `due ${this.getMoment().format('DD.MM.YY')}`
+            updateTask()
+        },
+        toString: function (date) {
+            const day = date.getDate();
+            const month = date.getMonth() + 1;
+            const year = date.getFullYear().toString().slice(-2);
+            return `${day}.${month}.${year}`;
+        }
+    });
+
+    function displayTask() {
+        taskContainer.classList = 'container-main-task'
+        checkbox.classList = 'container-main-task-titleCont_checkbox'
+        buttonCont.classList = 'container-main-task-buttons'
+        deleteBtn.classList = 'container-main-task-buttons_delete'
+        arrowDownImg.classList = 'container-main-task-titleCont_arrowDown'
+        titleCont.classList = 'container-main-task-titleCont'
+        titleElem.classList = 'container-main-task-titleCont_title'
+        dateText.classList = 'container-main-task-titleCont_dateTxt'
+        bodyElem.classList = 'container-main-task_body'
+
+        checkImg.style.display = completion ? 'block' : 'none'
+        titleElem.textContent = title || 'No title'
+        bodyElem.textContent = body || 'No description'  //create a seperate function for this
+        dateText.textContent = date ? `due ${date}` : 'No date'
+        deleteBtn.textContent = 'Delete'
+        dateTextEditor.field = dateText
+
+        checkImg.src = checkImgSrc
+        arrowDownImg.src = arrowDownImgSrc
+
+
+        initializeTaskEventListeners(checkbox, checkImg)
+        checkbox.append(checkImg)
+        titleCont.append(checkbox, titleElem, arrowDownImg, dateText)
+        buttonCont.append(deleteBtn)
+        taskContainer.append(titleCont, bodyElem, buttonCont)
+        main.prepend(taskContainer)
+    }
+
+    const updateTask = () => {
+        project.myTasks.find(task => {
+            if (task.ID === ID) {
+                task.date = dateTextEditor.toString()
+                console.log(UI.myProjects);
+            }
+        })
+    }
 
     const changeCompletion = () => {
-        project.changeTaskCompletion(title, body)
+        project.changeTaskCompletion(ID)
         completion = !completion
         !clicked ? checkImg.style.display = 'block' : checkImg.style.display = 'none'
         clicked = !clicked
     }
 
     const remove = () => {
-        project.removeTask(title, body)
+        project.removeTask(ID)
         taskContainer.remove()
     }
 
@@ -69,34 +126,6 @@ const TaskFactory = (titleVal, bodyVal, completionVal, dateVal, project) => {
         arrowDownImg.addEventListener('click', () => { changeBodyVisibility() })
     }
 
-    function displayTask() {
-        taskContainer.classList = 'container-main-task'
-        checkbox.classList = 'container-main-task-titleCont_checkbox'
-        buttonCont.classList = 'container-main-task-buttons'
-        deleteBtn.classList = 'container-main-task-buttons_delete'
-        arrowDownImg.classList = 'container-main-task-titleCont_arrowDown'
-        titleCont.classList = 'container-main-task-titleCont'
-        titleElem.classList = 'container-main-task-titleCont_title'
-        dateText.classList = 'container-main-task-titleCont_dateTxt'
-        bodyElem.classList = 'container-main-task_body'
-
-        checkImg.style.display = completion ? 'block' : 'none'
-        titleElem.textContent = title || 'No title'
-        bodyElem.textContent = body || 'No description'  //create a seperate function for this
-        dateText.textContent = date ? `due ${date}` : 'No date'
-        deleteBtn.textContent = 'Delete'
-
-        checkImg.src = checkImgSrc
-        arrowDownImg.src = arrowDownImgSrc
-
-
-        initializeTaskEventListeners(checkbox, checkImg)
-        checkbox.append(checkImg)
-        titleCont.append(checkbox, titleElem, arrowDownImg, dateText)
-        buttonCont.append(deleteBtn)
-        taskContainer.append(titleCont, bodyElem, buttonCont)
-        main.prepend(taskContainer)
-    }
 
     console.log(UI.myProjects);
 
@@ -105,6 +134,7 @@ const TaskFactory = (titleVal, bodyVal, completionVal, dateVal, project) => {
         body,
         completion,
         date,
+        ID,
         displayTask,
     }
 }

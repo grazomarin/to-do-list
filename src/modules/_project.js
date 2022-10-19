@@ -61,11 +61,20 @@ const ProjectFactory = (titleValue) => {
         projectTitleInput.style.display = 'none'
     }
 
+    const updateProject = () => {
+        UI.myProjects.forEach(project => {
+            if (project.myTasks === myTasks) {
+                project.title = title
+            }
+        });
+    }
+
     const enableTitleEditorInteraction = (event) => {
         if (event.key === "Enter") {
             event.preventDefault()
             title = projectTitleInput.value || title
             projectTitle.textContent = title
+            updateProject()
             disableTitleEditor()
         } else if (event.key === 'Esc') {
             event.preventDefault()
