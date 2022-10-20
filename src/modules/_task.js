@@ -10,9 +10,9 @@ import Pikaday from 'pikaday'
 
 
 const TaskFactory = (titleVal, bodyVal, completionVal, dateObj, project) => {
-    const title = titleVal
-    const body = bodyVal
-    const date = dateObj.toString()
+    let title = titleVal
+    let body = bodyVal
+    let date = dateObj.toString()
     let completion = completionVal
     let clicked = false
 
@@ -24,7 +24,9 @@ const TaskFactory = (titleVal, bodyVal, completionVal, dateObj, project) => {
     const arrowDownImg = new Image(18, 18)
     const titleCont = document.createElement('div')
     const titleElem = document.createElement('p')
+    const titleInput = document.createElement('input')
     const bodyElem = document.createElement('p')
+    const bodyInput = document.createElement('textarea')
     const buttonCont = document.createElement('div')
     const deleteBtn = document.createElement('button')
     const dateText = document.createElement('p')
@@ -52,25 +54,28 @@ const TaskFactory = (titleVal, bodyVal, completionVal, dateObj, project) => {
         arrowDownImg.classList = 'container-main-task-titleCont_arrowDown'
         titleCont.classList = 'container-main-task-titleCont'
         titleElem.classList = 'container-main-task-titleCont_title'
+        titleInput.classList = 'container-main-task-titleCont_title_input'
         dateText.classList = 'container-main-task-titleCont_dateTxt'
         bodyElem.classList = 'container-main-task_body'
+        bodyInput.classList = 'container-main-task_body_input'
 
         checkImg.style.display = completion ? 'block' : 'none'
         titleElem.textContent = title || 'No title'
         bodyElem.textContent = body || 'No description'  //create a seperate function for this
+        bodyInput.setAttribute('multiline', 'false')
+        bodyInput.setAttribute('rows', '4')
         dateText.textContent = date ? `due ${date}` : 'No date'
-        deleteBtn.textContent = 'Delete'
         dateTextEditor.field = dateText
+        deleteBtn.textContent = 'Delete'
 
         checkImg.src = checkImgSrc
         arrowDownImg.src = arrowDownImgSrc
 
-
         initializeTaskEventListeners(checkbox, checkImg)
         checkbox.append(checkImg)
-        titleCont.append(checkbox, titleElem, arrowDownImg, dateText)
+        titleCont.append(checkbox, titleElem, titleInput, arrowDownImg, dateText)
         buttonCont.append(deleteBtn)
-        taskContainer.append(titleCont, bodyElem, buttonCont)
+        taskContainer.append(titleCont, bodyElem, bodyInput, buttonCont)
         main.prepend(taskContainer)
     }
 
@@ -78,6 +83,8 @@ const TaskFactory = (titleVal, bodyVal, completionVal, dateObj, project) => {
         project.myTasks.find(task => {
             if (task.ID === ID) {
                 task.date = dateTextEditor.toString()
+                task.title
+                task.body
                 console.log(UI.myProjects);
             }
         })
@@ -93,6 +100,36 @@ const TaskFactory = (titleVal, bodyVal, completionVal, dateObj, project) => {
     const remove = () => {
         project.removeTask(ID)
         taskContainer.remove()
+    }
+
+    const enableEditor = (holder, input) => {
+        holder.style.display = 'none'
+        input.style.display = 'block'
+        input.setAttribute('value', holder.textContent)
+        input.textContent = holder.textContent
+    }
+
+    const disableEditor = (holder, input) => {
+        holder.style.display = 'block'
+        input.style.display = 'none'
+    }
+
+    const enableEditorInteraction = (event, holder, input) => {
+        if (event.key === "Enter") {
+            event.preventDefault()
+            if (holder === titleElem) {
+                title = input.value || title
+                holder.textContent = title
+            } else {
+                body = input.value || body
+                holder.textContent = body
+            }
+            updateTask()
+            disableEditor(holder, input)
+        } else if (event.key === 'Esc') {
+            event.preventDefault()
+            disableEditor(holder, input)
+        }
     }
 
     const checkboxMouseOver = () => {
@@ -124,6 +161,10 @@ const TaskFactory = (titleVal, bodyVal, completionVal, dateObj, project) => {
         checkbox.addEventListener('mouseout', () => { checkboxMouseOut() })
         deleteBtn.addEventListener('click', () => { remove() })
         arrowDownImg.addEventListener('click', () => { changeBodyVisibility() })
+        titleElem.addEventListener('click', () => { enableEditor(titleElem, titleInput) })
+        bodyElem.addEventListener('click', () => { enableEditor(bodyElem, bodyInput) })
+        titleInput.addEventListener('keypress', (event) => { enableEditorInteraction(event, titleElem, titleInput) })
+        bodyInput.addEventListener('keypress', (event) => { enableEditorInteraction(event, bodyElem, bodyInput) })
     }
 
 

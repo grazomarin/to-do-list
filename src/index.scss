@@ -1,5 +1,28 @@
 @use 'style_modules' as *;
 
+@mixin button($colorMX) {
+    background-color: $colorMX;
+    border: none;
+    box-shadow: none;
+    width: 70px;
+    height: 25px;
+    padding: 0 10px;
+    border-radius: $border-radius-big;
+    font-family: $font-family;
+    cursor: pointer;
+}
+
+%input {
+    display: none;
+    padding: 0px 5px 2px;
+    border-radius: $border-radius-small;
+    font-size: $font-small;
+    width: 90%;
+    font-family: $font-family;
+    border: $border-style;
+}
+
+
 .container {
     display: grid;
     grid-template:
@@ -29,6 +52,10 @@
             border-radius: $border-radius-small;
             transition: all .1s $transition-curve;
 
+            span:first-child {
+                cursor: pointer;
+            }
+
             &_count {
                 justify-self: right;
             }
@@ -41,14 +68,9 @@
             }
 
             &_input {
-                display: none;
-                padding: 0px 5px 2px;
-                margin: 0px -5px -2px;
-                border-radius: $border-radius-small;
-                font-size: $font-small;
-                width: 100%;
+                @extend %input;
                 height: 20px; //set a variable that calculates value from project container size
-                font-family: $font-family;
+                margin: 0px -5px -2px;
             }
 
             &:hover {
@@ -64,6 +86,7 @@
             text-align: center;
             font-size: $font-small;
             height: min-content;
+            cursor: pointer;
 
             &::before {
                 content: '+ ';
@@ -89,11 +112,11 @@
                 gap: 10px;
 
                 &_cancel {
-                    @include button($grey-dark-color, $border-radius-big, $font-family)
+                    @include button($grey-dark-color)
                 }
 
                 &_submit {
-                    @include button($red-color, $border-radius-big, $font-family)
+                    @include button($red-color)
                 }
             }
         }
@@ -114,6 +137,7 @@
             text-align: center;
             font-size: $font-big;
             height: min-content;
+            cursor: pointer;
 
             &::before {
                 content: '+ ';
@@ -177,12 +201,28 @@
 
                 &_title {
                     font-size: $font-big;
+                    cursor: pointer;
+                    margin: 0 7px;
+
+                    &_input {
+                        @extend %input;
+                        font-size: $font-big;
+                        height: 30.4px;
+                    }
                 }
             }
 
             &_body {
                 display: none;
                 font-size: $font-small;
+                cursor: pointer;
+
+                &_input {
+                    @extend %input;
+                    resize: none;
+                    width: 100%;
+                    overflow: auto;
+                }
             }
 
 
@@ -191,7 +231,7 @@
                 justify-content: right;
 
                 &_delete {
-                    @include button($red-color, $border-radius-big, $font-family);
+                    @include button($red-color);
                 }
             }
         }
@@ -226,7 +266,7 @@
                 }
 
                 &_date {
-                    @include button(white, $border-radius-big, $font-family);
+                    @include button(white);
                     width: 80px;
                     border: $border-style;
                     margin: 5px;
@@ -241,11 +281,11 @@
                 gap: 10px;
 
                 &_cancel {
-                    @include button($grey-dark-color, $border-radius-big, $font-family)
+                    @include button($grey-dark-color)
                 }
 
                 &_submit {
-                    @include button($red-color, $border-radius-big, $font-family)
+                    @include button($red-color)
                 }
             }
         }
