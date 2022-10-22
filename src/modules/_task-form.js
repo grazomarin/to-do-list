@@ -1,12 +1,10 @@
 import UI from './_ui'
-import ProjectFactory from './_project'
 import TaskFactory from './_task'
-import navFormFactory from './_nav-form'
-import { main, nav } from '../index'
+import { main } from '../index'
 import Pikaday from 'pikaday'
 
 
-const TaskFormFactory = (project) => {
+const TaskFormFactory = (projID) => {
     const addTaskLine = document.createElement('div')
     const taskForm = document.createElement('form')
     const inputs = document.createElement('div')
@@ -64,10 +62,10 @@ const TaskFormFactory = (project) => {
 
     const initKeyboardListener = (event) => {
         if (event.key === "Enter") {
-            event.preventDefault();
+            // event.preventDefault();
             submit.click();
         } else if (event.key === 'Space') {
-            event.preventDefault()
+            // event.preventDefault()
             cancel.click()
         }
     }
@@ -87,10 +85,17 @@ const TaskFormFactory = (project) => {
     }
 
     const submitTask = () => {
-        const task = TaskFactory(title.value, body.value, false, datePicker, project)
-        project.submitTask(task)
-        task.displayTask()
-        hideAddTask()
+        const test = '2'
+        const test2 = '3'
+        console.log('Test', test == test2);
+        UI.myProjects.forEach(project => {
+            if (project.ID === projID) {
+                const task = TaskFactory(title.value, body.value, false, datePicker.toString(), '', project)
+                project.submitTask(task)
+                task.displayTask()
+                hideAddTask()
+            }
+        });
     }
 
     const resetInputs = () => {

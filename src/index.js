@@ -12,9 +12,20 @@ import navFormFactory from './modules/_nav-form'
 const main = document.querySelector('.container-main')
 const nav = document.querySelector('.container-nav')
 
-const navForm = navFormFactory()
-navForm.buildNav()
-UI.initProject()
+
+document.addEventListener('DOMContentLoaded', () => {
+    if (localStorage['projects']) {
+        UI.loadHomepage()
+    } else {
+        UI.firstLoad()
+    }
+})
+
+
+
+
+
+
 
 export { main, nav }
 

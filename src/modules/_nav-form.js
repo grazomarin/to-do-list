@@ -1,8 +1,6 @@
 import UI from './_ui'
 import ProjectFactory from './_project'
-import TaskFactory from './_task'
-import TaskFormFactory from './_task-form'
-import { main, nav } from '../index'
+import { nav } from '../index'
 
 
 const navFormFactory = () => {
@@ -38,7 +36,7 @@ const navFormFactory = () => {
     const initEventListeners = () => {
         addProjectLine.addEventListener('click', () => { showAddTask() })
         cancel.addEventListener('click', () => { hideAddTask() })
-        submit.addEventListener('click', () => { submitTask() })
+        submit.addEventListener('click', () => { submitProject() })
         title.addEventListener('keypress', (event) => {
             if (event.key === "Enter") {
                 event.preventDefault();
@@ -50,12 +48,12 @@ const navFormFactory = () => {
         })
     }
 
-    const submitTask = () => {
+    const submitProject = () => {
         const newProject = ProjectFactory(title.value)
         UI.addProject(newProject)
         UI.resetMain()
         newProject.displayProject()
-        newProject.initialize(newProject)
+        UI.initializeProj(newProject.ID)
         hideAddTask()
     }
 

@@ -2,21 +2,19 @@ import checkImgSrc from '../images/icons/check.svg'
 import arrowDownImgSrc from '../images/icons/arrow-down.svg'
 
 import UI from './_ui'
-import ProjectFactory from './_project'
-import TaskFormFactory from './_task-form'
-import navFormFactory from './_nav-form'
-import { main, nav } from '../index'
+import { main } from '../index'
 import Pikaday from 'pikaday'
 
 
-const TaskFactory = (titleVal, bodyVal, completionVal, dateObj, project) => {
+const TaskFactory = (titleVal, bodyVal, completionVal, dateStr, taskID, projectID) => {
     let title = titleVal
     let body = bodyVal
-    let date = dateObj.toString()
+    let date = dateStr
     let completion = completionVal
     let clicked = false
 
-    const ID = Math.random()
+    const ID = taskID || Math.random()
+    const project = UI.myProjects.find(project => { if (project.ID === projectID) return project })
 
     const taskContainer = document.createElement('div')
     const checkbox = document.createElement('button')
@@ -76,7 +74,7 @@ const TaskFactory = (titleVal, bodyVal, completionVal, dateObj, project) => {
         titleCont.append(checkbox, titleElem, titleInput, arrowDownImg, dateText)
         buttonCont.append(deleteBtn)
         taskContainer.append(titleCont, bodyElem, bodyInput, buttonCont)
-        main.prepend(taskContainer)
+        main.insertBefore(taskContainer, document.querySelector('.container-main_addTask'))
     }
 
     const updateTask = () => {
@@ -85,9 +83,9 @@ const TaskFactory = (titleVal, bodyVal, completionVal, dateObj, project) => {
                 task.date = dateTextEditor.toString()
                 task.title
                 task.body
-                console.log(UI.myProjects);
             }
         })
+        localStorage['projects'] = JSON.stringify(UI.myProjects)
     }
 
     const changeCompletion = () => {
@@ -95,6 +93,8 @@ const TaskFactory = (titleVal, bodyVal, completionVal, dateObj, project) => {
         completion = !completion
         !clicked ? checkImg.style.display = 'block' : checkImg.style.display = 'none'
         clicked = !clicked
+
+        localStorage['projects'] = JSON.stringify(UI.myProjects)
     }
 
     const remove = () => {
@@ -151,6 +151,7 @@ const TaskFactory = (titleVal, bodyVal, completionVal, dateObj, project) => {
     const changeBodyVisibility = () => {
         bodyElem.style.display === 'block' ? bodyElem.style.display = 'none' : bodyElem.style.display = 'block'
         buttonCont.style.display === 'flex' ? buttonCont.style.display = 'none' : buttonCont.style.display = 'flex'
+        return
     }
 
     const initializeTaskEventListeners = () => {

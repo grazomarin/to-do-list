@@ -1,39 +1,41 @@
 import closeImgSrc from '../images/icons/close.svg'
 
 import UI from './_ui'
-import TaskFactory from './_task'
 import TaskFormFactory from './_task-form'
-import navFormFactory from './_nav-form'
-import { main, nav } from '../index'
+import { nav } from '../index'
+import TaskFactory from './_task'
 
 
-const ProjectFactory = (titleValue) => {
+const ProjectFactory = (titleValue, IDval) => {
     const myTasks = []
     let title = titleValue
-
     const projectContainer = document.createElement('li')
     let projectTitle = document.createElement('span')
-    const projectTitleInput = document.createElement('input')
+    const titleInput = document.createElement('input')
     const projectTaskCount = document.createElement('span')
     const closeImg = title !== 'Index' ? new Image(13, 13) : new Image(0, 0)
 
+    const ID = IDval || Math.random()
 
     const displayProjectTasks = () => {
-        myTasks.forEach(task => { task.displayTask() });
+        myTasks.forEach(storedTask => {
+            const task = TaskFactory(storedTask.title, storedTask.body, storedTask.completion, storedTask.date, storedTask.ID, ID)
+            task.displayTask()
+        });
     }
 
     const displayProject = () => {
         projectContainer.classList = 'container-nav-project'
         closeImg.classList = 'container-nav-project_close'
         projectTaskCount.classList = 'container-nav-project_count'
-        projectTitleInput.classList = 'container-nav-project_input'
+        titleInput.classList = 'container-nav-project_input'
 
         closeImg.src = closeImgSrc
         projectTitle.textContent = title || 'No name'
         projectTaskCount.textContent = myTasks.length
 
-        projectContainer.append(projectTitle, projectTitleInput, closeImg, projectTaskCount)
-        nav.prepend(projectContainer)
+        projectContainer.append(projectTitle, titleInput, closeImg, projectTaskCount)
+        nav.insertBefore(projectContainer, document.querySelector('.container-nav_addProject'))
         initEventListeners()
     }
 
@@ -52,27 +54,29 @@ const ProjectFactory = (titleValue) => {
 
     const enableTitleEditor = () => {
         projectTitle.style.display = 'none'
-        projectTitleInput.style.display = 'block'
-        projectTitleInput.setAttribute('value', title)
+        titleInput.style.display = 'block'
+        titleInput.setAttribute('value', title)
     }
 
     const disableTitleEditor = () => {
         projectTitle.style.display = 'block'
-        projectTitleInput.style.display = 'none'
+        titleInput.style.display = 'none'
     }
 
     const updateProject = () => {
         UI.myProjects.forEach(project => {
-            if (project.myTasks === myTasks) {
+            if (project.ID === ID) {
                 project.title = title
             }
         });
+
+        localStorage['projects'] = JSON.stringify(UI.myProjects)
     }
 
     const enableTitleEditorInteraction = (event) => {
         if (event.key === "Enter") {
             event.preventDefault()
-            title = projectTitleInput.value || title
+            title = titleInput.value || title
             projectTitle.textContent = title
             updateProject()
             disableTitleEditor()
@@ -84,21 +88,13 @@ const ProjectFactory = (titleValue) => {
 
     const initEventListeners = () => {
         projectContainer.addEventListener('click', () => {
-            if (!projectContainer.classList.contains("container-nav-project--active")) { initialize() }
+            if (!projectContainer.classList.contains("container-nav-project--active")) { UI.initializeProj(ID) }
         })
         closeImg.addEventListener('click', () => { remove() })
         projectContainer.addEventListener('mouseover', () => { displayClose() })
         projectContainer.addEventListener('mouseout', () => { hideClose() })
         projectTitle.addEventListener('click', () => { enableTitleEditor() })
-        projectTitleInput.addEventListener('keypress', (event) => { enableTitleEditorInteraction(event) })
-    }
-
-    const initialize = (self) => {
-        UI.resetMain()
-        displayProjectTasks()
-        makeActive()
-        const myForm = TaskFormFactory(self)
-        myForm.buildAddTask()
+        titleInput.addEventListener('keypress', (event) => { enableTitleEditorInteraction(event) })
     }
 
     const makeActive = () => {
@@ -109,26 +105,29 @@ const ProjectFactory = (titleValue) => {
     const submitTask = (task) => {
         myTasks.push(task)
         projectTaskCount.textContent = myTasks.length
+        localStorage['projects'] = JSON.stringify(UI.myProjects)
     }
 
-    const changeTaskCompletion = (title, body) => {
-        myTasks.find(task => { if (task.title === title && task.body === body) task.completion = !task.completion })
+    const changeTaskCompletion = (ID) => {
+        myTasks.find(task => { if (task.ID === ID) task.completion = !task.completion })
     }
 
-    const removeTask = (title, body) => {
-        myTasks.find(task => { if (task.title === title || task.body === body) myTasks.splice(myTasks.indexOf(task), 1) })
+    const removeTask = (ID) => {
+        myTasks.find(task => { if (task.ID === ID) myTasks.splice(myTasks.indexOf(task), 1) })
         projectTaskCount.textContent = myTasks.length
+        localStorage['projects'] = JSON.stringify(UI.myProjects)
     }
 
     return {
         title,
         myTasks,
-        initialize,
+        ID,
         displayProjectTasks,
         displayProject,
         submitTask,
         changeTaskCompletion,
         removeTask,
+        makeActive
     }
 }
 

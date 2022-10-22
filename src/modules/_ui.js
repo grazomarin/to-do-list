@@ -1,21 +1,22 @@
 import ProjectFactory from './_project'
-import TaskFactory from './_task'
-import TaskFormFactory from './_task-form'
 import navFormFactory from './_nav-form'
-import { main, nav } from '../index'
+import TaskFormFactory from './_task-form'
+import storage from './_storage'
+import { main } from '../index'
 
 
 const UI = (() => {
 
     const myProjects = []
 
-
-    function initProject() {
+    function firstLoad() {
         const index = ProjectFactory('Index')
         UI.addProject(index)
         UI.resetMain()
         index.displayProject()
         index.initialize(index)
+        const navForm = navFormFactory()
+        navForm.buildNav()
     }
 
     function resetMain() {
@@ -28,6 +29,8 @@ const UI = (() => {
 
     const addProject = (project) => {
         myProjects.push(project)
+
+        localStorage['projects'] = JSON.stringify(myProjects)
     }
 
     const removeProject = (children) => {
@@ -36,22 +39,47 @@ const UI = (() => {
                 UI.myProjects.splice(UI.myProjects.indexOf(project), 1)
             }
         });
+
+        localStorage['projects'] = JSON.stringify(UI.myProjects)
     }
 
-    // const displayProjectList = () => {
-    //     myProjects.forEach(project => {
-    //         project.displayProject()
-    //     })
-    // }
+    const loadHomepage = () => {
+        storage.loadAll()
+        UI.displayProjects()
+        navFormFactory().buildNav()
+    }
+
+    const displayProjects = () => {
+        myProjects.forEach(project => {
+            project.displayProject()
+            UI.initializeProj(project.ID)
+        })
+    }
+
+    const initializeProj = (ID) => {
+        UI.myProjects.find(project => {
+            if (project.ID === ID) {
+                UI.resetMain()
+                project.displayProjectTasks()
+                project.makeActive()
+                const myForm = TaskFormFactory(project.ID)
+                myForm.buildAddTask()
+            }
+        })
+    }
+
 
     return {
         myProjects,
         resetMain,
-        initProject,
+        firstLoad,
         addProject,
         removeProject,
-        // displayProjectList,
+        loadHomepage,
+        displayProjects,
+        initializeProj,
     }
 })()
+
 
 export default UI
