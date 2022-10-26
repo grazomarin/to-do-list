@@ -1,2 +1,4 @@
 node_modules
 log.md
+.eslintrc.js
+.prettierrc.json
