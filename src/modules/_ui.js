@@ -12,13 +12,13 @@ const UI = (() => {
 		UI.addProject(index);
 		UI.resetMain();
 		index.displayProject();
-		index.initialize(index);
+		UI.initializeProj(index.ID);
 		const navForm = navFormFactory();
 		navForm.buildNav();
 	}
 
 	function resetMain() {
-		if (main.children.length != 0) {
+		if (main.children.length !== 0) {
 			Array.from(main.children).forEach((child) => {
 				child.remove();
 			});
@@ -55,6 +55,7 @@ const UI = (() => {
 	};
 
 	const initializeProj = (ID) => {
+		// eslint-disable-next-line array-callback-return
 		UI.myProjects.find((project) => {
 			if (project.ID === ID) {
 				UI.resetMain();
