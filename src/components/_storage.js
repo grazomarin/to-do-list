@@ -25,7 +25,7 @@ const storage = (() => {
 				storedTask.completion,
 				storedTask.date,
 				storedTask.ID,
-				project,
+				project
 			);
 			project.myTasks.push(task);
 		});

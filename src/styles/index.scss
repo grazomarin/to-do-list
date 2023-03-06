@@ -1,0 +1,287 @@
+@use 'modules/index' as *;
+
+html {
+	height: 100vh;
+}
+
+@mixin button($colorMX) {
+	background-color: $colorMX;
+	border: none;
+	box-shadow: none;
+	width: 70px;
+	height: 25px;
+	padding: 0 10px;
+	border-radius: $big-radius;
+	font-family: $font;
+	cursor: pointer;
+}
+
+%input {
+	display: none;
+	padding: 0px 5px 2px;
+	border-radius: $small-radius;
+	font-size: $font-small;
+	width: 90%;
+	font-family: $font;
+	border: $grey-color 2px solid;
+}
+
+#root {
+	display: grid;
+	grid-template-rows: 60px 1fr;
+	grid-template-columns: 1fr 3fr;
+	grid-template-areas: 'header header' 'index main';
+	height: 100vh;
+	font-family: $font;
+}
+
+.index {
+	grid-area: index;
+	background-color: $light-grey;
+
+	display: flex;
+	flex-flow: column;
+	gap: 10px;
+	padding: 20px 30px 0 30px;
+
+	&-project {
+		display: grid;
+		grid-template-columns: max-content 1fr min-content;
+		padding: 5px 14px;
+		border-radius: $small-radius;
+		transition: all 0.1s $transition-curve;
+
+		span:first-child {
+			cursor: pointer;
+		}
+
+		&_count {
+			justify-self: right;
+		}
+
+		&_close {
+			display: none;
+			justify-self: right;
+			align-self: center;
+			margin-right: 10px;
+		}
+
+		&_input {
+			@extend %input;
+			height: 20px; //set a variable that calculates value from project container size
+			margin: 0px -5px -2px;
+		}
+
+		&:hover {
+			background-color: $grey-color;
+		}
+
+		&--active {
+			background-color: $dark-grey !important;
+		}
+	}
+
+	&_addProject {
+		text-align: center;
+		font-size: $font-small;
+		height: min-content;
+		cursor: pointer;
+
+		&::before {
+			content: '+ ';
+		}
+	}
+
+	&-projectForm {
+		display: none;
+		flex-flow: column;
+
+		&_title {
+			border: $dark-grey 2px solid;
+			border-radius: $big-radius;
+			padding: 5px;
+			font-size: $font-small;
+			font-family: $font;
+		}
+
+		&-buttons {
+			display: flex;
+			justify-content: end;
+			margin-top: 5px;
+			gap: 10px;
+
+			&_cancel {
+				@include button($dark-grey);
+			}
+
+			&_submit {
+				@include button($red);
+			}
+		}
+	}
+}
+
+.main {
+	grid-area: main;
+	margin: 20px auto;
+	display: flex;
+	flex-direction: column;
+	gap: 10px;
+
+	&_addTask {
+		text-align: center;
+		font-size: $font-big;
+		height: min-content;
+		cursor: pointer;
+
+		&::before {
+			content: '+ ';
+		}
+	}
+
+	&-task {
+		display: flex;
+		flex-direction: column;
+		gap: 8px;
+		padding: 0 0 8px 0;
+		border: 0px solid $dark-grey;
+		border-width: 0px 0px 1px 0px;
+
+		&-titleCont {
+			display: grid;
+			grid-template-columns: min-content 1fr min-content max-content;
+			grid-auto-flow: column;
+			align-items: center;
+			white-space: nowrap;
+
+			& > img,
+			&_checkbox {
+				margin-top: 5px;
+			}
+
+			& > img {
+				display: none;
+				cursor: pointer;
+				justify-self: end;
+			}
+
+			&_arrowDown {
+				justify-self: end;
+				margin-right: $padding;
+			}
+
+			&_checkbox {
+				display: flex;
+				align-items: center;
+				justify-content: center;
+				flex: 0 0 auto;
+				width: 20px;
+				height: 20px;
+				border-radius: 50%;
+				border: 2px solid $blue;
+				background-color: $trans-blues;
+				cursor: pointer;
+				margin-right: $padding;
+
+				&:hover {
+					img {
+						opacity: 50%;
+					}
+				}
+			}
+
+			&_title {
+				font-size: $font-big;
+				cursor: pointer;
+				margin: 0 7px;
+
+				&_input {
+					@extend %input;
+					font-size: $font-big;
+					height: 30.4px;
+				}
+			}
+		}
+
+		&_body {
+			display: none;
+			font-size: $font-small;
+			cursor: pointer;
+
+			&_input {
+				@extend %input;
+				resize: none;
+				width: 100%;
+				overflow: auto;
+			}
+		}
+
+		&-buttons {
+			display: none;
+			justify-content: right;
+
+			&_delete {
+				@include button($red);
+			}
+		}
+	}
+
+	&-taskForm {
+		display: none;
+
+		&-inputs {
+			display: flex;
+			flex-direction: column;
+			border: $dark-grey 2px solid;
+			border-radius: $big-radius;
+
+			&_title,
+			&_description {
+				border-radius: $big-radius;
+				padding: 5px;
+				font-size: $font-small;
+				font-family: $font;
+			}
+
+			&_title {
+				display: flex;
+				align-items: center;
+				font-size: $font-medium;
+			}
+
+			&_description {
+				resize: none;
+				font-family: $font;
+			}
+
+			&_date {
+				@include button(white);
+				width: 80px;
+				border: $dark-grey 2px solid;
+				margin: 5px;
+			}
+		}
+
+		&-buttons {
+			display: flex;
+			justify-content: end;
+			margin-top: 5px;
+			gap: 10px;
+
+			&_cancel {
+				@include button($dark-grey);
+			}
+
+			&_submit {
+				@include button($red);
+			}
+		}
+	}
+}
+
+.header {
+	background-color: yellow;
+	grid-area: header;
+	background-color: $blue;
+	z-index: 0;
+}

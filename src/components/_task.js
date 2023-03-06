@@ -12,7 +12,7 @@ const TaskFactory = (
 	completionVal,
 	dateStr,
 	taskID,
-	projectID,
+	projectID
 ) => {
 	let title = titleVal;
 	let body = bodyVal;
@@ -86,13 +86,13 @@ const TaskFactory = (
 			titleElem,
 			titleInput,
 			arrowDownImg,
-			dateText,
+			dateText
 		);
 		buttonCont.append(deleteBtn);
 		taskContainer.append(titleCont, bodyElem, bodyInput, buttonCont);
 		main.insertBefore(
 			taskContainer,
-			document.querySelector('.container-main_addTask'),
+			document.querySelector('.container-main_addTask')
 		);
 	}
 

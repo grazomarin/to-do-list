@@ -23,7 +23,7 @@ const ProjectFactory = (titleValue, IDval) => {
 				storedTask.completion,
 				storedTask.date,
 				storedTask.ID,
-				ID,
+				ID
 			);
 			task.displayTask();
 		});
@@ -43,11 +43,11 @@ const ProjectFactory = (titleValue, IDval) => {
 			projectTitle,
 			titleInput,
 			closeImg,
-			projectTaskCount,
+			projectTaskCount
 		);
 		nav.insertBefore(
 			projectContainer,
-			document.querySelector('.container-nav_addProject'),
+			document.querySelector('.container-nav_addProject')
 		);
 		initEventListeners();
 	};
@@ -104,7 +104,7 @@ const ProjectFactory = (titleValue, IDval) => {
 		projectContainer.addEventListener('click', () => {
 			if (
 				!projectContainer.classList.contains(
-					'container-nav-project--active',
+					'container-nav-project--active'
 				)
 			) {
 				UI.initializeProj(ID);

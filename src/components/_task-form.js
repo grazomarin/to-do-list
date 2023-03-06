@@ -98,7 +98,7 @@ const TaskFormFactory = (projID) => {
 					false,
 					datePicker.toString(),
 					'',
-					project.ID,
+					project.ID
 				);
 				project.submitTask(task);
 				task.displayTask();
