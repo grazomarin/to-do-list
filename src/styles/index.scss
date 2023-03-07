@@ -2,28 +2,16 @@
 
 html {
 	height: 100vh;
-}
-
-@mixin button($colorMX) {
-	background-color: $colorMX;
-	border: none;
-	box-shadow: none;
-	width: 70px;
-	height: 25px;
-	padding: 0 10px;
-	border-radius: $big-radius;
 	font-family: $font;
-	cursor: pointer;
 }
 
 %input {
 	display: none;
 	padding: 0px 5px 2px;
-	border-radius: $small-radius;
+	border-radius: $radius;
 	font-size: $font-small;
 	width: 90%;
-	font-family: $font;
-	border: $grey-color 2px solid;
+	border: $grey 2px solid;
 }
 
 #root {
@@ -32,23 +20,28 @@ html {
 	grid-template-columns: 1fr 3fr;
 	grid-template-areas: 'header header' 'index main';
 	height: 100vh;
-	font-family: $font;
+}
+
+.add {
+	font-size: $font-big;
+	cursor: pointer;
+	align-self: center;
 }
 
 .index {
-	grid-area: index;
-	background-color: $light-grey;
-
 	display: flex;
 	flex-flow: column;
+	grid-area: index;
+
+	background-color: $light-grey;
 	gap: 10px;
-	padding: 20px 30px 0 30px;
+	padding: $offset-s;
 
 	&-project {
 		display: grid;
 		grid-template-columns: max-content 1fr min-content;
 		padding: 5px 14px;
-		border-radius: $small-radius;
+		border-radius: $radius;
 		transition: all 0.1s $transition-curve;
 
 		span:first-child {
@@ -73,7 +66,7 @@ html {
 		}
 
 		&:hover {
-			background-color: $grey-color;
+			background-color: $grey;
 		}
 
 		&--active {
@@ -98,10 +91,9 @@ html {
 
 		&_title {
 			border: $dark-grey 2px solid;
-			border-radius: $big-radius;
+			border-radius: $radius;
 			padding: 5px;
 			font-size: $font-small;
-			font-family: $font;
 		}
 
 		&-buttons {
@@ -109,35 +101,17 @@ html {
 			justify-content: end;
 			margin-top: 5px;
 			gap: 10px;
-
-			&_cancel {
-				@include button($dark-grey);
-			}
-
-			&_submit {
-				@include button($red);
-			}
 		}
 	}
 }
 
 .main {
-	grid-area: main;
-	margin: 20px auto;
 	display: flex;
 	flex-direction: column;
+	grid-area: main;
+
+	margin: $offset-s;
 	gap: 10px;
-
-	&_addTask {
-		text-align: center;
-		font-size: $font-big;
-		height: min-content;
-		cursor: pointer;
-
-		&::before {
-			content: '+ ';
-		}
-	}
 
 	&-task {
 		display: flex;
@@ -167,7 +141,7 @@ html {
 
 			&_arrowDown {
 				justify-self: end;
-				margin-right: $padding;
+				margin-right: $offset-s;
 			}
 
 			&_checkbox {
@@ -179,9 +153,9 @@ html {
 				height: 20px;
 				border-radius: 50%;
 				border: 2px solid $blue;
-				background-color: $trans-blues;
+				background-color: $trans-blue;
 				cursor: pointer;
-				margin-right: $padding;
+				margin-right: $offset-s;
 
 				&:hover {
 					img {
@@ -219,10 +193,6 @@ html {
 		&-buttons {
 			display: none;
 			justify-content: right;
-
-			&_delete {
-				@include button($red);
-			}
 		}
 	}
 
@@ -233,14 +203,13 @@ html {
 			display: flex;
 			flex-direction: column;
 			border: $dark-grey 2px solid;
-			border-radius: $big-radius;
+			border-radius: $radius;
 
 			&_title,
 			&_description {
-				border-radius: $big-radius;
+				border-radius: $radius;
 				padding: 5px;
 				font-size: $font-small;
-				font-family: $font;
 			}
 
 			&_title {
@@ -251,11 +220,9 @@ html {
 
 			&_description {
 				resize: none;
-				font-family: $font;
 			}
 
 			&_date {
-				@include button(white);
 				width: 80px;
 				border: $dark-grey 2px solid;
 				margin: 5px;
@@ -269,19 +236,49 @@ html {
 			gap: 10px;
 
 			&_cancel {
-				@include button($dark-grey);
 			}
 
 			&_submit {
-				@include button($red);
 			}
 		}
 	}
 }
 
+form {
+	display: flex;
+	flex-flow: column;
+	gap: $offset-s;
+
+	input {
+	}
+
+	.buttons {
+		display: flex;
+		gap: $offset-xs;
+		justify-content: end;
+
+		button {
+			aspect-ratio: 3/1;
+			width: 88px;
+			border: 3px solid;
+			border-radius: $radius;
+			cursor: pointer;
+		}
+
+		.submit {
+			border-color: $dark-blue;
+			@include zoomin($dark-blue);
+		}
+
+		.cancel {
+			border-color: $red;
+			@include zoomin($red);
+		}
+	}
+}
+
 .header {
-	background-color: yellow;
 	grid-area: header;
-	background-color: $blue;
+	background-color: $dark-blue;
 	z-index: 0;
 }

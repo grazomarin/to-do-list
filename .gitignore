@@ -1,4 +1,5 @@
 node_modules
-notes.txt
+TODO
 .eslintrc.js
 .prettierrc.json
+.history
