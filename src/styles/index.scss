@@ -38,6 +38,34 @@ html {
 	border: 3px solid $dark-grey;
 	border-radius: $radius;
 
+	.folder {
+		display: flex;
+		align-items: center;
+		gap: $offset-xs;
+
+		font-size: $font-large;
+
+		.bullet {
+			aspect-ratio: 1/1;
+			width: 12px;
+			background-color: $dark-blue;
+			border-radius: 50%;
+		}
+
+		&.active {
+			box-sizing: border-box;
+			font-weight: 500;
+			font-style: italic;
+			background-color: $dark-grey;
+			padding: $offset-xs;
+			margin: 0 (-$offset-xs) 0;
+			border-radius: $radius;
+
+			.bullet {
+				background-color: transparent;
+			}
+		}
+	}
 
 	&-project {
 		display: grid;
@@ -249,6 +277,11 @@ form {
 	gap: $offset-s;
 
 	input {
+		padding: $offset-xs;
+		margin: 0 (-$offset-xs) 0;
+		border-radius: $radius;
+		font-size: $font-large;
+		border: $dark-blue 2px solid;
 	}
 
 	.buttons {
