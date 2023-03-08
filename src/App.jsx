@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import WebFont from 'webfontloader';
 import { StorageProvider } from './components/contexts/StorageContext';
-import Header from './components/Header';
 import Index from './components/Index';
 import Main from './components/Main';
 
@@ -16,10 +15,9 @@ function App() {
 
 	return (
 		<>
-			<Header />
 			<StorageProvider>
-				<Main />
 				<Index />
+				<Main />
 			</StorageProvider>
 		</>
 	);
