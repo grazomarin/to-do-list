@@ -3,3 +3,4 @@ TODO
 .eslintrc.js
 .prettierrc.json
 .history
+dist
