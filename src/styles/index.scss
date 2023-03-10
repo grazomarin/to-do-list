@@ -5,14 +5,6 @@ html {
 	font-family: $font;
 }
 
-%input {
-	display: none;
-	padding: 0px 5px 2px;
-	border-radius: $radius;
-	font-size: $font-small;
-	width: 90%;
-}
-
 #root {
 	display: grid;
 	grid-template-columns: 1.2fr 3fr;
@@ -25,40 +17,37 @@ html {
 	font-size: $font-large;
 	cursor: pointer;
 	align-self: center;
+	justify-self: center;
 }
 
 .index {
-	display: flex;
-	flex-flow: column;
+	display: grid;
+	grid-auto-flow: row;
+	grid-auto-rows: $folder-height;
+	gap: $offset-s;
 
-	background-color: $grey;
-	gap: 10px;
-	margin: $offset-s;
+	background-color: $light-grey;
+	margin: $offset-m;
 	padding: $offset-m $offset-l;
-	border: 3px solid $dark-grey;
+	border: 2px solid $grey;
 	border-radius: $radius;
 
 	.folder {
 		display: flex;
 		align-items: center;
-		gap: $offset-xs;
+		gap: $offset-s;
+		transition: 0.1s all $transition-curve;
 
 		font-size: $font-large;
-
-		.bullet {
-			aspect-ratio: 1/1;
-			width: 12px;
-			background-color: $dark-blue;
-			border-radius: 50%;
-		}
+		cursor: pointer;
 
 		&.active {
 			box-sizing: border-box;
 			font-weight: 500;
-			font-style: italic;
-			background-color: $dark-grey;
+			background-color: $grey;
 			padding: $offset-xs;
 			margin: 0 (-$offset-xs) 0;
+			border: 1px solid $dark-grey;
 			border-radius: $radius;
 
 			.bullet {
@@ -66,74 +55,7 @@ html {
 			}
 		}
 	}
-
-	&-project {
-		display: grid;
-		grid-template-columns: max-content 1fr min-content;
-		padding: 5px 14px;
-		border-radius: $radius;
-		transition: all 0.1s $transition-curve;
-
-		span:first-child {
-			cursor: pointer;
-		}
-
-		&_count {
-			justify-self: right;
-		}
-
-		&_close {
-			display: none;
-			justify-self: right;
-			align-self: center;
-			margin-right: 10px;
-		}
-
-		&_input {
-			@extend %input;
-			height: 20px; //set a variable that calculates value from project container size
-			margin: 0px -5px -2px;
-		}
-
-		&:hover {
-		}
-
-		&--active {
-			background-color: $dark-grey !important;
-		}
-	}
-
-	&_addProject {
-		text-align: center;
-		font-size: $font-small;
-		height: min-content;
-		cursor: pointer;
-
-		&::before {
-			content: '+ ';
-		}
-	}
-
-	&-projectForm {
-		display: none;
-		flex-flow: column;
-
-		&_title {
-			border: $dark-grey 2px solid;
-			border-radius: $radius;
-			padding: 5px;
-			font-size: $font-small;
-		}
-
-		&-buttons {
-			display: flex;
-			justify-content: end;
-			margin-top: 5px;
-			gap: 10px;
-		}
-	}
 }
-
 .main {
 	display: grid;
 	grid-template-rows: 30px 1fr;
@@ -142,133 +64,9 @@ html {
 .tasks {
 	display: flex;
 	flex-direction: column;
-
-	margin: $offset-s;
 	gap: 10px;
 
-	&-task {
-		display: flex;
-		flex-direction: column;
-		gap: 8px;
-		padding: 0 0 8px 0;
-		border: 0px solid $dark-grey;
-		border-width: 0px 0px 1px 0px;
-
-		&-titleCont {
-			display: grid;
-			grid-template-columns: min-content 1fr min-content max-content;
-			grid-auto-flow: column;
-			align-items: center;
-			white-space: nowrap;
-
-			& > img,
-			&_checkbox {
-				margin-top: 5px;
-			}
-
-			& > img {
-				display: none;
-				cursor: pointer;
-				justify-self: end;
-			}
-
-			&_arrowDown {
-				justify-self: end;
-				margin-right: $offset-s;
-			}
-
-			&_checkbox {
-				display: flex;
-				align-items: center;
-				justify-content: center;
-				flex: 0 0 auto;
-				width: 20px;
-				height: 20px;
-				border-radius: 50%;
-				border: 2px solid $blue;
-				background-color: $trans-blue;
-				cursor: pointer;
-				margin-right: $offset-s;
-
-				&:hover {
-					img {
-						opacity: 50%;
-					}
-				}
-			}
-
-			&_title {
-				font-size: $font-large;
-				cursor: pointer;
-				margin: 0 7px;
-
-				&_input {
-					@extend %input;
-					font-size: $font-large;
-					height: 30.4px;
-				}
-			}
-		}
-
-		&_body {
-			display: none;
-			font-size: $font-small;
-			cursor: pointer;
-
-			&_input {
-				@extend %input;
-				resize: none;
-				width: 100%;
-				overflow: auto;
-			}
-		}
-
-		&-buttons {
-			display: none;
-			justify-content: right;
-		}
-	}
-
-	&-taskForm {
-		display: none;
-
-		&-inputs {
-			display: flex;
-			flex-direction: column;
-			border: $dark-grey 2px solid;
-			border-radius: $radius;
-
-			&_title,
-			&_description {
-				border-radius: $radius;
-				padding: 5px;
-				font-size: $font-small;
-			}
-
-			&_title {
-				display: flex;
-				align-items: center;
-				font-size: $font-medium;
-			}
-
-			&_description {
-				resize: none;
-			}
-
-			&_date {
-				width: 80px;
-				border: $dark-grey 2px solid;
-				margin: 5px;
-			}
-		}
-
-		&-buttons {
-			display: flex;
-			justify-content: end;
-			margin-top: 5px;
-			gap: 10px;
-		}
-	}
+	margin: $offset-s;
 }
 
 form {
@@ -276,12 +74,20 @@ form {
 	flex-flow: column;
 	gap: $offset-s;
 
-	input {
-		padding: $offset-xs;
-		margin: 0 (-$offset-xs) 0;
-		border-radius: $radius;
-		font-size: $font-large;
-		border: $dark-blue 2px solid;
+	.input-cont {
+		display: flex;
+		align-items: center;
+		gap: $offset-xs;
+
+		input {
+			width: 100%;
+			font-size: $font-large;
+			padding: $offset-xxs $offset-xs;
+			margin: 0 (-$offset-xs) 0 0;
+			box-sizing: border-box;
+			border: $dark-grey 2px solid;
+			border-radius: $radius;
+		}
 	}
 
 	.buttons {
@@ -307,4 +113,11 @@ form {
 			@include zoomin($red);
 		}
 	}
+}
+
+.bullet {
+	aspect-ratio: 1/1;
+	width: 7px;
+	background-color: $dark-blue;
+	border-radius: 50%;
 }
