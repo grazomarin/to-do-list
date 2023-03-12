@@ -12,7 +12,7 @@ html {
 }
 
 .add {
-	font-size: $font-large;
+	font-size: $font-l;
 	cursor: pointer;
 	align-self: center;
 	justify-self: center;
@@ -24,7 +24,7 @@ html {
 	grid-auto-rows: $folder-height;
 	gap: $offset-s;
 
-	background-color: $light-grey;
+	background-color: $grey-l;
 	margin: $offset-m;
 	padding: $offset-m $offset-l;
 	border: 2px solid $grey;
@@ -34,7 +34,7 @@ html {
 		display: flex;
 		align-items: center;
 		justify-content: space-between;
-		font-size: $font-large;
+		font-size: $font-l;
 
 		.icon {
 			display: none;
@@ -55,7 +55,7 @@ html {
 		transition: 0.1s all $transition-curve;
 
 		position: relative;
-		font-size: $font-large;
+		font-size: $font-l;
 		cursor: pointer;
 
 		&.active {
@@ -64,7 +64,7 @@ html {
 			background-color: $grey;
 			padding: $offset-xs;
 			margin: 0 (-$offset-xs) 0;
-			border: 1px solid $dark-grey;
+			border: 1px solid $grey-d;
 			border-radius: $radius;
 
 			.bullet {
@@ -96,10 +96,10 @@ html {
 			overflow: hidden;
 
 			.option {
-				font-size: $font-medium;
+				font-size: $font-m;
 				padding: $offset-xs $offset-s;
 				&:hover {
-					background-color: $dark-grey;
+					background-color: $grey-d;
 				}
 			}
 		}
@@ -140,36 +140,12 @@ form {
 
 		input {
 			width: 100%;
-			font-size: $font-large;
+			font-size: $font-l;
 			padding: $offset-xxs $offset-xs;
 			margin: 0 (-$offset-xs) 0 0;
 			box-sizing: border-box;
-			border: $dark-grey 2px solid;
+			border: $grey-d 2px solid;
 			border-radius: $radius;
-		}
-	}
-
-	.buttons {
-		display: flex;
-		gap: $offset-xs;
-		justify-content: end;
-
-		button {
-			aspect-ratio: 3/1;
-			width: 88px;
-			border: 3px solid;
-			border-radius: $radius;
-			cursor: pointer;
-		}
-
-		.submit {
-			border-color: $dark-blue;
-			@include zoomin($dark-blue);
-		}
-
-		.cancel {
-			border-color: $red;
-			@include zoomin($red);
 		}
 	}
 }
@@ -177,6 +153,56 @@ form {
 .bullet {
 	aspect-ratio: 1/1;
 	width: 7px;
-	background-color: $dark-blue;
+	background-color: $blue-d;
 	border-radius: 50%;
+}
+
+.overlay {
+	position: absolute;
+	width: 100vw;
+	height: 100vh;
+	background-color: rgba(0, 0, 0, 0.2);
+}
+
+.confirm {
+	aspect-ratio: 3/1;
+	width: 450px;
+	padding: $offset-s;
+	background-color: $grey-xd;
+	box-shadow: rgb(84, 84, 84) 0 0 10px 0;
+	position: absolute;
+	transform: translate(-50%, -50%);
+	border-radius: $radius;
+	top: 25%;
+	left: 50%;
+	display: flex;
+	flex-flow: column;
+	align-items: center;
+	justify-content: space-around;
+
+	button {
+		border: none;
+	}
+}
+
+.buttons {
+	display: flex;
+	gap: $offset-xs;
+	justify-content: end;
+
+	button {
+		aspect-ratio: 3/1;
+		width: 88px;
+		font-size: $font-s;
+		border: none;
+		border-radius: $radius;
+		cursor: pointer;
+	}
+
+	.submit {
+		background-color: $grey-d;
+	}
+	.cancel {
+		background-color: $red;
+	}
 }

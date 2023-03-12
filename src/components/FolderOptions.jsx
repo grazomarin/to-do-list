@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 
-function FolderOptions({ hideOptions, handleDelete }) {
+function FolderOptions({ hideOptions, toggleConfirm }) {
 	function handleClick(e) {
 		const parentClass = e.target.parentElement.className;
 		if (parentClass !== 'folder active') hideOptions();
@@ -16,7 +16,7 @@ function FolderOptions({ hideOptions, handleDelete }) {
 
 	return (
 		<div className="options">
-			<div className="option" onClick={handleDelete}>
+			<div className="option" onClick={toggleConfirm}>
 				Delete
 			</div>
 			<div className="option">Edit</div>
