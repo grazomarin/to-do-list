@@ -56,9 +56,18 @@ html {
 		}
 	}
 }
+
 .main {
 	display: grid;
-	grid-template-rows: 30px 1fr;
+	grid-template-rows: min-content 1fr;
+
+	.header {
+		display: flex;
+		justify-content: right;
+		font-family: $header-font;
+		font-size: 1rem;
+		margin: $offset-xs $offset-s 0 0;
+		font-weight: 800;
 }
 
 .tasks {
@@ -67,6 +76,7 @@ html {
 	gap: 10px;
 
 	margin: $offset-s;
+	}
 }
 
 form {

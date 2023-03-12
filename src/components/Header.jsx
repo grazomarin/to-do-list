@@ -1,11 +1,7 @@
 import React, { useState } from 'react';
 
 function Header() {
-	return (
-		<div className="header">
-			<i>To Do</i>
-		</div>
-	);
+	return <div className="header">To Do List</div>;
 }
 
 export default Header;
