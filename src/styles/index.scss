@@ -8,8 +8,6 @@ html {
 #root {
 	display: grid;
 	grid-template-columns: 1.2fr 3fr;
-	grid-auto-flow: column;
-
 	height: 100vh;
 }
 
@@ -56,6 +54,7 @@ html {
 		gap: $offset-s;
 		transition: 0.1s all $transition-curve;
 
+		position: relative;
 		font-size: $font-large;
 		cursor: pointer;
 
@@ -72,6 +71,38 @@ html {
 				background-color: transparent;
 			}
 		}
+
+		.more {
+			display: none;
+			width: 24px;
+			margin-left: auto;
+		}
+
+		&:hover {
+			.more {
+				display: flex;
+			}
+		}
+
+		.options {
+			aspect-ratio: 10/16;
+			position: absolute;
+			width: 180px;
+			background-color: $grey;
+			box-shadow: rgb(84, 84, 84) 0 0 6px 0px;
+			border-radius: $radius;
+			top: 50%;
+			left: calc(100% - $offset-xs);
+			overflow: hidden;
+
+			.option {
+				font-size: $font-medium;
+				padding: $offset-xs $offset-s;
+				&:hover {
+					background-color: $dark-grey;
+				}
+			}
+		}
 	}
 }
 
@@ -86,14 +117,14 @@ html {
 		font-size: 1rem;
 		margin: $offset-xs $offset-s 0 0;
 		font-weight: 800;
-}
+	}
 
-.tasks {
-	display: flex;
-	flex-direction: column;
-	gap: 10px;
+	.tasks {
+		display: flex;
+		flex-direction: column;
+		gap: 10px;
 
-	margin: $offset-s;
+		margin: $offset-s;
 	}
 }
 
