@@ -6,6 +6,7 @@ import {
 } from './contexts/StorageContext';
 import Folder from './Folder';
 import FolderForm from './FolderForm';
+import add from '../assets/images/add.svg';
 
 function Index() {
 	const [addMode, setAddMode] = useState(false);
@@ -17,7 +18,16 @@ function Index() {
 		setAddMode((prev) => !prev);
 	}
 
+	function isTheSameFolderClicked(id) {
+		for (const folder of storage) {
+			if (folder.active) {
+				return folder.id === id;
+			}
+		}
+	}
+
 	function makeFolderActive(id) {
+		if (isTheSameFolderClicked(id)) return;
 		makeFoldersInactive();
 		setStorage((prev) => {
 			return prev.map((folder) => {
@@ -44,6 +54,19 @@ function Index() {
 
 	return (
 		<div className="index">
+			<div>
+				<div className="title">
+					Projects{' '}
+					<img
+						src={add}
+						alt=""
+						className="icon"
+						onClick={() => {
+							!addMode && toggleAddMode();
+						}}
+					/>
+				</div>
+			</div>
 			{storage.map((folder) => {
 				return (
 					<Folder
@@ -55,15 +78,11 @@ function Index() {
 					/>
 				);
 			})}
-			{addMode ? (
+			{addMode && (
 				<FolderForm
 					toggleDisplay={toggleAddMode}
 					handleSubmit={handleSubmit}
 				/>
-			) : (
-				<h3 className="add" onClick={toggleAddMode}>
-					+ add folder
-				</h3>
 			)}
 		</div>
 	);

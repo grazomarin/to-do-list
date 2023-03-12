@@ -32,6 +32,24 @@ html {
 	border: 2px solid $grey;
 	border-radius: $radius;
 
+	.title {
+		display: flex;
+		align-items: center;
+		justify-content: space-between;
+		font-size: $font-large;
+
+		.icon {
+			display: none;
+		}
+	}
+
+	&:hover {
+		.icon {
+			cursor: pointer;
+			display: block;
+		}
+	}
+
 	.folder {
 		display: flex;
 		align-items: center;

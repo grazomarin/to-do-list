@@ -1,10 +1,15 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 
 function FolderForm({ toggleDisplay, handleSubmit }) {
 	const [title, setTitle] = useState('');
 	const resetValues = () => {
 		setTitle('');
 	};
+	const inputRef = useRef(null);
+
+	useEffect(() => {
+		inputRef.current.focus();
+	}, []);
 
 	return (
 		<form>
@@ -15,6 +20,7 @@ function FolderForm({ toggleDisplay, handleSubmit }) {
 					name="title"
 					value={title}
 					onInput={(e) => setTitle(e.target.value)}
+					ref={inputRef}
 				/>
 			</div>
 			<div className="buttons">
