@@ -8,6 +8,7 @@ html {
 #root {
 	display: grid;
 	grid-template-columns: 1.2fr 3fr;
+	grid-template-areas: 'index main';
 	height: 100vh;
 }
 
@@ -23,6 +24,7 @@ html {
 	grid-auto-flow: row;
 	grid-auto-rows: $folder-height;
 	gap: $offset-s;
+	grid-area: index;
 
 	background-color: $grey-l;
 	margin: $offset-m;
@@ -45,6 +47,12 @@ html {
 		.icon {
 			cursor: pointer;
 			display: block;
+		}
+	}
+
+	.input-cont {
+		input {
+			margin: 0 (-$offset-xs);
 		}
 	}
 
@@ -109,6 +117,11 @@ html {
 .main {
 	display: grid;
 	grid-template-rows: min-content 1fr;
+	grid-area: main;
+
+	.input-cont {
+		flex-flow: column;
+	}
 
 	.header {
 		display: flex;
@@ -136,14 +149,21 @@ form {
 	.input-cont {
 		display: flex;
 		align-items: center;
-		gap: $offset-xs;
+		gap: $offset-s;
 
 		input {
 			width: 100%;
 			font-size: $font-l;
 			padding: $offset-xxs $offset-xs;
-			margin: 0 (-$offset-xs) 0 0;
-			box-sizing: border-box;
+			border: $grey-d 2px solid;
+			border-radius: $radius;
+		}
+
+		textarea {
+			resize: none;
+			width: 100%;
+			padding: $offset-xs;
+			font-size: $font-m;
 			border: $grey-d 2px solid;
 			border-radius: $radius;
 		}
@@ -191,7 +211,7 @@ form {
 	justify-content: end;
 
 	button {
-		aspect-ratio: 3/1;
+		aspect-ratio: 5/2;
 		width: 88px;
 		font-size: $font-s;
 		border: none;
