@@ -5,11 +5,13 @@ const StorageContext = createContext();
 const SetStorageContext = createContext();
 const AppendFolderContext = createContext();
 const DeleteFolderContext = createContext();
+const AppendTaskContext = createContext();
 
 export const useStorage = () => useContext(StorageContext);
 export const useSetStorage = () => useContext(SetStorageContext);
 export const useAppendFolder = () => useContext(AppendFolderContext);
 export const useDeleteFolder = () => useContext(DeleteFolderContext);
+export const useAppendTask = () => useContext(AppendTaskContext);
 
 export const StorageProvider = ({ children }) => {
 	const [storage, setStorage] = useState([
@@ -34,12 +36,32 @@ export const StorageProvider = ({ children }) => {
 		});
 	}
 
+	function appendTask(id, { title, description }) {
+		setStorage((prev) => {
+			return prev.map((folder) => {
+				if (folder.id === id) {
+					folder.tasks = [
+						...folder.tasks,
+						{
+							title: title,
+							description: description,
+							id: uniqid(),
+						},
+					];
+				}
+				return folder;
+			});
+		});
+	}
+
 	return (
 		<StorageContext.Provider value={storage}>
 			<SetStorageContext.Provider value={setStorage}>
 				<AppendFolderContext.Provider value={appendFolder}>
 					<DeleteFolderContext.Provider value={deleteFolder}>
-						{children}
+						<AppendTaskContext.Provider value={appendTask}>
+							{children}
+						</AppendTaskContext.Provider>
 					</DeleteFolderContext.Provider>
 				</AppendFolderContext.Provider>
 			</SetStorageContext.Provider>

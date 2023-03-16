@@ -20,6 +20,7 @@ function FolderForm({ toggleDisplay, handleSubmit }) {
 					name="title"
 					value={title}
 					onInput={(e) => setTitle(e.target.value)}
+					placeholder="Title"
 					ref={inputRef}
 				/>
 			</div>

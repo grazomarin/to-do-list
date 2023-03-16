@@ -13,6 +13,7 @@ function Index() {
 	const storage = useStorage();
 	const setStorage = useSetStorage();
 	const appendFolder = useAppendFolder();
+	const [currentFolderId, setCurrentFolderId] = useState(storage[0].id);
 
 	function toggleAddMode() {
 		setAddMode((prev) => !prev);
@@ -46,11 +47,11 @@ function Index() {
 		});
 	}
 
-	const handleSubmit = (e, values) => {
+	function handleSubmit(e, values) {
 		e.preventDefault();
 		makeFoldersInactive();
 		appendFolder(values.title);
-	};
+	}
 
 	return (
 		<div className="index">
