@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from 'react';
-import ReactDOM from 'react-dom';
 import { useAppendTask, useStorage } from './contexts/StorageContext';
 import Header from './Header';
 import Task from './Task';
@@ -23,6 +22,9 @@ function Main() {
 	return (
 		<div className="main">
 			<Header />
+			{/* checks if there are any selected folders */}
+			{storage.some((folder) => folder.active) ? (
+				// if yes renders tasks and form
 			<div className="tasks">
 				{storage
 					.find((folder) => folder.active)
@@ -36,6 +38,7 @@ function Main() {
 							/>
 						);
 					})}
+
 				{addMode ? (
 					<TaskForm
 						toggleDisplay={toggleAddMode}
@@ -47,8 +50,11 @@ function Main() {
 					</h3>
 				)}
 			</div>
+			) : (
+				// if no asks to select a folder
+				<h2 className="notSelected">Select a Folder</h2>
+			)}
 		</div>
 	);
 }
-
 export default Main;
