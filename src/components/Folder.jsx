@@ -1,10 +1,10 @@
 import React, { useState, useRef } from 'react';
-import dots from '../assets/images/dots.svg';
 import Options from './Options';
 import ConfirmAction from './ConfirmAction';
+import dots from '../assets/images/dots.svg';
 import uniqid from 'uniqid';
 
-function Folder({ name, active, makeActive, id, handleDelete }) {
+function Folder({ title, active, makeActive, id, handleDelete }) {
 	const [showConfirm, setShowConfirm] = useState(false);
 	const [showOptions, setShowOptions] = useState(false);
 	const moreRef = useRef();
@@ -19,7 +19,7 @@ function Folder({ name, active, makeActive, id, handleDelete }) {
 			onClick={() => makeActive(id)}
 		>
 			<div className="bullet"></div>
-			{name}
+			{title}
 			<img
 				className="more"
 				ref={moreRef}
@@ -38,7 +38,7 @@ function Folder({ name, active, makeActive, id, handleDelete }) {
 			{showConfirm && (
 				<ConfirmAction
 					handleDelete={() => handleDelete(id)}
-					name={name}
+					title={title}
 					toggleConfirm={toggleConfirm}
 				/>
 			)}

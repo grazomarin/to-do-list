@@ -19,6 +19,32 @@ html {
 	justify-self: center;
 }
 
+.more {
+	display: none;
+	width: 24px;
+	margin-left: auto;
+}
+
+.options {
+	aspect-ratio: 10/16;
+	position: absolute;
+	width: 180px;
+	background-color: $grey;
+	box-shadow: rgb(84, 84, 84) 0 0 6px 0px;
+	border-radius: $radius;
+	top: 50%;
+	left: calc(100% - $offset-xs);
+	overflow: hidden;
+
+	.option {
+		font-size: $font-m;
+		padding: $offset-xs $offset-s;
+		&:hover {
+			background-color: $grey-d;
+		}
+	}
+}
+
 .index {
 	display: grid;
 	grid-auto-flow: row;
@@ -83,35 +109,9 @@ html {
 			}
 		}
 
-		.more {
-			display: none;
-			width: 24px;
-			margin-left: auto;
-		}
-
 		&:hover {
 			.more {
 				display: flex;
-			}
-		}
-
-		.options {
-			aspect-ratio: 10/16;
-			position: absolute;
-			width: 180px;
-			background-color: $grey;
-			box-shadow: rgb(84, 84, 84) 0 0 6px 0px;
-			border-radius: $radius;
-			top: 50%;
-			left: calc(100% - $offset-xs);
-			overflow: hidden;
-
-			.option {
-				font-size: $font-m;
-				padding: $offset-xs $offset-s;
-				&:hover {
-					background-color: $grey-d;
-				}
 			}
 		}
 	}
@@ -141,6 +141,30 @@ html {
 		gap: $offset-m;
 
 		margin: $offset-s;
+
+		.task {
+			position: relative;
+
+			.title {
+				font-size: $font-l;
+			}
+			.description {
+				font-size: $font-m;
+			}
+
+			.more {
+				display: flex;
+				position: absolute;
+				right: 0;
+				top: 50%;
+				transform: translate(0, -50%);
+			}
+
+			.options {
+				transform: translate(-100%, 0);
+			}
+		}
+	}
 
 	.notSelected {
 		align-self: start;

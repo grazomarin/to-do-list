@@ -3,6 +3,7 @@ import {
 	useStorage,
 	useSetStorage,
 	useAppendFolder,
+	useDeleteFolder,
 } from './contexts/StorageContext';
 import Folder from './Folder';
 import FolderForm from './FolderForm';
@@ -13,7 +14,7 @@ function Index() {
 	const storage = useStorage();
 	const setStorage = useSetStorage();
 	const appendFolder = useAppendFolder();
-	const [currentFolderId, setCurrentFolderId] = useState(storage[0].id);
+	const deleteFolder = useDeleteFolder();
 
 	function toggleAddMode() {
 		setAddMode((prev) => !prev);
@@ -32,7 +33,7 @@ function Index() {
 		makeFoldersInactive();
 		setStorage((prev) => {
 			return prev.map((folder) => {
-				folder.id === id ? (folder.active = true) : null;
+				folder.id === id && (folder.active = true);
 				return folder;
 			});
 		});
@@ -53,11 +54,15 @@ function Index() {
 		appendFolder(values.title);
 	}
 
+	function handleDelete(id) {
+		deleteFolder(id);
+	}
+
 	return (
 		<div className="index">
 			<div>
 				<div className="title">
-					Projects{' '}
+					Folders:
 					<img
 						src={add}
 						alt=""
@@ -72,7 +77,8 @@ function Index() {
 				return (
 					<Folder
 						makeActive={makeFolderActive}
-						name={folder.name}
+						handleDelete={handleDelete}
+						title={folder.title}
 						id={folder.id}
 						active={folder.active}
 						key={folder.id}

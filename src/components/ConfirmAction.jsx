@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import ReactDOM from 'react-dom';
 
-function ConfirmAction({ name, handleDelete, toggleConfirm }) {
+function ConfirmAction({ title, handleDelete, toggleConfirm }) {
 	function handleClick(e) {
 		const parentClass = e.target.parentElement.className;
 		if (!parentClass) toggleConfirm();
@@ -19,7 +19,7 @@ function ConfirmAction({ name, handleDelete, toggleConfirm }) {
 		<div className="overlay">
 			<div className="confirm">
 				<h2>
-					Are you sure you want to delete <b>{name}</b>?
+					Are you sure you want to delete <b>{title}</b>?
 				</h2>
 				<div className="buttons">
 					<button className="submit" onClick={handleDelete}>

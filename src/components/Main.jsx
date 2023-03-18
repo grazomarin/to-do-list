@@ -1,5 +1,9 @@
 import React, { useState, useEffect } from 'react';
-import { useAppendTask, useStorage } from './contexts/StorageContext';
+import {
+	useAppendTask,
+	useDeleteTask,
+	useStorage,
+} from './contexts/StorageContext';
 import Header from './Header';
 import Task from './Task';
 import TaskForm from './TaskForm';
@@ -7,6 +11,7 @@ import TaskForm from './TaskForm';
 function Main() {
 	const storage = useStorage();
 	const appendTask = useAppendTask();
+	const deleteTask = useDeleteTask();
 	const [addMode, setAddMode] = useState(false);
 
 	function toggleAddMode() {
@@ -16,7 +21,11 @@ function Main() {
 	function handleSubmit(e, values) {
 		e.preventDefault();
 		toggleAddMode();
-		appendTask(storage.find((folder) => folder.active).id, values);
+		appendTask(values);
+	}
+
+	function handleDelete(taskId) {
+		deleteTask(taskId);
 	}
 
 	return (
@@ -25,31 +34,32 @@ function Main() {
 			{/* checks if there are any selected folders */}
 			{storage.some((folder) => folder.active) ? (
 				// if yes renders tasks and form
-			<div className="tasks">
-				{storage
-					.find((folder) => folder.active)
-					.tasks.map((task) => {
-						return (
-							<Task
-								title={task.title}
-								description={task.description}
-								id={task.id}
-								key={task.id}
-							/>
-						);
-					})}
+				<div className="tasks">
+					{storage
+						.find((folder) => folder.active)
+						.tasks.map((task) => {
+							return (
+								<Task
+									title={task.title}
+									description={task.description}
+									id={task.id}
+									handleDelete={handleDelete}
+									key={task.id}
+								/>
+							);
+						})}
 
-				{addMode ? (
-					<TaskForm
-						toggleDisplay={toggleAddMode}
-						handleSubmit={handleSubmit}
-					/>
-				) : (
-					<h3 className="add" onClick={toggleAddMode}>
-						+ add task
-					</h3>
-				)}
-			</div>
+					{addMode ? (
+						<TaskForm
+							toggleDisplay={toggleAddMode}
+							handleSubmit={handleSubmit}
+						/>
+					) : (
+						<h3 className="add" onClick={toggleAddMode}>
+							+ add task
+						</h3>
+					)}
+				</div>
 			) : (
 				// if no asks to select a folder
 				<h2 className="notSelected">Select a Folder</h2>
