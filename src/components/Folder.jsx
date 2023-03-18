@@ -1,15 +1,15 @@
-import React, { useState } from 'react';
+import React, { useState, useRef } from 'react';
 import dots from '../assets/images/dots.svg';
-import { useDeleteFolder } from './contexts/StorageContext';
-import FolderOptions from './FolderOptions';
+import Options from './Options';
 import ConfirmAction from './ConfirmAction';
+import uniqid from 'uniqid';
 
-function Folder({ name, active, makeActive, id }) {
+function Folder({ name, active, makeActive, id, handleDelete }) {
 	const [showConfirm, setShowConfirm] = useState(false);
 	const [showOptions, setShowOptions] = useState(false);
+	const moreRef = useRef();
 	const displayOptions = () => setShowOptions(true);
 	const hideOptions = () => setShowOptions(false);
-	const handleDelete = useDeleteFolder();
 
 	const toggleConfirm = () => setShowConfirm((prev) => !prev);
 
@@ -20,11 +20,19 @@ function Folder({ name, active, makeActive, id }) {
 		>
 			<div className="bullet"></div>
 			{name}
-			<img className="more" src={dots} alt="" onClick={displayOptions} />
+			<img
+				className="more"
+				ref={moreRef}
+				src={dots}
+				alt=""
+				onClick={displayOptions}
+			/>
 			{showOptions && (
-				<FolderOptions
+				<Options
 					hideOptions={hideOptions}
 					toggleConfirm={toggleConfirm}
+					key={uniqid()}
+					moreRef={moreRef}
 				/>
 			)}
 			{showConfirm && (

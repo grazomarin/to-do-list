@@ -1,9 +1,15 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useRef } from 'react';
 
-function FolderOptions({ hideOptions, toggleConfirm }) {
+function Options({ hideOptions, toggleConfirm, moreRef }) {
+	const optionsRef = useRef();
+
 	function handleClick(e) {
-		const parentClass = e.target.parentElement.className;
-		if (parentClass !== 'folder active') hideOptions();
+		if (
+			!optionsRef.current.contains(e.target) &&
+			optionsRef.current.className !== e.target?.className &&
+			moreRef.current !== e.target
+		)
+			hideOptions();
 	}
 
 	useEffect(() => {
@@ -15,7 +21,7 @@ function FolderOptions({ hideOptions, toggleConfirm }) {
 	}, []);
 
 	return (
-		<div className="options">
+		<div className="options" ref={optionsRef}>
 			<div className="option" onClick={toggleConfirm}>
 				Delete
 			</div>
@@ -26,4 +32,4 @@ function FolderOptions({ hideOptions, toggleConfirm }) {
 	);
 }
 
-export default FolderOptions;
+export default Options;
