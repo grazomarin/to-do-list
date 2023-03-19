@@ -35,10 +35,13 @@ html {
 	top: 50%;
 	left: calc(100% - $offset-xs);
 	overflow: hidden;
+	cursor: default;
+	z-index: 1000;
 
 	.option {
 		font-size: $font-m;
 		padding: $offset-xs $offset-s;
+		cursor: pointer;
 		&:hover {
 			background-color: $grey-d;
 		}
@@ -138,30 +141,38 @@ html {
 	.tasks {
 		display: flex;
 		flex-direction: column;
-		gap: $offset-m;
 
 		margin: $offset-s;
 
 		.task {
+			display: grid;
+			grid-template-columns: min-content 1fr min-content;
+			grid-template-rows: $font-l $font-m;
+			grid-template-areas: 'checkbox title more' 'checkbox description more';
+			row-gap: $offset-s;
+
 			position: relative;
+			border-bottom: 1px solid $grey-d;
+			padding-bottom: $offset-s;
+			margin-bottom: $offset-s;
 
 			.title {
 				font-size: $font-l;
+				grid-area: title;
 			}
 			.description {
 				font-size: $font-m;
+				grid-area: description;
 			}
 
 			.more {
 				display: flex;
-				position: absolute;
-				right: 0;
-				top: 50%;
-				transform: translate(0, -50%);
+				align-self: center;
+				grid-area: more;
 			}
 
 			.options {
-				transform: translate(-100%, 0);
+				transform: translate(-105%, 0);
 			}
 		}
 	}
