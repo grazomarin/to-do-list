@@ -9,7 +9,7 @@ import Task from './Task';
 import TaskForm from './TaskForm';
 
 function Main() {
-	const storage = useStorage();
+	const [storage, setStorage] = useStorage();
 	const appendTask = useAppendTask();
 	const deleteTask = useDeleteTask();
 	const [addMode, setAddMode] = useState(false);

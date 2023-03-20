@@ -4,7 +4,7 @@ import ConfirmAction from './ConfirmAction';
 import dots from '../assets/images/dots.svg';
 import uniqid from 'uniqid';
 
-function Folder({ title, active, makeActive, id, handleDelete }) {
+function Folder({ title, active, makeActive, id, handleDelete, enableEdit }) {
 	const [showConfirm, setShowConfirm] = useState(false);
 	const [showOptions, setShowOptions] = useState(false);
 	const moreRef = useRef();
@@ -31,6 +31,7 @@ function Folder({ title, active, makeActive, id, handleDelete }) {
 				<Options
 					hideOptions={hideOptions}
 					toggleConfirm={toggleConfirm}
+					enableEdit={() => enableEdit(id)}
 					key={uniqid()}
 					moreRef={moreRef}
 				/>

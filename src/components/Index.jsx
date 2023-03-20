@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 import {
 	useStorage,
-	useSetStorage,
 	useAppendFolder,
 	useDeleteFolder,
 } from './contexts/StorageContext';
@@ -11,13 +10,16 @@ import add from '../assets/images/add.svg';
 
 function Index() {
 	const [addMode, setAddMode] = useState(false);
-	const storage = useStorage();
-	const setStorage = useSetStorage();
+	const [storage, setStorage] = useStorage();
 	const appendFolder = useAppendFolder();
 	const deleteFolder = useDeleteFolder();
 
-	function toggleAddMode() {
-		setAddMode((prev) => !prev);
+	function enableAddMode() {
+		setAddMode(true);
+	}
+
+	function disableAddMode() {
+		setAddMode(false);
 	}
 
 	function isTheSameFolderClicked(id) {
@@ -28,34 +30,61 @@ function Index() {
 		}
 	}
 
-	function makeFolderActive(id) {
-		if (isTheSameFolderClicked(id)) return;
-		makeFoldersInactive();
-		setStorage((prev) => {
-			return prev.map((folder) => {
-				folder.id === id && (folder.active = true);
-				return folder;
-			});
-		});
-	}
-
 	function makeFoldersInactive() {
+		setStorage((prev) =>
+			prev.map((folder) => ({
+				...folder,
+				active: false,
+			}))
+		);
+	}
+
+	function makeFolderActive(folderId) {
+		if (isTheSameFolderClicked(folderId)) return;
+		makeFoldersInactive();
 		setStorage((prev) => {
 			return prev.map((folder) => {
-				folder.active = false;
+				folder.id === folderId && (folder.active = true);
 				return folder;
 			});
 		});
 	}
 
-	function handleSubmit(e, values) {
-		e.preventDefault();
+	function handleSubmit(title) {
 		makeFoldersInactive();
-		appendFolder(values.title);
+		appendFolder(title);
 	}
 
 	function handleDelete(id) {
 		deleteFolder(id);
+	}
+
+	function enableEdit(folderId) {
+		setStorage((prev) => {
+			return prev.map((folder) => {
+				folder.edit = false;
+				folder.id === folderId && (folder.edit = true);
+				return folder;
+			});
+		});
+	}
+
+	function handleEdit(folderId, title) {
+		makeFoldersInactive();
+		setStorage((prev) => {
+			return prev.map((folder) => {
+				if (folder.id === folderId) {
+					return {
+						title: title,
+						tasks: [...folder.tasks],
+						active: true,
+						edit: false,
+						id: folderId,
+					};
+				}
+				return folder;
+			});
+		});
 	}
 
 	return (
@@ -68,16 +97,25 @@ function Index() {
 						alt=""
 						className="icon"
 						onClick={() => {
-							!addMode && toggleAddMode();
+							!addMode && enableAddMode();
 						}}
 					/>
 				</div>
 			</div>
 			{storage.map((folder) => {
-				return (
+				return folder.edit ? (
+					<FolderForm
+						disableAddMode={disableAddMode}
+						handleEdit={handleEdit}
+						oldTitle={folder.title}
+						id={folder.id}
+						key={folder.id}
+					/>
+				) : (
 					<Folder
 						makeActive={makeFolderActive}
 						handleDelete={handleDelete}
+						enableEdit={enableEdit}
 						title={folder.title}
 						id={folder.id}
 						active={folder.active}
@@ -87,7 +125,7 @@ function Index() {
 			})}
 			{addMode && (
 				<FolderForm
-					toggleDisplay={toggleAddMode}
+					disableAddMode={disableAddMode}
 					handleSubmit={handleSubmit}
 				/>
 			)}

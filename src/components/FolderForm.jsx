@@ -1,7 +1,13 @@
 import React, { useState, useEffect, useRef } from 'react';
 
-function FolderForm({ toggleDisplay, handleSubmit }) {
-	const [title, setTitle] = useState('');
+function FolderForm({
+	disableAddMode,
+	handleSubmit,
+	handleEdit,
+	oldTitle,
+	id,
+}) {
+	const [title, setTitle] = useState(oldTitle || '');
 	const resetValues = () => {
 		setTitle('');
 	};
@@ -28,14 +34,21 @@ function FolderForm({ toggleDisplay, handleSubmit }) {
 				<button
 					className="submit"
 					onClick={(e) => {
-						handleSubmit(e, { title: title });
-						toggleDisplay();
+						e.preventDefault();
+						id ? handleEdit(id, title) : handleSubmit(title);
+						disableAddMode();
 						resetValues();
 					}}
 				>
 					Submit
 				</button>
-				<button className="cancel" type="reset" onClick={toggleDisplay}>
+				<button
+					className="cancel"
+					type="reset"
+					onClick={() => {
+						id && handleEdit(id, oldTitle);
+					}}
+				>
 					Cancel
 				</button>
 			</div>
