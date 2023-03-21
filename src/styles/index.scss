@@ -147,14 +147,13 @@ html {
 		display: flex;
 		flex-direction: column;
 
-		margin: $offset-s;
+		margin: $offset-xl;
 
 		.task {
 			display: grid;
 			grid-template-columns: min-content 1fr min-content;
-			grid-template-rows: $font-l $font-m;
-			grid-template-areas: 'checkbox title more' 'checkbox description more';
-			row-gap: $offset-s;
+			grid-template-areas: 'checkbox info more';
+			column-gap: $offset-xs;
 
 			position: relative;
 			border-bottom: 1px solid $grey-d;
@@ -188,88 +187,35 @@ html {
 	}
 }
 
-form {
+			.info {
 	display: flex;
 	flex-flow: column;
-	gap: $offset-s;
+				gap: $offset-xxs;
+				grid-area: info;
 
-	.input-cont {
-		display: flex;
-		align-items: center;
-		gap: $offset-s;
-
-		input {
-			width: 100%;
+				.title {
 			font-size: $font-l;
-			padding: $offset-xxs $offset-xs;
-			border: $grey-d 2px solid;
-			border-radius: $radius;
-		}
-
-		textarea {
-			resize: none;
-			width: 100%;
-			padding: $offset-xs;
-			font-size: $font-m;
-			border: $grey-d 2px solid;
-			border-radius: $radius;
-		}
-	}
+}
+				.description {
+					font-size: $font-s;
+}
 }
 
-.bullet {
-	aspect-ratio: 1/1;
-	width: 7px;
-	background-color: $blue-d;
-	border-radius: 50%;
-}
-
-.overlay {
-	position: absolute;
-	width: 100vw;
-	height: 100vh;
-	background-color: rgba(0, 0, 0, 0.2);
-}
-
-.confirm {
-	aspect-ratio: 3/1;
-	width: 450px;
-	padding: $offset-s;
-	background-color: $grey-xd;
-	box-shadow: rgb(84, 84, 84) 0 0 10px 0;
-	position: absolute;
-	transform: translate(-50%, -50%);
-	border-radius: $radius;
-	top: 25%;
-	left: 50%;
+			.more {
 	display: flex;
-	flex-flow: column;
-	align-items: center;
-	justify-content: space-around;
+				align-self: center;
+				justify-self: center;
+				grid-area: more;
+			}
 
-	button {
-		border: none;
+			.options {
+				transform: translate(-105%, 0);
 	}
 }
-
-.buttons {
-	display: flex;
-	gap: $offset-xs;
-	justify-content: end;
-
-	button {
-		aspect-ratio: 5/2;
-		width: 88px;
-		font-size: $font-s;
-		border: none;
-		border-radius: $radius;
-		cursor: pointer;
 	}
 
-	.submit {
-		background-color: $grey-d;
-	}
-	.cancel {
-		background-color: $red;
+	.notSelected {
+		align-self: start;
+		justify-self: center;
 	}
 }

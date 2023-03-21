@@ -8,6 +8,7 @@ $blue-d: rgb(7, 30, 59);
 $blue: rgb(17, 73, 144);
 $blue-l: rgb(27, 116, 229);
 $trans-blue: rgba(7, 31, 59, 0.5);
+$grey-xl: rgb(248, 248, 248);
 $grey-l: rgb(240, 240, 240);
 $grey: rgb(225, 225, 225);
 $grey-d: rgb(200, 200, 200);
@@ -17,9 +18,10 @@ $radius: 14px;
 $transition-curve: cubic-bezier(0.5, 1, 0.5, 1);
 $offset-xxs: 5px;
 $offset-xs: 10px;
-$offset-s: 20px;
-$offset-m: 30px;
-$offset-l: 40px;
+$offset-s: 15px;
+$offset-m: 20px;
+$offset-l: 30px;
+$offset-xl: 40px;
 $folder-height: 40px;
 
 @mixin zoomin($color) {
