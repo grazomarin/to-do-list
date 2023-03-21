@@ -7,15 +7,14 @@ html {
 
 #root {
 	display: grid;
-	grid-template-columns: 1fr 3fr;
+	grid-template-columns: 2fr 7fr;
 	grid-template-areas: 'index main';
 	height: 100vh;
 }
 
 .add {
-	font-size: $font-l;
+	font-size: $font-m;
 	cursor: pointer;
-	align-self: center;
 	justify-self: center;
 }
 
@@ -27,7 +26,6 @@ html {
 }
 
 .options {
-	aspect-ratio: 10/16;
 	position: absolute;
 	width: 180px;
 	background-color: $grey;
@@ -40,12 +38,99 @@ html {
 	z-index: 1000;
 
 	.option {
-		font-size: $font-m;
-		padding: $offset-xs $offset-s;
+		font-size: $font-s;
+		padding: $offset-xs $offset-m;
 		cursor: pointer;
+
 		&:hover {
 			background-color: $grey-d;
 		}
+	}
+}
+
+form {
+	display: flex;
+	flex-flow: column;
+	gap: $offset-m;
+
+	.input-cont {
+		display: flex;
+		align-items: center;
+		gap: $offset-s;
+
+		input {
+			width: 100%;
+			font-size: $font-m;
+			padding: $offset-xxs $offset-xs;
+			border: $grey-d 2px solid;
+			border-radius: $radius;
+		}
+
+		textarea {
+			resize: none;
+			width: 100%;
+			padding: $offset-xxs $offset-xs;
+			font-size: $font-s;
+			border: $grey-d 2px solid;
+			border-radius: $radius;
+		}
+	}
+}
+
+.bullet {
+	aspect-ratio: 1/1;
+	width: 7px;
+	background-color: $blue-d;
+	border-radius: 50%;
+}
+
+.overlay {
+	position: absolute;
+	width: 100vw;
+	height: 100vh;
+	background-color: rgba(0, 0, 0, 0.2);
+}
+
+.confirm {
+	aspect-ratio: 3/1;
+	width: 450px;
+	padding: $offset-m;
+	background-color: $grey-xd;
+	box-shadow: rgb(84, 84, 84) 0 0 $offset-xs 0;
+	position: absolute;
+	transform: translate(-50%, -50%);
+	border-radius: $radius;
+	top: 25%;
+	left: 50%;
+	display: flex;
+	flex-flow: column;
+	align-items: center;
+	justify-content: space-around;
+
+	button {
+		border: none;
+	}
+}
+
+.buttons {
+	display: flex;
+	gap: $offset-xs;
+	justify-content: end;
+
+	button {
+		aspect-ratio: 5/2;
+		width: 74px;
+		font-size: $font-xs;
+		border: none;
+		border-radius: $radius;
+		cursor: pointer;
+	}
+
+	.submit {
+		background-color: $grey-d;
+	}
+	.cancel {
+		background-color: $red;
 	}
 }
 
@@ -56,11 +141,9 @@ html {
 	gap: $offset-s;
 	grid-area: index;
 
-	background-color: $grey-l;
-	margin: $offset-m;
-	padding: $offset-m $offset-l;
-	border: 2px solid $grey;
-	border-radius: $radius;
+	background-color: $grey-xl;
+	padding: $offset-xl;
+	border: 2px solid $grey-l;
 
 	.title {
 		display: flex;
@@ -68,13 +151,13 @@ html {
 		justify-content: space-between;
 		font-size: $font-l;
 
-		.icon {
+		.plus {
 			display: none;
 		}
 	}
 
 	&:hover {
-		.icon {
+		.plus {
 			cursor: pointer;
 			display: block;
 		}
@@ -92,11 +175,11 @@ html {
 	.folder {
 		display: flex;
 		align-items: center;
-		gap: $offset-s;
+		gap: $offset-m;
 		transition: 0.1s all $transition-curve;
 
 		position: relative;
-		font-size: $font-l;
+		font-size: $font-m;
 		height: $folder-height;
 		cursor: pointer;
 
@@ -105,7 +188,7 @@ html {
 			font-weight: 500;
 			background-color: $grey;
 			padding: $offset-xs;
-			padding-right: $offset-s;
+			padding-right: $offset-m;
 			margin: 0 0 0 (-$offset-xs);
 			border: 1px solid $grey-d;
 			border-radius: $radius;
@@ -137,10 +220,11 @@ html {
 	.header {
 		display: flex;
 		justify-content: right;
-		font-family: $header-font;
 		font-size: 1rem;
-		margin: $offset-xs $offset-s 0 0;
+		margin: $offset-xs $offset-m 0 0;
 		font-weight: 800;
+		position: absolute;
+		right: 0;
 	}
 
 	.tasks {
@@ -160,49 +244,49 @@ html {
 			padding-bottom: $offset-s;
 			margin-bottom: $offset-s;
 
-			.title {
-				font-size: $font-l;
-				grid-area: title;
-			}
-			.description {
-				font-size: $font-m;
-				grid-area: description;
+			&.completed {
+				color: $grey-d;
 			}
 
-			.more {
-				display: flex;
-				align-self: center;
-				grid-area: more;
+			.checkbox-cont {
+				position: relative;
+				width: 30px;
+				height: 30px;
+				grid-area: checkbox;
+				cursor: pointer;
 			}
 
-			.options {
-				transform: translate(-105%, 0);
+			.checkbox {
+				position: relative;
+				height: 30px;
+				width: 30px;
 			}
-		}
-	}
 
-	.notSelected {
-		align-self: start;
-		justify-self: center;
-	}
-}
+			.check {
+				position: absolute;
+				height: 20px;
+				width: 20px;
+				top: 50%;
+				right: 50%;
+				transform: translate(50%, -50%);
+			}
 
 			.info {
-	display: flex;
-	flex-flow: column;
+				display: flex;
+				flex-flow: column;
 				gap: $offset-xxs;
 				grid-area: info;
 
 				.title {
-			font-size: $font-l;
-}
+					font-size: $font-l;
+				}
 				.description {
 					font-size: $font-s;
-}
-}
+				}
+			}
 
 			.more {
-	display: flex;
+				display: flex;
 				align-self: center;
 				justify-self: center;
 				grid-area: more;
@@ -210,8 +294,8 @@ html {
 
 			.options {
 				transform: translate(-105%, 0);
-	}
-}
+			}
+		}
 	}
 
 	.notSelected {

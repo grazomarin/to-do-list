@@ -51,6 +51,7 @@ export const StorageProvider = ({ children }) => {
 						{
 							title: title,
 							description: description,
+							completed: false,
 							id: uniqid(),
 						},
 					];

@@ -2,9 +2,18 @@ import React, { useState, useRef } from 'react';
 import Options from './Options';
 import ConfirmAction from './ConfirmAction';
 import dots from '../assets/images/dots.svg';
+import checkbox from '../assets/images/checkbox.svg';
+import check from '../assets/images/check.svg';
 import uniqid from 'uniqid';
 
-function Task({ title, description, id, handleDelete }) {
+function Task({
+	title,
+	description,
+	completed,
+	id,
+	handleDelete,
+	handleComplete,
+}) {
 	const [showConfirm, setShowConfirm] = useState(false);
 	const [showOptions, setShowOptions] = useState(false);
 	const moreRef = useRef();
@@ -14,33 +23,39 @@ function Task({ title, description, id, handleDelete }) {
 	const toggleConfirm = () => setShowConfirm((prev) => !prev);
 
 	return (
-		<div className="task">
-			<div className="title">
-				{title}
-				<img
-					className="more"
-					ref={moreRef}
-					src={dots}
-					alt=""
-					onClick={displayOptions}
-				/>
-				{showOptions && (
-					<Options
-						hideOptions={hideOptions}
-						toggleConfirm={toggleConfirm}
-						key={uniqid()}
-						moreRef={moreRef}
-					/>
-				)}
-				{showConfirm && (
-					<ConfirmAction
-						handleDelete={() => handleDelete(id)}
-						title={title}
-						toggleConfirm={toggleConfirm}
-					/>
+		<div className={`task ${completed ? 'completed' : ''}`}>
+			<div className="checkbox-cont" onClick={() => handleComplete(id)}>
+				<img src={checkbox} alt="" className="checkbox" />
+				{completed && <img src={check} alt="" className="check" />}
+			</div>
+			<div className="info">
+				<div className="title">{title}</div>
+				{description && (
+					<div className="description">{description}</div>
 				)}
 			</div>
-			<div className="description">{description}</div>
+			<img
+				className="more"
+				ref={moreRef}
+				src={dots}
+				alt=""
+				onClick={displayOptions}
+			/>
+			{showOptions && (
+				<Options
+					hideOptions={hideOptions}
+					toggleConfirm={toggleConfirm}
+					key={uniqid()}
+					moreRef={moreRef}
+				/>
+			)}
+			{showConfirm && (
+				<ConfirmAction
+					handleDelete={() => handleDelete(id)}
+					title={title}
+					toggleConfirm={toggleConfirm}
+				/>
+			)}
 		</div>
 	);
 }

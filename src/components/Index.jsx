@@ -95,7 +95,7 @@ function Index() {
 					<img
 						src={add}
 						alt=""
-						className="icon"
+						className="plus"
 						onClick={() => {
 							!addMode && enableAddMode();
 						}}

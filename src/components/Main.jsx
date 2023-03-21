@@ -28,6 +28,28 @@ function Main() {
 		deleteTask(taskId);
 	}
 
+	function handleComplete(taskId) {
+		setStorage((prev) =>
+			prev.map((folder) => {
+				if (folder.active) {
+					return {
+						...folder,
+						tasks: folder.tasks.map((task) => {
+							if (task.id === taskId) {
+								return {
+									...task,
+									completed: !task.completed,
+								};
+							}
+							return task;
+						}),
+					};
+				}
+				return folder;
+			})
+		);
+	}
+
 	return (
 		<div className="main">
 			<Header />
@@ -43,7 +65,9 @@ function Main() {
 									title={task.title}
 									description={task.description}
 									id={task.id}
+									completed={task.completed}
 									handleDelete={handleDelete}
+									handleComplete={handleComplete}
 									key={task.id}
 								/>
 							);

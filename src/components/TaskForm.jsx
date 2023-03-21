@@ -23,7 +23,7 @@ function TaskForm({ toggleDisplay, handleSubmit }) {
 				<textarea
 					name="description"
 					id="description"
-					rows="5"
+					rows="3"
 					onInput={(e) => setDescription(e.target.value)}
 					placeholder="Details..."
 				></textarea>

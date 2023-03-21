@@ -8,7 +8,7 @@ function App() {
 	useEffect(() => {
 		WebFont.load({
 			google: {
-				families: ['Jost', 'Edu VIC WA NT Beginner'],
+				families: ['Jost'],
 			},
 		});
 	}, []);
