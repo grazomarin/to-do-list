@@ -12,6 +12,7 @@ function Task({
 	completed,
 	id,
 	handleDelete,
+	enableEdit,
 	handleComplete,
 }) {
 	const [showConfirm, setShowConfirm] = useState(false);
@@ -45,6 +46,7 @@ function Task({
 				<Options
 					hideOptions={hideOptions}
 					toggleConfirm={toggleConfirm}
+					enableEdit={() => enableEdit(id)}
 					key={uniqid()}
 					moreRef={moreRef}
 				/>

@@ -1,10 +1,21 @@
 import React, { useState, useRef, useEffect } from 'react';
 
-function TaskForm({ toggleDisplay, handleSubmit }) {
-	const [title, setTitle] = useState('');
-	const [description, setDescription] = useState('');
+function TaskForm({
+	oldTitle,
+	oldDescription,
+	id,
+	disableAddMode,
+	handleEdit,
+	handleSubmit,
+}) {
+	const [title, setTitle] = useState(oldTitle || '');
+	const [description, setDescription] = useState(oldDescription || '');
 
 	const inputRef = useRef(null);
+
+	const resetValues = () => {
+		setTitle('');
+	};
 
 	useEffect(() => {
 		inputRef.current.focus();
@@ -17,6 +28,7 @@ function TaskForm({ toggleDisplay, handleSubmit }) {
 					type="text"
 					name="title"
 					ref={inputRef}
+					value={title}
 					onInput={(e) => setTitle(e.target.value)}
 					placeholder="Title"
 				/>
@@ -24,6 +36,7 @@ function TaskForm({ toggleDisplay, handleSubmit }) {
 					name="description"
 					id="description"
 					rows="3"
+					value={description}
 					onInput={(e) => setDescription(e.target.value)}
 					placeholder="Details..."
 				></textarea>
@@ -33,15 +46,25 @@ function TaskForm({ toggleDisplay, handleSubmit }) {
 					className="submit"
 					type="submit"
 					onClick={(e) => {
-						handleSubmit(e, {
-							title: title,
-							description: description,
-						});
+						e.preventDefault();
+						id
+							? handleEdit(id, title, description)
+							: handleSubmit(title, description);
+						disableAddMode();
+						resetValues();
 					}}
 				>
 					Submit
 				</button>
-				<button className="cancel" type="reset" onClick={toggleDisplay}>
+				<button
+					className="cancel"
+					type="reset"
+					onClick={() => {
+						id
+							? handleEdit(id, oldTitle, oldDescription)
+							: disableAddMode();
+					}}
+				>
 					Cancel
 				</button>
 			</div>

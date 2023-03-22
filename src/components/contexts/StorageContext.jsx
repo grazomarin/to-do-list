@@ -42,7 +42,7 @@ export const StorageProvider = ({ children }) => {
 		});
 	}
 
-	function appendTask({ title, description }) {
+	function appendTask(title, description) {
 		setStorage((prev) => {
 			return prev.map((folder) => {
 				if (folder.active) {
@@ -52,6 +52,7 @@ export const StorageProvider = ({ children }) => {
 							title: title,
 							description: description,
 							completed: false,
+							edit: false,
 							id: uniqid(),
 						},
 					];
