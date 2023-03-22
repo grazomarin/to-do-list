@@ -117,6 +117,7 @@ function Index() {
 						handleDelete={handleDelete}
 						enableEdit={enableEdit}
 						title={folder.title}
+						tasks={folder.tasks}
 						id={folder.id}
 						active={folder.active}
 						key={folder.id}

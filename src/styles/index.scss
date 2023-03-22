@@ -209,6 +209,13 @@ form {
 			}
 		}
 
+		.tasksCount {
+			font-size: $font-xxs;
+			color: $grey-xd;
+			justify-self: end;
+			margin-right: $offset-xxs;
+		}
+
 		&:hover {
 			.more {
 				visibility: visible;
