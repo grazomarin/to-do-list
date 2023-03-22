@@ -7,7 +7,7 @@ html {
 
 #root {
 	display: grid;
-	grid-template-columns: 2fr 7fr;
+	grid-template-columns: minmax(0, 2fr) 7fr;
 	grid-template-areas: 'index main';
 	height: 100vh;
 }
@@ -19,7 +19,7 @@ html {
 }
 
 .more {
-	display: none;
+	visibility: hidden;
 	width: 24px;
 	margin-left: auto;
 	cursor: pointer;
@@ -78,8 +78,9 @@ form {
 }
 
 .bullet {
-	aspect-ratio: 1/1;
 	width: 7px;
+	height: 7px;
+	margin-right: $offset-m;
 	background-color: $blue-d;
 	border-radius: 50%;
 }
@@ -135,9 +136,9 @@ form {
 }
 
 .index {
-	display: grid;
+	display: flex;
+	flex-flow: column;
 	grid-auto-flow: row;
-	grid-auto-rows: minmax($folder-height, min-content);
 	gap: $offset-s;
 	grid-area: index;
 
@@ -149,7 +150,7 @@ form {
 		display: flex;
 		align-items: center;
 		justify-content: space-between;
-		font-size: $font-l;
+		font-size: $font-xl;
 
 		.plus {
 			display: none;
@@ -173,23 +174,33 @@ form {
 	}
 
 	.folder {
-		display: flex;
+		display: grid;
+		grid-auto-flow: column;
+		grid-template-columns: min-content 1fr min-content;
 		align-items: center;
-		gap: $offset-m;
+		justify-content: center;
 		transition: 0.1s all $transition-curve;
 
 		position: relative;
-		font-size: $font-m;
 		height: $folder-height;
 		cursor: pointer;
+
+		.title {
+			width: 98%;
+			display: block;
+			white-space: nowrap;
+			overflow: hidden;
+			text-overflow: ellipsis;
+			justify-self: start;
+			font-size: $font-m;
+		}
 
 		&.active {
 			box-sizing: border-box;
 			font-weight: 500;
 			background-color: $grey;
-			padding: $offset-xs;
-			padding-right: $offset-m;
-			margin: 0 0 0 (-$offset-xs);
+			padding: 0 0 0 $offset-xs;
+			margin: 0 0 0 (-$offset-xxs);
 			border: 1px solid $grey-d;
 			border-radius: $radius;
 
@@ -200,9 +211,7 @@ form {
 
 		&:hover {
 			.more {
-				display: flex;
-				position: absolute;
-				right: $offset-xxs;
+				visibility: visible;
 			}
 		}
 	}
@@ -220,7 +229,7 @@ form {
 	.header {
 		display: flex;
 		justify-content: right;
-		font-size: 1rem;
+		font-size: $font-xs;
 		margin: $offset-xs $offset-m 0 0;
 		font-weight: 800;
 		position: absolute;
@@ -278,7 +287,7 @@ form {
 				grid-area: info;
 
 				.title {
-					font-size: $font-l;
+					font-size: $font-xl;
 				}
 				.description {
 					font-size: $font-s;
@@ -286,7 +295,7 @@ form {
 			}
 
 			.more {
-				display: flex;
+				visibility: visible;
 				align-self: center;
 				justify-self: center;
 				grid-area: more;
