@@ -46,7 +46,7 @@ function FolderForm({
 					className="cancel"
 					type="reset"
 					onClick={() => {
-						id && handleEdit(id, oldTitle);
+						id ? handleEdit(id, oldTitle) : disableAddMode();
 					}}
 				>
 					Cancel
