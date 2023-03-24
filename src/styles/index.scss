@@ -51,12 +51,12 @@ html {
 form {
 	display: flex;
 	flex-flow: column;
-	gap: $offset-m;
+	gap: $offset-xs;
 
 	.input-cont {
 		display: flex;
 		align-items: center;
-		gap: $offset-s;
+		gap: $offset-xs;
 
 		input {
 			width: 100%;
@@ -121,10 +121,6 @@ form {
 	button {
 		aspect-ratio: 5/2;
 		width: 74px;
-		font-size: $font-xs;
-		border: none;
-		border-radius: $radius;
-		cursor: pointer;
 	}
 
 	.submit {
@@ -133,6 +129,19 @@ form {
 	.cancel {
 		background-color: $red;
 	}
+}
+
+button {
+	border: none;
+	border-radius: $radius;
+	font-size: $font-xs;
+	cursor: pointer;
+}
+
+.dateSelectorButton {
+	width: 200px;
+	padding: $offset-xxs $offset-m;
+	color: $black;
 }
 
 .index {
@@ -261,7 +270,9 @@ form {
 			margin-bottom: $offset-s;
 
 			&.completed {
-				color: $grey-d;
+				.info {
+					color: $grey-d;
+				}
 			}
 
 			.checkbox-cont {

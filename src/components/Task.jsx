@@ -9,6 +9,7 @@ import uniqid from 'uniqid';
 function Task({
 	title,
 	description,
+	dueDate,
 	completed,
 	id,
 	handleDelete,
@@ -34,6 +35,7 @@ function Task({
 				{description && (
 					<div className="description">{description}</div>
 				)}
+				<div>{dueDate ? dueDate : 'No date'}</div>
 			</div>
 			<img
 				className="more"

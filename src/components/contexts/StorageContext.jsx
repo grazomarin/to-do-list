@@ -42,7 +42,7 @@ export const StorageProvider = ({ children }) => {
 		});
 	}
 
-	function appendTask(title, description) {
+	function appendTask(title, description, dueDate) {
 		setStorage((prev) => {
 			return prev.map((folder) => {
 				if (folder.active) {
@@ -51,6 +51,7 @@ export const StorageProvider = ({ children }) => {
 						{
 							title: title,
 							description: description,
+							dueDate: dueDate,
 							completed: false,
 							edit: false,
 							id: uniqid(),

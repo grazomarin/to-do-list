@@ -1,0 +1,34 @@
+@use 'variables';
+@import 'node_modules/react-datepicker/src/stylesheets/datepicker.scss';
+
+.react-datepicker-popper {
+	* {
+		font-family: 'Jost';
+	}
+}
+
+.react-datepicker__close-icon {
+	padding: 0;
+	position: relative;
+
+	&::after {
+		box-sizing: border-box;
+		width: 22px;
+		height: 22px;
+		font-size: 1rem;
+		text-align: center;
+		background-color: rgb(255, 102, 102);
+		color: rgb(33, 33, 33);
+	}
+}
+
+.react-datepicker__input-container {
+	display: flex;
+	justify-content: flex-start;
+	align-items: center;
+	gap: 10px;
+}
+
+.react-datepicker__triangle {
+	display: none;
+}

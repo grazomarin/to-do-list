@@ -17,9 +17,9 @@ function Main() {
 	const enableAddMode = () => setAddMode(true);
 	const disableAddMode = () => setAddMode(false);
 
-	function handleSubmit(title, description) {
+	function handleSubmit(title, description, dueDate) {
 		disableAddMode();
-		appendTask(title, description);
+		appendTask(title, description, dueDate);
 	}
 
 	function handleDelete(taskId) {
@@ -87,7 +87,7 @@ function Main() {
 		);
 	}
 
-	function handleEdit(taskId, title, description) {
+	function handleEdit(taskId, title, description, dueDate) {
 		disableOtherEdits();
 		setStorage((prev) =>
 			prev.map((folder) =>
@@ -99,6 +99,7 @@ function Main() {
 									? {
 											title: title,
 											description: description,
+											dueDate: dueDate,
 											completed: false,
 											edit: false,
 											id: task.id,
@@ -135,6 +136,7 @@ function Main() {
 								<Task
 									title={task.title}
 									description={task.description}
+									dueDate={task.dueDate}
 									id={task.id}
 									completed={task.completed}
 									handleDelete={handleDelete}

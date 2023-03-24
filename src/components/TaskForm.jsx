@@ -1,4 +1,6 @@
-import React, { useState, useRef, useEffect } from 'react';
+import React, { useState, useRef, useEffect, forwardRef } from 'react';
+import DatePicker from 'react-datepicker';
+import { setHours, setMinutes, format } from 'date-fns';
 
 function TaskForm({
 	oldTitle,
@@ -10,6 +12,17 @@ function TaskForm({
 }) {
 	const [title, setTitle] = useState(oldTitle || '');
 	const [description, setDescription] = useState(oldDescription || '');
+	const [dueDate, setDueDate] = useState(new Date());
+	const DateSelector = forwardRef(({ value, onClick }, ref) => (
+		<button
+			className="dateSelectorButton"
+			onClick={onClick}
+			ref={ref}
+			type="button"
+		>
+			{value || 'No due date selected'}
+		</button>
+	));
 
 	const inputRef = useRef(null);
 
@@ -20,6 +33,10 @@ function TaskForm({
 	useEffect(() => {
 		inputRef.current.focus();
 	}, []);
+
+	function formatDate() {
+		return format(dueDate, 'MMM dd, hh:mm a');
+	}
 
 	return (
 		<form>
@@ -40,6 +57,18 @@ function TaskForm({
 					onInput={(e) => setDescription(e.target.value)}
 					placeholder="Details..."
 				></textarea>
+				<DatePicker
+					selected={dueDate}
+					onChange={(date) => setDueDate(date)}
+					showTimeSelect
+					dateFormat="MMM dd, p"
+					minDate={new Date()}
+					minTime={new Date()}
+					maxTime={setHours(setMinutes(new Date(), 59), 23)}
+					customInput={<DateSelector />}
+					isClearable
+					monthsShown={1}
+				/>
 			</div>
 			<div className="buttons">
 				<button
@@ -48,8 +77,8 @@ function TaskForm({
 					onClick={(e) => {
 						e.preventDefault();
 						id
-							? handleEdit(id, title, description)
-							: handleSubmit(title, description);
+							? handleEdit(id, title, description, formatDate())
+							: handleSubmit(title, description, formatDate());
 						disableAddMode();
 						resetValues();
 					}}
@@ -61,7 +90,12 @@ function TaskForm({
 					type="reset"
 					onClick={() => {
 						id
-							? handleEdit(id, oldTitle, oldDescription)
+							? handleEdit(
+									id,
+									oldTitle,
+									oldDescription,
+									formatDate()
+							  )
 							: disableAddMode();
 					}}
 				>
