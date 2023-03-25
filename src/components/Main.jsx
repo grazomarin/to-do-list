@@ -4,7 +4,6 @@ import {
 	useDeleteTask,
 	useStorage,
 } from './contexts/StorageContext';
-import Header from './Header';
 import Task from './Task';
 import TaskForm from './TaskForm';
 
@@ -112,16 +111,24 @@ function Main() {
 		);
 	}
 
+	function returnActiveFolder() {
+		for (let i = 0; i < storage.length; i++) {
+			if (storage[i].active) return storage[i];
+		}
+		return null;
+	}
+
 	return (
 		<div className="main">
-			<Header />
 			{/* checks if there are any selected folders */}
-			{storage.some((folder) => folder.active) ? (
+			{returnActiveFolder() ? (
 				// if yes renders tasks and form
-				<div className="tasks">
-					{storage
-						.find((folder) => folder.active)
-						.tasks.map((task) => {
+				<>
+					<div className="folder_title">
+						{returnActiveFolder().title}
+					</div>
+					<div className="tasks">
+						{returnActiveFolder().tasks.map((task) => {
 							return task.edit ? (
 								<TaskForm
 									oldTitle={task.title}
@@ -148,17 +155,18 @@ function Main() {
 							);
 						})}
 
-					{addMode ? (
-						<TaskForm
-							disableAddMode={disableAddMode}
-							handleSubmit={handleSubmit}
-						/>
-					) : (
-						<h3 className="add" onClick={enableAddMode}>
-							+ add task
-						</h3>
-					)}
-				</div>
+						{addMode ? (
+							<TaskForm
+								disableAddMode={disableAddMode}
+								handleSubmit={handleSubmit}
+							/>
+						) : (
+							<h3 className="add" onClick={enableAddMode}>
+								+ add task
+							</h3>
+						)}
+					</div>
+				</>
 			) : (
 				// if no asks to select a folder
 				<h2 className="notSelected">Select a Folder</h2>

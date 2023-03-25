@@ -16,6 +16,7 @@ html {
 	font-size: $font-m;
 	cursor: pointer;
 	justify-self: center;
+	align-self: start;
 }
 
 .more {
@@ -144,6 +145,14 @@ button {
 	color: $black;
 }
 
+.header {
+	font-size: $font-xs;
+	font-weight: 800;
+	position: absolute;
+	top: $offset-xs;
+	right: $offset-m;
+}
+
 .index {
 	display: flex;
 	flex-flow: column;
@@ -237,26 +246,23 @@ button {
 	display: grid;
 	grid-template-rows: min-content 1fr;
 	grid-area: main;
+	gap: $offset-s;
 
 	.input-cont {
 		flex-flow: column;
 	}
 
-	.header {
-		display: flex;
-		justify-content: right;
-		font-size: $font-xs;
-		margin: $offset-xs $offset-m 0 0;
-		font-weight: 800;
-		position: absolute;
-		right: 0;
+	.folder_title {
+		margin: $offset-xl $offset-xl 0;
+		font-size: $font-xl;
+		font-weight: 600;
 	}
 
 	.tasks {
 		display: flex;
 		flex-direction: column;
 
-		margin: $offset-xl;
+		margin: 0 $offset-xl $offset-xl;
 
 		.task {
 			display: grid;
@@ -269,30 +275,24 @@ button {
 			padding-bottom: $offset-s;
 			margin-bottom: $offset-s;
 
-			&.completed {
-				.info {
-					color: $grey-d;
-				}
-			}
-
 			.checkbox-cont {
 				position: relative;
-				width: 30px;
-				height: 30px;
+				width: 26px;
+				height: 26px;
 				grid-area: checkbox;
 				cursor: pointer;
 			}
 
 			.checkbox {
 				position: relative;
-				height: 30px;
-				width: 30px;
+				height: 26px;
+				width: 26px;
 			}
 
 			.check {
 				position: absolute;
-				height: 20px;
-				width: 20px;
+				height: 16px;
+				width: 16px;
 				top: 50%;
 				right: 50%;
 				transform: translate(50%, -50%);
@@ -301,7 +301,6 @@ button {
 			.info {
 				display: flex;
 				flex-flow: column;
-				gap: $offset-xxs;
 				grid-area: info;
 
 				.title {
@@ -309,12 +308,22 @@ button {
 				}
 
 				.description {
-					font-size: $font-s;
+					font-size: $font-xs;
+					color: $black;
 				}
 
 				.dueDate {
 					font-size: $font-xxs;
 					color: $black;
+					margin-top: $offset-xxs;
+				}
+			}
+
+			&.completed {
+				.info {
+					* {
+						color: $grey-d;
+					}
 				}
 			}
 
