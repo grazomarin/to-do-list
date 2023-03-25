@@ -126,6 +126,7 @@ function Main() {
 								<TaskForm
 									oldTitle={task.title}
 									oldDescription={task.description}
+									oldDate={task.dueDate}
 									id={task.id}
 									disableAddMode={disableAddMode}
 									handleEdit={handleEdit}

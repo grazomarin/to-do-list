@@ -35,7 +35,7 @@ function Task({
 				{description && (
 					<div className="description">{description}</div>
 				)}
-				<div>{dueDate ? dueDate : 'No date'}</div>
+				{dueDate && <div className="dueDate">due {dueDate}</div>}
 			</div>
 			<img
 				className="more"

@@ -307,8 +307,14 @@ button {
 				.title {
 					font-size: $font-xl;
 				}
+
 				.description {
 					font-size: $font-s;
+				}
+
+				.dueDate {
+					font-size: $font-xxs;
+					color: $black;
 				}
 			}
 

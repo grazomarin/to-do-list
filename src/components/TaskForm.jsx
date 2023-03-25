@@ -1,10 +1,11 @@
 import React, { useState, useRef, useEffect, forwardRef } from 'react';
 import DatePicker from 'react-datepicker';
-import { setHours, setMinutes, format } from 'date-fns';
+import { setHours, setMinutes, format, parse } from 'date-fns';
 
 function TaskForm({
 	oldTitle,
 	oldDescription,
+	oldDate,
 	id,
 	disableAddMode,
 	handleEdit,
@@ -12,7 +13,7 @@ function TaskForm({
 }) {
 	const [title, setTitle] = useState(oldTitle || '');
 	const [description, setDescription] = useState(oldDescription || '');
-	const [dueDate, setDueDate] = useState(new Date());
+	const [dueDate, setDueDate] = useState(parseDate(oldDate));
 	const DateSelector = forwardRef(({ value, onClick }, ref) => (
 		<button
 			className="dateSelectorButton"
@@ -34,8 +35,12 @@ function TaskForm({
 		inputRef.current.focus();
 	}, []);
 
-	function formatDate() {
-		return format(dueDate, 'MMM dd, hh:mm a');
+	function formatDate(date) {
+		return date ? format(dueDate, 'MMM dd, hh:mm a') : null;
+	}
+
+	function parseDate(date) {
+		return date ? parse(date, 'MMM dd, hh:mm a', new Date()) : null;
 	}
 
 	return (
@@ -58,6 +63,7 @@ function TaskForm({
 					placeholder="Details..."
 				></textarea>
 				<DatePicker
+					startDate={dueDate}
 					selected={dueDate}
 					onChange={(date) => setDueDate(date)}
 					showTimeSelect
@@ -77,8 +83,17 @@ function TaskForm({
 					onClick={(e) => {
 						e.preventDefault();
 						id
-							? handleEdit(id, title, description, formatDate())
-							: handleSubmit(title, description, formatDate());
+							? handleEdit(
+									id,
+									title,
+									description,
+									formatDate(dueDate)
+							  )
+							: handleSubmit(
+									title,
+									description,
+									formatDate(dueDate)
+							  );
 						disableAddMode();
 						resetValues();
 					}}
@@ -90,12 +105,7 @@ function TaskForm({
 					type="reset"
 					onClick={() => {
 						id
-							? handleEdit(
-									id,
-									oldTitle,
-									oldDescription,
-									formatDate()
-							  )
+							? handleEdit(id, oldTitle, oldDescription, oldDate)
 							: disableAddMode();
 					}}
 				>
