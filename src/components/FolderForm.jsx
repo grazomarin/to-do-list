@@ -8,6 +8,7 @@ function FolderForm({
 	id,
 }) {
 	const [title, setTitle] = useState(oldTitle || '');
+	const [displayError, setDisplayError] = useState(false);
 	const resetValues = () => {
 		setTitle('');
 	};
@@ -16,6 +17,11 @@ function FolderForm({
 	useEffect(() => {
 		inputRef.current.focus();
 	}, []);
+
+	function throwError() {
+		setDisplayError(true);
+		setTimeout(() => setDisplayError(false), 2000);
+	}
 
 	return (
 		<form>
@@ -35,9 +41,11 @@ function FolderForm({
 					className="submit"
 					onClick={(e) => {
 						e.preventDefault();
-						id ? handleEdit(id, title) : handleSubmit(title);
-						disableAddMode();
-						resetValues();
+						if (title) {
+							id ? handleEdit(id, title) : handleSubmit(title);
+							disableAddMode();
+							resetValues();
+						} else throwError();
 					}}
 				>
 					Submit
@@ -52,6 +60,7 @@ function FolderForm({
 					Cancel
 				</button>
 			</div>
+			{displayError && <div className="error">Enter a valid title!</div>}
 		</form>
 	);
 }

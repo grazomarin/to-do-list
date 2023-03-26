@@ -95,7 +95,7 @@ form {
 .bullet {
 	width: 7px;
 	height: 7px;
-	margin-right: $offset-m;
+	margin-right: $offset-s;
 	background-color: $blue-d;
 	border-radius: 50%;
 }
@@ -139,7 +139,7 @@ form {
 		aspect-ratio: 5/2;
 		width: 74px;
 		padding: $offset-xxs;
-		flex: 0 0 74px;
+		flex: 0 0 auto;
 	}
 
 	.submit {
@@ -209,7 +209,7 @@ button {
 		min-width: 0; /* prevents grid from expanding */
 		.input-cont {
 			input {
-				margin: 0 (-$offset-xs);
+				margin: 0 0 0 (-$offset-s);
 			}
 		}
 	}
@@ -226,6 +226,26 @@ button {
 		height: $folder-height;
 		cursor: pointer;
 
+		&.active {
+			box-sizing: border-box;
+			font-weight: 500;
+			background-color: $grey;
+			padding: 0 $offset-xs 0;
+			margin: 0 0 0 (-$offset-xs);
+			border: 1px solid $grey-d;
+			border-radius: $radius;
+
+			.bullet {
+				background-color: transparent;
+			}
+		}
+
+		&:hover {
+			.more {
+				visibility: visible;
+			}
+		}
+
 		.title {
 			width: 98%;
 			display: block;
@@ -236,32 +256,20 @@ button {
 			font-size: $font-m;
 		}
 
-		&.active {
-			box-sizing: border-box;
-			font-weight: 500;
-			background-color: $grey;
-			padding: 0 $offset-xs 0;
-			margin: 0 0 0 (-$offset-xxs);
-			border: 1px solid $grey-d;
-			border-radius: $radius;
-
-			.bullet {
-				background-color: transparent;
-			}
-		}
-
 		.tasksCount {
 			font-size: $font-xxs;
 			color: $grey-xd;
 			justify-self: end;
 			margin-right: $offset-xxs;
 		}
+	}
 
-		&:hover {
-			.more {
-				visibility: visible;
-			}
-		}
+	.error {
+		height: auto;
+		padding: $offset-xxs;
+		text-align: center;
+		margin-left: calc(7px + $offset-xs);
+		width: calc(100% - $offset-s);
 	}
 }
 
