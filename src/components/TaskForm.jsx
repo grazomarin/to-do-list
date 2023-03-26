@@ -1,6 +1,8 @@
 import React, { useState, useRef, useEffect, forwardRef } from 'react';
 import DatePicker from 'react-datepicker';
 import { setHours, setMinutes, format, parse } from 'date-fns';
+import calendar from '../assets/images/calendar.svg';
+import CalendarIcon from './icon_components/CalendarIcon';
 
 function TaskForm({
 	oldTitle,
@@ -21,7 +23,8 @@ function TaskForm({
 			ref={ref}
 			type="button"
 		>
-			{value || 'No due date selected'}
+			<CalendarIcon />
+			<span>{value || 'No due date selected'}</span>
 		</button>
 	));
 
@@ -62,6 +65,8 @@ function TaskForm({
 					onInput={(e) => setDescription(e.target.value)}
 					placeholder="Details..."
 				></textarea>
+			</div>
+			<div className="buttons">
 				<DatePicker
 					startDate={dueDate}
 					selected={dueDate}
@@ -73,10 +78,9 @@ function TaskForm({
 					maxTime={setHours(setMinutes(new Date(), 59), 23)}
 					customInput={<DateSelector />}
 					isClearable
+					fixedHeight
 					monthsShown={1}
 				/>
-			</div>
-			<div className="buttons">
 				<button
 					className="submit"
 					type="submit"

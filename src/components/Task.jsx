@@ -5,6 +5,7 @@ import dots from '../assets/images/dots.svg';
 import checkbox from '../assets/images/checkbox.svg';
 import check from '../assets/images/check.svg';
 import uniqid from 'uniqid';
+import CalendarIcon from './icon_components/CalendarIcon';
 
 function Task({
 	title,
@@ -35,7 +36,12 @@ function Task({
 				{description && (
 					<div className="description">{description}</div>
 				)}
-				{dueDate && <div className="dueDate">due {dueDate}</div>}
+				{dueDate && (
+					<div className="dueDate">
+						<CalendarIcon />
+						{dueDate}
+					</div>
+				)}
 			</div>
 			<img
 				className="more"

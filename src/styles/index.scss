@@ -26,11 +26,17 @@ html {
 	cursor: pointer;
 }
 
+.calendar {
+	width: 20px;
+	height: 20px;
+	stroke: $black;
+}
+
 .options {
 	position: absolute;
 	width: 180px;
-	background-color: $grey;
-	box-shadow: rgb(84, 84, 84) 0 0 6px 0px;
+	background-color: $grey-l;
+	box-shadow: rgb(84, 84, 84) 0 0 3px 0px;
 	border-radius: $radius;
 	top: 50%;
 	left: calc(100% - $offset-xs);
@@ -118,10 +124,14 @@ form {
 	display: flex;
 	gap: $offset-xs;
 	justify-content: end;
+	align-items: center;
 
-	button {
+	.submit,
+	.cancel {
 		aspect-ratio: 5/2;
 		width: 74px;
+		padding: $offset-xxs;
+		flex: 0 0 74px;
 	}
 
 	.submit {
@@ -140,8 +150,13 @@ button {
 }
 
 .dateSelectorButton {
-	width: 200px;
-	padding: $offset-xxs $offset-m;
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+	gap: $offset-xs;
+	background-color: $grey-l;
+	width: auto;
+	padding: $offset-xxs $offset-s;
 	color: $black;
 }
 
@@ -261,6 +276,7 @@ button {
 	.tasks {
 		display: flex;
 		flex-direction: column;
+		gap: $offset-s;
 
 		margin: 0 $offset-xl $offset-xl;
 
@@ -273,7 +289,6 @@ button {
 			position: relative;
 			border-bottom: 1px solid $grey-d;
 			padding-bottom: $offset-s;
-			margin-bottom: $offset-s;
 
 			.checkbox-cont {
 				position: relative;
@@ -313,6 +328,9 @@ button {
 				}
 
 				.dueDate {
+					display: flex;
+					align-items: center;
+					gap: $offset-xxs;
 					font-size: $font-xxs;
 					color: $black;
 					margin-top: $offset-xxs;
@@ -323,6 +341,7 @@ button {
 				.info {
 					* {
 						color: $grey-d;
+						stroke: $grey-d;
 					}
 				}
 			}

@@ -16,6 +16,8 @@ function Main() {
 	const enableAddMode = () => setAddMode(true);
 	const disableAddMode = () => setAddMode(false);
 
+	useEffect(() => setAddMode(false), [returnActiveFolder()]);
+
 	function handleSubmit(title, description, dueDate) {
 		disableAddMode();
 		appendTask(title, description, dueDate);
