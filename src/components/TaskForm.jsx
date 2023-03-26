@@ -16,6 +16,7 @@ function TaskForm({
 	const [title, setTitle] = useState(oldTitle || '');
 	const [description, setDescription] = useState(oldDescription || '');
 	const [dueDate, setDueDate] = useState(parseDate(oldDate));
+	const [displayError, setDisplayError] = useState(false);
 	const DateSelector = forwardRef(({ value, onClick }, ref) => (
 		<button
 			className="dateSelectorButton"
@@ -44,6 +45,11 @@ function TaskForm({
 
 	function parseDate(date) {
 		return date ? parse(date, 'MMM dd, hh:mm a', new Date()) : null;
+	}
+
+	function throwError() {
+		setDisplayError(true);
+		setTimeout(() => setDisplayError(false), 2000);
 	}
 
 	return (
@@ -86,20 +92,22 @@ function TaskForm({
 					type="submit"
 					onClick={(e) => {
 						e.preventDefault();
-						id
-							? handleEdit(
-									id,
-									title,
-									description,
-									formatDate(dueDate)
-							  )
-							: handleSubmit(
-									title,
-									description,
-									formatDate(dueDate)
-							  );
-						disableAddMode();
-						resetValues();
+						if (title) {
+							id
+								? handleEdit(
+										id,
+										title,
+										description,
+										formatDate(dueDate)
+								  )
+								: handleSubmit(
+										title,
+										description,
+										formatDate(dueDate)
+								  );
+							disableAddMode();
+							resetValues();
+						} else throwError();
 					}}
 				>
 					Submit
@@ -116,6 +124,7 @@ function TaskForm({
 					Cancel
 				</button>
 			</div>
+			{displayError && <div className="error">Enter a valid title!</div>}
 		</form>
 	);
 }

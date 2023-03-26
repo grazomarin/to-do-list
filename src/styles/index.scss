@@ -32,6 +32,14 @@ html {
 	stroke: $black;
 }
 
+.error {
+	background-color: $red;
+	width: 150px;
+	padding: $offset-xs;
+	text-align: center;
+	color: white;
+}
+
 .options {
 	position: absolute;
 	width: 180px;
@@ -232,7 +240,7 @@ button {
 			box-sizing: border-box;
 			font-weight: 500;
 			background-color: $grey;
-			padding: 0 0 0 $offset-xs;
+			padding: 0 $offset-xs 0;
 			margin: 0 0 0 (-$offset-xxs);
 			border: 1px solid $grey-d;
 			border-radius: $radius;
