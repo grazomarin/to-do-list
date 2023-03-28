@@ -376,6 +376,7 @@ button {
 	}
 
 	.notSelected {
+		margin: $offset-xl;
 		align-self: start;
 		justify-self: center;
 	}

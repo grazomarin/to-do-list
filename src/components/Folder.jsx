@@ -11,6 +11,7 @@ function Folder({
 	id,
 	makeActive,
 	handleDelete,
+	handleDuplicate,
 	enableEdit,
 }) {
 	const [showConfirm, setShowConfirm] = useState(false);
@@ -52,6 +53,7 @@ function Folder({
 					hideOptions={hideOptions}
 					toggleConfirm={toggleConfirm}
 					enableEdit={() => enableEdit(id)}
+					handleDuplicate={() => handleDuplicate(id)}
 					key={uniqid()}
 					moreRef={moreRef}
 				/>

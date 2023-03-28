@@ -6,6 +6,7 @@ import {
 } from './contexts/StorageContext';
 import Task from './Task';
 import TaskForm from './TaskForm';
+import uniqid from 'uniqid';
 
 function Main() {
 	const [storage, setStorage] = useStorage();
@@ -113,6 +114,29 @@ function Main() {
 		);
 	}
 
+	function handleDuplicate(taskId) {
+		setStorage((prev) =>
+			prev.map((folder) =>
+				folder.active
+					? {
+							...folder,
+							tasks: folder.tasks.reduce((updated, task) => {
+								if (task.id === taskId) {
+									updated.push(task, {
+										...task,
+										id: uniqid(),
+									});
+								} else {
+									updated.push(task);
+								}
+								return updated;
+							}, []),
+					  }
+					: folder
+			)
+		);
+	}
+
 	function returnActiveFolder() {
 		for (let i = 0; i < storage.length; i++) {
 			if (storage[i].active) return storage[i];
@@ -150,6 +174,7 @@ function Main() {
 									id={task.id}
 									completed={task.completed}
 									handleDelete={handleDelete}
+									handleDuplicate={handleDuplicate}
 									enableEdit={enableEdit}
 									handleComplete={handleComplete}
 									key={task.id}

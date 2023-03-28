@@ -1,6 +1,12 @@
 import React, { useEffect, useState, useRef } from 'react';
 
-function Options({ hideOptions, enableEdit, toggleConfirm, moreRef }) {
+function Options({
+	hideOptions,
+	enableEdit,
+	handleDuplicate,
+	toggleConfirm,
+	moreRef,
+}) {
 	const optionsRef = useRef();
 
 	function handleClick(e) {
@@ -28,7 +34,9 @@ function Options({ hideOptions, enableEdit, toggleConfirm, moreRef }) {
 			<div className="option" onClick={enableEdit}>
 				Edit
 			</div>
-			<div className="option">Duplicate</div>
+			<div className="option" onClick={handleDuplicate}>
+				Duplicate
+			</div>
 			<div className="option">Add to Favorites</div>
 		</div>
 	);

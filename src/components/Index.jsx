@@ -7,6 +7,7 @@ import {
 import Folder from './Folder';
 import FolderForm from './FolderForm';
 import add from '../assets/images/add.svg';
+import uniqid from 'uniqid';
 
 function Index() {
 	const [addMode, setAddMode] = useState(false);
@@ -73,18 +74,33 @@ function Index() {
 		makeFoldersInactive();
 		setStorage((prev) => {
 			return prev.map((folder) => {
-				if (folder.id === folderId) {
-					return {
-						title: title,
-						tasks: [...folder.tasks],
-						active: true,
-						edit: false,
-						id: folderId,
-					};
-				}
-				return folder;
+				return folder.id === folderId
+					? {
+							title: title,
+							tasks: [...folder.tasks],
+							active: true,
+							edit: false,
+							id: folderId,
+					  }
+					: folder;
 			});
 		});
+	}
+
+	function handleDuplicate(folderId) {
+		setStorage((prev) =>
+			prev.reduce((updated, folder) => {
+				folder.id === folderId
+					? updated.push(folder, {
+							...folder,
+							id: uniqid(),
+							active: false,
+					  })
+					: updated.push(folder);
+
+				return updated;
+			}, [])
+		);
 	}
 
 	return (
@@ -115,6 +131,7 @@ function Index() {
 					<Folder
 						makeActive={makeFolderActive}
 						handleDelete={handleDelete}
+						handleDuplicate={handleDuplicate}
 						enableEdit={enableEdit}
 						title={folder.title}
 						tasks={folder.tasks}

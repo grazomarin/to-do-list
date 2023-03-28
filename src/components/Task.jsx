@@ -14,6 +14,7 @@ function Task({
 	completed,
 	id,
 	handleDelete,
+	handleDuplicate,
 	enableEdit,
 	handleComplete,
 }) {
@@ -54,6 +55,7 @@ function Task({
 				<Options
 					hideOptions={hideOptions}
 					toggleConfirm={toggleConfirm}
+					handleDuplicate={() => handleDuplicate(id)}
 					enableEdit={() => enableEdit(id)}
 					key={uniqid()}
 					moreRef={moreRef}
