@@ -8,6 +8,7 @@ function Folder({
 	title,
 	active,
 	tasks,
+	sections,
 	id,
 	makeActive,
 	handleDelete,
@@ -22,10 +23,24 @@ function Folder({
 
 	const toggleConfirm = () => setShowConfirm((prev) => !prev);
 
+	function returnNumOfTotalTasks() {
+		let taskCount = 0;
+		taskCount += tasks.length;
+		for (let i = 0; i < sections.length; i++) {
+			taskCount += sections[i].tasks.length;
+		}
+		return taskCount;
+	}
+
 	function returnNumOfCompletedTasks() {
 		let completedCount = 0;
 		for (let i = 0; i < tasks.length; i++) {
 			tasks[i].completed ? completedCount++ : null;
+		}
+		for (let i = 0; i < sections.length; i++) {
+			for (let y = 0; y < sections[i].tasks.length; y++) {
+				sections[i].tasks[y].completed ? completedCount++ : null;
+			}
 		}
 		return completedCount;
 	}
@@ -38,7 +53,7 @@ function Folder({
 			<div className="bullet"></div>
 			<span className="title">{title}</span>
 			<div className="tasksCount">
-				{returnNumOfCompletedTasks()}/{tasks.length}
+				{returnNumOfCompletedTasks()}/{returnNumOfTotalTasks()}
 			</div>
 			<img
 				className="more"

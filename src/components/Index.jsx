@@ -136,6 +136,7 @@ function Index() {
 						enableEdit={enableEdit}
 						title={folder.title}
 						tasks={folder.tasks}
+						sections={folder.sections}
 						id={folder.id}
 						active={folder.active}
 						key={folder.id}
