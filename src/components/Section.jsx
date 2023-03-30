@@ -11,7 +11,7 @@ function Section({ title, tasks, id }) {
 	const enableAddTaskMode = () => setAddTaskMode(true);
 	const disableAddTaskMode = () => setAddTaskMode(false);
 
-	function handleSectionTaskSubmit(title, description, dueDate, sectionId) {
+	function handleSubmit(title, description, dueDate, sectionId) {
 		setStorage((prev) =>
 			prev.map((folder) =>
 				folder.active
@@ -42,12 +42,77 @@ function Section({ title, tasks, id }) {
 		console.log(storage);
 	}
 
+	function handleComplete(taskId) {
+		setStorage((prev) =>
+			prev.map((folder) =>
+				folder.active
+					? {
+							...folder,
+							sections: folder.sections.map((section) =>
+								section.id === id
+									? {
+											...section,
+											tasks: section.tasks.map((task) =>
+												task.id === taskId
+													? {
+															...task,
+															completed:
+																!task.completed,
+													  }
+													: task
+											),
+									  }
+									: section
+							),
+					  }
+					: folder
+			)
+		);
+	}
+
+	// function enableEdit(taskId) {
+	// 	disableOtherEdits();
+	// 	setStorage((prev) =>
+	// 		prev.map((folder) =>
+	// 			folder.active
+	// 				? {
+	// 						...folder,
+	// 						sections: folder.sections.map((section) =>
+	// 							section.id === id
+	// 								? {
+	// 										...section,
+	// 										tasks: section.tasks.map((task) =>
+	// 											task.id === taskId
+	// 												? { ...task, edit: true }
+	// 												: task
+	// 										),
+	// 								  }
+	// 								: section
+	// 						),
+	// 				  }
+	// 				: folder
+	// 		)
+	// 	);
+	// }
+
 	return (
 		<div className="section">
 			<div className="section_title">{title}</div>
 
 			<div className="section-tasks">
 				{tasks.map((task) => {
+					// return task.edit ? (
+					// 	<TaskForm
+					// 		oldTitle={task.title}
+					// 		oldDescription={task.description}
+					// 		oldDate={task.dueDate}
+					// 		taskId={task.id}
+					// 		disableAddMode={disableAddTaskMode}
+					// 		handleEdit={handleEdit}
+					// 		handleSubmit={handleSubmit}
+					// 		key={task.id}
+					// 	/>
+					// ) : ();
 					return (
 						<Task
 							title={task.title}
@@ -60,7 +125,7 @@ function Section({ title, tasks, id }) {
 							// 	handleDuplicate
 							// }
 							// enableEdit={enableEdit}
-							// handleComplete={handleComplete}
+							handleComplete={handleComplete}
 							key={task.id}
 						/>
 					);
@@ -70,7 +135,7 @@ function Section({ title, tasks, id }) {
 					{addTaskMode ? (
 						<TaskForm
 							disableAddMode={disableAddTaskMode}
-							handleSubmit={handleSectionTaskSubmit}
+							handleSubmit={handleSubmit}
 							sectionId={id}
 						/>
 					) : (
