@@ -8,7 +8,8 @@ function TaskForm({
 	oldTitle,
 	oldDescription,
 	oldDate,
-	id,
+	taskId,
+	sectionId,
 	disableAddMode,
 	handleEdit,
 	handleSubmit,
@@ -93,17 +94,19 @@ function TaskForm({
 					onClick={(e) => {
 						e.preventDefault();
 						if (title) {
-							id
+							taskId
 								? handleEdit(
-										id,
+										taskId,
 										title,
 										description,
-										formatDate(dueDate)
+										formatDate(dueDate),
+										sectionId
 								  )
 								: handleSubmit(
 										title,
 										description,
-										formatDate(dueDate)
+										formatDate(dueDate),
+										sectionId
 								  );
 							disableAddMode();
 							resetValues();
@@ -116,8 +119,13 @@ function TaskForm({
 					className="cancel"
 					type="reset"
 					onClick={() => {
-						id
-							? handleEdit(id, oldTitle, oldDescription, oldDate)
+						taskId
+							? handleEdit(
+									taskId,
+									oldTitle,
+									oldDescription,
+									oldDate
+							  )
 							: disableAddMode();
 					}}
 				>

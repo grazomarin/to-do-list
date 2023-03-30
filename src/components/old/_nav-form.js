@@ -1,6 +1,6 @@
 import UI from './_ui';
 import ProjectFactory from './_project';
-import { nav } from '../index';
+import { nav } from '../../index';
 
 const navFormFactory = () => {
 	const addProjectLine = document.createElement('div');

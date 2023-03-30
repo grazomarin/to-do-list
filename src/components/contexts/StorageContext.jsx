@@ -15,7 +15,14 @@ export const useDeleteTask = () => useContext(DeleteTaskContext);
 
 export const StorageProvider = ({ children }) => {
 	const [storage, setStorage] = useState([
-		{ title: 'Index', tasks: [], active: true, edit: false, id: uniqid() },
+		{
+			title: 'Index',
+			tasks: [],
+			sections: [],
+			active: true,
+			edit: false,
+			id: uniqid(),
+		},
 	]);
 
 	function appendFolder(title) {
@@ -25,6 +32,7 @@ export const StorageProvider = ({ children }) => {
 				{
 					title: title,
 					tasks: [],
+					sections: [],
 					active: true,
 					edit: false,
 					id: uniqid(),

@@ -5,7 +5,7 @@ import {
 	useDeleteFolder,
 } from './contexts/StorageContext';
 import Folder from './Folder';
-import FolderForm from './FolderForm';
+import TitleForm from './TitleForm';
 import add from '../assets/images/add.svg';
 import uniqid from 'uniqid';
 
@@ -120,12 +120,13 @@ function Index() {
 			</div>
 			{storage.map((folder) => {
 				return folder.edit ? (
-					<FolderForm
+					<TitleForm
 						disableAddMode={disableAddMode}
 						handleEdit={handleEdit}
 						oldTitle={folder.title}
 						id={folder.id}
 						key={folder.id}
+						bullet={true}
 					/>
 				) : (
 					<Folder
@@ -142,9 +143,10 @@ function Index() {
 				);
 			})}
 			{addMode && (
-				<FolderForm
+				<TitleForm
 					disableAddMode={disableAddMode}
 					handleSubmit={handleSubmit}
+					bullet={true}
 				/>
 			)}
 		</div>

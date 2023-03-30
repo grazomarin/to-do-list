@@ -1,11 +1,12 @@
 import React, { useState, useEffect, useRef } from 'react';
 
-function FolderForm({
+function TitleForm({
 	disableAddMode,
 	handleSubmit,
 	handleEdit,
 	oldTitle,
 	id,
+	bullet,
 }) {
 	const [title, setTitle] = useState(oldTitle || '');
 	const [displayError, setDisplayError] = useState(false);
@@ -26,7 +27,7 @@ function FolderForm({
 	return (
 		<form>
 			<div className="input-cont">
-				<div className="bullet"></div>
+				{bullet && <div className="bullet"></div>}
 				<input
 					type="text"
 					name="title"
@@ -65,4 +66,4 @@ function FolderForm({
 	);
 }
 
-export default FolderForm;
+export default TitleForm;

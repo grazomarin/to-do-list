@@ -7,20 +7,25 @@ import {
 import Task from './Task';
 import TaskForm from './TaskForm';
 import uniqid from 'uniqid';
+import TitleForm from './TitleForm';
+import Section from './Section';
 
 function Main() {
 	const [storage, setStorage] = useStorage();
 	const appendTask = useAppendTask();
 	const deleteTask = useDeleteTask();
-	const [addMode, setAddMode] = useState(false);
+	const [addTaskMode, setAddTaskMode] = useState(false);
+	const [addSectionMode, setAddSectionMode] = useState(false);
 
-	const enableAddMode = () => setAddMode(true);
-	const disableAddMode = () => setAddMode(false);
+	const enableAddTaskMode = () => setAddTaskMode(true);
+	const disableAddTaskMode = () => setAddTaskMode(false);
+	const enableAddSectionMode = () => setAddSectionMode(true);
+	const disableAddSectionMode = () => setAddSectionMode(false);
 
-	useEffect(() => setAddMode(false), [returnActiveFolder()]);
+	useEffect(() => setAddTaskMode(false), [returnActiveFolder()]);
 
-	function handleSubmit(title, description, dueDate) {
-		disableAddMode();
+	function handleTaskSubmit(title, description, dueDate) {
+		disableAddTaskMode();
 		appendTask(title, description, dueDate);
 	}
 
@@ -102,7 +107,7 @@ function Main() {
 											title: title,
 											description: description,
 											dueDate: dueDate,
-											completed: false,
+											completed: task.completed,
 											edit: false,
 											id: task.id,
 									  }
@@ -144,6 +149,26 @@ function Main() {
 		return null;
 	}
 
+	function handleSectionSubmit(title) {
+		setStorage((prev) =>
+			prev.map((folder) =>
+				folder.active
+					? {
+							...folder,
+							sections: [
+								...folder.sections,
+								{
+									title: title,
+									tasks: [],
+									id: uniqid(),
+								},
+							],
+					  }
+					: folder
+			)
+		);
+	}
+
 	return (
 		<div className="main">
 			{/* checks if there are any selected folders */}
@@ -160,10 +185,10 @@ function Main() {
 									oldTitle={task.title}
 									oldDescription={task.description}
 									oldDate={task.dueDate}
-									id={task.id}
-									disableAddMode={disableAddMode}
+									taskId={task.id}
+									disableAddMode={disableAddTaskMode}
 									handleEdit={handleEdit}
-									handleSubmit={handleSubmit}
+									handleSubmit={handleTaskSubmit}
 									key={task.id}
 								/>
 							) : (
@@ -182,16 +207,47 @@ function Main() {
 							);
 						})}
 
-						{addMode ? (
-							<TaskForm
-								disableAddMode={disableAddMode}
-								handleSubmit={handleSubmit}
-							/>
-						) : (
-							<h3 className="add" onClick={enableAddMode}>
-								+ add task
-							</h3>
-						)}
+						<h3 className="add">
+							{addTaskMode ? (
+								<TaskForm
+									disableAddMode={disableAddTaskMode}
+									handleSubmit={handleTaskSubmit}
+								/>
+							) : (
+								<div
+									className="add_task"
+									onClick={enableAddTaskMode}
+								>
+									+ add task
+								</div>
+							)}
+							{addSectionMode ? (
+								<TitleForm
+									handleSubmit={handleSectionSubmit}
+									disableAddMode={disableAddSectionMode}
+								/>
+							) : (
+								<div
+									className="add_section"
+									onClick={enableAddSectionMode}
+								>
+									<div className="decoration"></div>
+									<div className="text">Add Section</div>
+									<div className="decoration"></div>
+								</div>
+							)}
+						</h3>
+
+						{returnActiveFolder().sections.map((section) => {
+							return (
+								<Section
+									title={section.title}
+									tasks={section.tasks}
+									id={section.id}
+									key={section.id}
+								/>
+							);
+						})}
 					</div>
 				</>
 			) : (
