@@ -78,6 +78,7 @@ function Index() {
 					? {
 							title: title,
 							tasks: [...folder.tasks],
+							sections: [...folder.sections],
 							active: true,
 							edit: false,
 							id: folderId,
