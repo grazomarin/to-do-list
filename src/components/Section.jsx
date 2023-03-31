@@ -6,8 +6,9 @@ import Options from './Options';
 import ConfirmAction from './ConfirmAction';
 import dots from '../assets/images/dots.svg';
 import uniqid from 'uniqid';
+import TitleForm from './TitleForm';
 
-function Section({ title, tasks, id }) {
+function Section({ title, tasks, edit, id }) {
 	const [storage, setStorage] = useStorage();
 	const [addTaskMode, setAddTaskMode] = useState(false);
 	const [showConfirm, setShowConfirm] = useState(false);
@@ -19,6 +20,69 @@ function Section({ title, tasks, id }) {
 
 	const enableAddTaskMode = () => setAddTaskMode(true);
 	const disableAddTaskMode = () => setAddTaskMode(false);
+
+	function handleSectionDelete(sectionId) {
+		setStorage((prev) =>
+			prev.map((folder) =>
+				folder.active
+					? {
+							...folder,
+							sections: folder.sections.reduce(
+								(reduced, section) => {
+									if (section.id !== sectionId)
+										reduced.push(section);
+									return reduced;
+								},
+								[]
+							),
+					  }
+					: folder
+			)
+		);
+	}
+
+	function enableSectionEdit(sectionId) {
+		setStorage((prev) =>
+			prev.map((folder) =>
+				folder.active
+					? {
+							...folder,
+							tasks: folder.tasks.map((task) => {
+								return { ...task, edit: false };
+							}),
+							sections: folder.sections.map((section) =>
+								section.id === sectionId
+									? {
+											...section,
+											tasks: section.tasks.map((task) => {
+												return { ...task, edit: false };
+											}),
+											edit: true,
+									  }
+									: section
+							),
+					  }
+					: folder
+			)
+		);
+	}
+
+	function handleSectionEdit(sectionId, title) {
+		setStorage((prev) =>
+			prev.map((folder) =>
+				folder.active
+					? {
+							...folder,
+							sections: folder.sections.map((section) =>
+								section.id === sectionId
+									? { ...section, edit: false, title: title }
+									: section
+							),
+					  }
+					: folder
+			)
+		);
+	}
 
 	function handleTaskSubmit(title, description, dueDate, sectionId) {
 		setStorage((prev) =>
@@ -49,26 +113,6 @@ function Section({ title, tasks, id }) {
 			)
 		);
 		console.log(storage);
-	}
-
-	function handleSectionDelete(sectionId) {
-		setStorage((prev) =>
-			prev.map((folder) =>
-				folder.active
-					? {
-							...folder,
-							sections: folder.sections.reduce(
-								(reduced, section) => {
-									if (section.id !== sectionId)
-										reduced.push(section);
-									return reduced;
-								},
-								[]
-							),
-					  }
-					: folder
-			)
-		);
 	}
 
 	function handleComplete(taskId) {
@@ -126,33 +170,42 @@ function Section({ title, tasks, id }) {
 
 	return (
 		<div className="section">
-			<div className="section_title">
-				{title}
-				<img
-					className="more"
-					ref={moreRef}
-					src={dots}
-					alt=""
-					onClick={displayOptions}
+			{edit ? (
+				<TitleForm
+					handleCancel={() => {}}
+					handleEdit={handleSectionEdit}
+					oldTitle={title}
+					id={id}
 				/>
-				{showOptions && (
-					<Options
-						hideOptions={hideOptions}
-						enableDelete={toggleConfirm}
-						enableEdit={() => enableEdit(id)}
-						handleDuplicate={() => handleDuplicate(id)}
-						key={uniqid()}
-						moreRef={moreRef}
+			) : (
+				<div className="section_title">
+					{title}
+					<img
+						className="more"
+						ref={moreRef}
+						src={dots}
+						alt=""
+						onClick={displayOptions}
 					/>
-				)}
-				{showConfirm && (
-					<ConfirmAction
-						handleDelete={() => handleSectionDelete(id)}
-						title={title}
-						handleCancel={toggleConfirm}
-					/>
-				)}
-			</div>
+					{showOptions && (
+						<Options
+							hideOptions={hideOptions}
+							enableDelete={toggleConfirm}
+							enableEdit={() => enableSectionEdit(id)}
+							// handleDuplicate={() => handleDuplicate(id)}
+							key={uniqid()}
+							moreRef={moreRef}
+						/>
+					)}
+					{showConfirm && (
+						<ConfirmAction
+							handleDelete={() => handleSectionDelete(id)}
+							title={title}
+							handleCancel={toggleConfirm}
+						/>
+					)}
+				</div>
+			)}
 
 			<div className="section-tasks">
 				{tasks.map((task) => {

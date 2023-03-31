@@ -122,7 +122,7 @@ function Index() {
 			{storage.map((folder) => {
 				return folder.edit ? (
 					<TitleForm
-						disableAddMode={disableAddMode}
+						handleCancel={() => {}}
 						handleEdit={handleEdit}
 						oldTitle={folder.title}
 						id={folder.id}
@@ -146,7 +146,7 @@ function Index() {
 			})}
 			{addMode && (
 				<TitleForm
-					disableAddMode={disableAddMode}
+					handleCancel={disableAddMode}
 					handleSubmit={handleSubmit}
 					bullet={true}
 				/>

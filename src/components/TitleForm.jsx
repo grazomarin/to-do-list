@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 
 function TitleForm({
-	disableAddMode,
+	handleCancel,
 	handleSubmit,
 	handleEdit,
 	oldTitle,
@@ -44,7 +44,7 @@ function TitleForm({
 						e.preventDefault();
 						if (title) {
 							id ? handleEdit(id, title) : handleSubmit(title);
-							disableAddMode();
+							handleCancel();
 							resetValues();
 						} else throwError();
 					}}
@@ -55,7 +55,7 @@ function TitleForm({
 					className="cancel"
 					type="reset"
 					onClick={() => {
-						id ? handleEdit(id, oldTitle) : disableAddMode();
+						id ? handleEdit(id, oldTitle) : handleCancel();
 					}}
 				>
 					Cancel

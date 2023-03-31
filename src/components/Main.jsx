@@ -55,38 +55,28 @@ function Main() {
 		);
 	}
 
-	function disableOtherEdits() {
+	function enableEdit(taskId) {
 		setStorage((prev) =>
 			prev.map((folder) =>
 				folder.active
 					? {
 							...folder,
-							tasks: folder.tasks.map((task) => {
+							sections: folder.sections.map((section) => {
 								return {
-									...task,
+									...section,
 									edit: false,
+									tasks: section.tasks.map((task) => {
+										return { ...task, edit: false };
+									}),
 								};
 							}),
-					  }
-					: folder
-			)
-		);
-	}
-
-	function enableEdit(taskId) {
-		disableOtherEdits();
-		setStorage((prev) =>
-			prev.map((folder) =>
-				folder.active
-					? {
-							...folder,
 							tasks: folder.tasks.map((task) =>
 								task.id === taskId
 									? {
 											...task,
 											edit: true,
 									  }
-									: task
+									: { ...task, edit: false }
 							),
 					  }
 					: folder
@@ -95,7 +85,6 @@ function Main() {
 	}
 
 	function handleEdit(taskId, title, description, dueDate) {
-		disableOtherEdits();
 		setStorage((prev) =>
 			prev.map((folder) =>
 				folder.active
@@ -159,6 +148,7 @@ function Main() {
 								...folder.sections,
 								{
 									title: title,
+									edit: false,
 									tasks: [],
 									id: uniqid(),
 								},
@@ -224,7 +214,7 @@ function Main() {
 							{addSectionMode ? (
 								<TitleForm
 									handleSubmit={handleSectionSubmit}
-									disableAddMode={disableAddSectionMode}
+									handleCancel={disableAddSectionMode}
 								/>
 							) : (
 								<div
@@ -243,6 +233,7 @@ function Main() {
 								<Section
 									title={section.title}
 									tasks={section.tasks}
+									edit={section.edit}
 									id={section.id}
 									key={section.id}
 								/>
