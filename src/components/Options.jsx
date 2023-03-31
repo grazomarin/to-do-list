@@ -4,7 +4,7 @@ function Options({
 	hideOptions,
 	enableEdit,
 	handleDuplicate,
-	toggleConfirm,
+	enableDelete,
 	moreRef,
 }) {
 	const optionsRef = useRef();
@@ -28,7 +28,7 @@ function Options({
 
 	return (
 		<div className="options" ref={optionsRef}>
-			<div className="option" onClick={toggleConfirm}>
+			<div className="option" onClick={enableDelete}>
 				Delete
 			</div>
 			<div className="option" onClick={enableEdit}>

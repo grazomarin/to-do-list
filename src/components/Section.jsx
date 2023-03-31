@@ -1,17 +1,26 @@
-import React, { useState } from 'react';
+import React, { useState, useRef } from 'react';
+import { useStorage } from './contexts/StorageContext';
 import TaskForm from './TaskForm';
 import Task from './Task';
-import { useStorage } from './contexts/StorageContext';
+import Options from './Options';
+import ConfirmAction from './ConfirmAction';
+import dots from '../assets/images/dots.svg';
 import uniqid from 'uniqid';
 
 function Section({ title, tasks, id }) {
-	const [addTaskMode, setAddTaskMode] = useState(false);
 	const [storage, setStorage] = useStorage();
+	const [addTaskMode, setAddTaskMode] = useState(false);
+	const [showConfirm, setShowConfirm] = useState(false);
+	const [showOptions, setShowOptions] = useState(false);
+	const moreRef = useRef();
+	const displayOptions = () => setShowOptions(true);
+	const hideOptions = () => setShowOptions(false);
+	const toggleConfirm = () => setShowConfirm((prev) => !prev);
 
 	const enableAddTaskMode = () => setAddTaskMode(true);
 	const disableAddTaskMode = () => setAddTaskMode(false);
 
-	function handleSubmit(title, description, dueDate, sectionId) {
+	function handleTaskSubmit(title, description, dueDate, sectionId) {
 		setStorage((prev) =>
 			prev.map((folder) =>
 				folder.active
@@ -40,6 +49,26 @@ function Section({ title, tasks, id }) {
 			)
 		);
 		console.log(storage);
+	}
+
+	function handleSectionDelete(sectionId) {
+		setStorage((prev) =>
+			prev.map((folder) =>
+				folder.active
+					? {
+							...folder,
+							sections: folder.sections.reduce(
+								(reduced, section) => {
+									if (section.id !== sectionId)
+										reduced.push(section);
+									return reduced;
+								},
+								[]
+							),
+					  }
+					: folder
+			)
+		);
 	}
 
 	function handleComplete(taskId) {
@@ -97,7 +126,33 @@ function Section({ title, tasks, id }) {
 
 	return (
 		<div className="section">
-			<div className="section_title">{title}</div>
+			<div className="section_title">
+				{title}
+				<img
+					className="more"
+					ref={moreRef}
+					src={dots}
+					alt=""
+					onClick={displayOptions}
+				/>
+				{showOptions && (
+					<Options
+						hideOptions={hideOptions}
+						enableDelete={toggleConfirm}
+						enableEdit={() => enableEdit(id)}
+						handleDuplicate={() => handleDuplicate(id)}
+						key={uniqid()}
+						moreRef={moreRef}
+					/>
+				)}
+				{showConfirm && (
+					<ConfirmAction
+						handleDelete={() => handleSectionDelete(id)}
+						title={title}
+						handleCancel={toggleConfirm}
+					/>
+				)}
+			</div>
 
 			<div className="section-tasks">
 				{tasks.map((task) => {
@@ -135,7 +190,7 @@ function Section({ title, tasks, id }) {
 					{addTaskMode ? (
 						<TaskForm
 							disableAddMode={disableAddTaskMode}
-							handleSubmit={handleSubmit}
+							handleSubmit={handleTaskSubmit}
 							sectionId={id}
 						/>
 					) : (

@@ -54,7 +54,7 @@ function Task({
 			{showOptions && (
 				<Options
 					hideOptions={hideOptions}
-					toggleConfirm={toggleConfirm}
+					enableDelete={toggleConfirm}
 					handleDuplicate={() => handleDuplicate(id)}
 					enableEdit={() => enableEdit(id)}
 					key={uniqid()}
@@ -65,7 +65,7 @@ function Task({
 				<ConfirmAction
 					handleDelete={() => handleDelete(id)}
 					title={title}
-					toggleConfirm={toggleConfirm}
+					handleCancel={toggleConfirm}
 				/>
 			)}
 		</div>

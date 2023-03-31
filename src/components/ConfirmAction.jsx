@@ -1,10 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import ReactDOM from 'react-dom';
 
-function ConfirmAction({ title, handleDelete, toggleConfirm }) {
+function ConfirmAction({ title, handleDelete, handleCancel }) {
 	function handleClick(e) {
 		const parentClass = e.target.parentElement.className;
-		if (!parentClass) toggleConfirm();
+		if (!parentClass) handleCancel();
 	}
 
 	useEffect(() => {
@@ -25,7 +25,7 @@ function ConfirmAction({ title, handleDelete, toggleConfirm }) {
 					<button className="submit" onClick={handleDelete}>
 						Confirm
 					</button>
-					<button className="cancel" onClick={toggleConfirm}>
+					<button className="cancel" onClick={handleCancel}>
 						Cancel
 					</button>
 				</div>

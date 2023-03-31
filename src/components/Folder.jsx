@@ -66,7 +66,7 @@ function Folder({
 			{showOptions && (
 				<Options
 					hideOptions={hideOptions}
-					toggleConfirm={toggleConfirm}
+					enableDelete={toggleConfirm}
 					enableEdit={() => enableEdit(id)}
 					handleDuplicate={() => handleDuplicate(id)}
 					key={uniqid()}
@@ -77,7 +77,7 @@ function Folder({
 				<ConfirmAction
 					handleDelete={() => handleDelete(id)}
 					title={title}
-					toggleConfirm={toggleConfirm}
+					handleCancel={toggleConfirm}
 				/>
 			)}
 		</div>

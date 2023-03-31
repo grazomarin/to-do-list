@@ -422,8 +422,15 @@ button {
 			margin-bottom: $offset-m;
 
 			&_title {
-				font-weight: 600;
+				display: flex;
+				justify-content: center;
 				font-size: $font-xl;
+				font-weight: 600;
+				position: relative;
+
+				.options {
+					transform: translate(-105%, 0);
+				}
 			}
 
 			&-tasks {
@@ -432,6 +439,12 @@ button {
 				gap: $offset-s;
 
 				margin: $offset-s;
+			}
+
+			&:hover {
+				.more {
+					visibility: visible;
+				}
 			}
 		}
 	}
