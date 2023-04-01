@@ -227,6 +227,37 @@ function Section({ title, tasks, edit, id }) {
 		);
 	}
 
+	function handleTaskDuplicate(taskId) {
+		setStorage((prev) =>
+			prev.map((folder) =>
+				folder.active
+					? {
+							...folder,
+							sections: folder.sections.map((section) =>
+								section.id === id
+									? {
+											...section,
+											tasks: section.tasks.reduce(
+												(reduced, task) => {
+													task.id === taskId
+														? reduced.push(task, {
+																...task,
+																id: uniqid(),
+														  })
+														: reduced.push(task);
+													return reduced;
+												},
+												[]
+											),
+									  }
+									: section
+							),
+					  }
+					: folder
+			)
+		);
+	}
+
 	return (
 		<div className="section">
 			{edit ? (
@@ -286,9 +317,7 @@ function Section({ title, tasks, edit, id }) {
 							completed={task.completed}
 							id={task.id}
 							handleDelete={handleTaskDelete}
-							// handleDuplicate={
-							// 	handleDuplicate
-							// }
+							handleDuplicate={handleTaskDuplicate}
 							enableEdit={enableTaskEdit}
 							handleComplete={handleComplete}
 							key={task.id}
