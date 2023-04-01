@@ -127,19 +127,19 @@ function Index() {
 						oldTitle={folder.title}
 						id={folder.id}
 						key={folder.id}
-						bullet={true}
+						bullet
 					/>
 				) : (
 					<Folder
-						makeActive={makeFolderActive}
-						handleDelete={handleDelete}
-						handleDuplicate={handleDuplicate}
-						enableEdit={enableEdit}
 						title={folder.title}
 						tasks={folder.tasks}
 						sections={folder.sections}
 						id={folder.id}
 						active={folder.active}
+						makeActive={makeFolderActive}
+						handleDelete={handleDelete}
+						handleDuplicate={handleDuplicate}
+						enableEdit={enableEdit}
 						key={folder.id}
 					/>
 				);
@@ -148,7 +148,7 @@ function Index() {
 				<TitleForm
 					handleCancel={disableAddMode}
 					handleSubmit={handleSubmit}
-					bullet={true}
+					bullet
 				/>
 			)}
 		</div>

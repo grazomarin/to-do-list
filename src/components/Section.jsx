@@ -112,7 +112,6 @@ function Section({ title, tasks, edit, id }) {
 					: folder
 			)
 		);
-		console.log(storage);
 	}
 
 	function handleComplete(taskId) {
@@ -143,30 +142,63 @@ function Section({ title, tasks, edit, id }) {
 		);
 	}
 
-	// function enableEdit(taskId) {
-	// 	disableOtherEdits();
-	// 	setStorage((prev) =>
-	// 		prev.map((folder) =>
-	// 			folder.active
-	// 				? {
-	// 						...folder,
-	// 						sections: folder.sections.map((section) =>
-	// 							section.id === id
-	// 								? {
-	// 										...section,
-	// 										tasks: section.tasks.map((task) =>
-	// 											task.id === taskId
-	// 												? { ...task, edit: true }
-	// 												: task
-	// 										),
-	// 								  }
-	// 								: section
-	// 						),
-	// 				  }
-	// 				: folder
-	// 		)
-	// 	);
-	// }
+	function enableTaskEdit(taskId) {
+		setStorage((prev) =>
+			prev.map((folder) =>
+				folder.active
+					? {
+							...folder,
+							tasks: folder.tasks.map((task) => {
+								return { ...task, edit: false };
+							}),
+							sections: folder.sections.map((section) =>
+								section.id === id
+									? {
+											...section,
+											tasks: section.tasks.map((task) =>
+												task.id === taskId
+													? { ...task, edit: true }
+													: { ...task, edit: false }
+											),
+									  }
+									: { ...section, edit: false }
+							),
+					  }
+					: folder
+			)
+		);
+	}
+
+	function handleTaskEdit(taskId, title, description, dueDate) {
+		setStorage((prev) =>
+			prev.map((folder) =>
+				folder.active
+					? {
+							...folder,
+							sections: folder.sections.map((section) =>
+								section.id === id
+									? {
+											...section,
+											tasks: section.tasks.map((task) =>
+												task.id === taskId
+													? {
+															...task,
+															title: title,
+															description:
+																description,
+															dueDate: dueDate,
+															edit: false,
+													  }
+													: task
+											),
+									  }
+									: section
+							),
+					  }
+					: folder
+			)
+		);
+	}
 
 	return (
 		<div className="section">
@@ -209,30 +241,28 @@ function Section({ title, tasks, edit, id }) {
 
 			<div className="section-tasks">
 				{tasks.map((task) => {
-					// return task.edit ? (
-					// 	<TaskForm
-					// 		oldTitle={task.title}
-					// 		oldDescription={task.description}
-					// 		oldDate={task.dueDate}
-					// 		taskId={task.id}
-					// 		disableAddMode={disableAddTaskMode}
-					// 		handleEdit={handleEdit}
-					// 		handleSubmit={handleSubmit}
-					// 		key={task.id}
-					// 	/>
-					// ) : ();
-					return (
+					return task.edit ? (
+						<TaskForm
+							oldTitle={task.title}
+							oldDescription={task.description}
+							oldDate={task.dueDate}
+							taskId={task.id}
+							handleCancel={() => {}}
+							handleEdit={handleTaskEdit}
+							key={task.id}
+						/>
+					) : (
 						<Task
 							title={task.title}
 							description={task.description}
 							dueDate={task.dueDate}
-							id={task.id}
 							completed={task.completed}
+							id={task.id}
 							// handleDelete={handleDelete}
 							// handleDuplicate={
 							// 	handleDuplicate
 							// }
-							// enableEdit={enableEdit}
+							enableEdit={enableTaskEdit}
 							handleComplete={handleComplete}
 							key={task.id}
 						/>
@@ -242,7 +272,7 @@ function Section({ title, tasks, edit, id }) {
 				<h3 className="add">
 					{addTaskMode ? (
 						<TaskForm
-							disableAddMode={disableAddTaskMode}
+							handleCancel={disableAddTaskMode}
 							handleSubmit={handleTaskSubmit}
 							sectionId={id}
 						/>

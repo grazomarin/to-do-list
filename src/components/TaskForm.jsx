@@ -10,7 +10,7 @@ function TaskForm({
 	oldDate,
 	taskId,
 	sectionId,
-	disableAddMode,
+	handleCancel,
 	handleEdit,
 	handleSubmit,
 }) {
@@ -108,7 +108,7 @@ function TaskForm({
 										formatDate(dueDate),
 										sectionId
 								  );
-							disableAddMode();
+							handleCancel();
 							resetValues();
 						} else throwError();
 					}}
@@ -126,7 +126,7 @@ function TaskForm({
 									oldDescription,
 									oldDate
 							  )
-							: disableAddMode();
+							: handleCancel();
 					}}
 				>
 					Cancel

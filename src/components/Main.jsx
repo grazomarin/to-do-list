@@ -176,9 +176,8 @@ function Main() {
 									oldDescription={task.description}
 									oldDate={task.dueDate}
 									taskId={task.id}
-									disableAddMode={disableAddTaskMode}
+									handleCancel={() => {}}
 									handleEdit={handleEdit}
-									handleSubmit={handleTaskSubmit}
 									key={task.id}
 								/>
 							) : (
@@ -200,7 +199,7 @@ function Main() {
 						<h3 className="add">
 							{addTaskMode ? (
 								<TaskForm
-									disableAddMode={disableAddTaskMode}
+									handleCancel={disableAddTaskMode}
 									handleSubmit={handleTaskSubmit}
 								/>
 							) : (
