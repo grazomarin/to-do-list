@@ -200,6 +200,33 @@ function Section({ title, tasks, edit, id }) {
 		);
 	}
 
+	function handleTaskDelete(taskId) {
+		setStorage((prev) =>
+			prev.map((folder) =>
+				folder.active
+					? {
+							...folder,
+							sections: folder.sections.map((section) =>
+								section.id === id
+									? {
+											...section,
+											tasks: tasks.reduce(
+												(reduced, task) => {
+													if (task.id !== taskId)
+														reduced.push(task);
+													return reduced;
+												},
+												[]
+											),
+									  }
+									: section
+							),
+					  }
+					: folder
+			)
+		);
+	}
+
 	return (
 		<div className="section">
 			{edit ? (
@@ -258,7 +285,7 @@ function Section({ title, tasks, edit, id }) {
 							dueDate={task.dueDate}
 							completed={task.completed}
 							id={task.id}
-							// handleDelete={handleDelete}
+							handleDelete={handleTaskDelete}
 							// handleDuplicate={
 							// 	handleDuplicate
 							// }
