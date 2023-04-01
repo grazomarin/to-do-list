@@ -79,6 +79,7 @@ function Index() {
 							title: title,
 							tasks: [...folder.tasks],
 							sections: [...folder.sections],
+							favorite: folder.favorite,
 							active: true,
 							edit: false,
 							id: folderId,
@@ -94,6 +95,7 @@ function Index() {
 				folder.id === folderId
 					? updated.push(folder, {
 							...folder,
+							title: `Copy of ${folder.title}`,
 							id: uniqid(),
 							active: false,
 					  })
@@ -104,20 +106,67 @@ function Index() {
 		);
 	}
 
+	function areThereFavoriteFolders() {
+		for (let i = 0; i < storage.length; i++) {
+			if (storage[i].favorite) return true;
+		}
+		return false;
+	}
+
+	function handleAddToFavorites(folderId) {
+		setStorage((prev) =>
+			prev.map((folder) =>
+				folder.id === folderId ? { ...folder, favorite: true } : folder
+			)
+		);
+	}
+
+	function handleRemoveFromFavorites(folderId) {
+		setStorage((prev) =>
+			prev.map((folder) =>
+				folder.id === folderId ? { ...folder, favorite: false } : folder
+			)
+		);
+	}
+
 	return (
 		<div className="index">
-			<div>
-				<div className="title">
-					Folders:
-					<img
-						src={add}
-						alt=""
-						className="plus"
-						onClick={() => {
-							!addMode && enableAddMode();
-						}}
-					/>
-				</div>
+			{areThereFavoriteFolders() && (
+				<>
+					<div className="title">Favorites:</div>
+					{storage.map((folder) => {
+						return (
+							folder.favorite && (
+								<Folder
+									title={folder.title}
+									tasks={folder.tasks}
+									sections={folder.sections}
+									id={folder.id}
+									active={folder.active}
+									makeActive={makeFolderActive}
+									enableEdit={enableEdit}
+									handleRemoveFromFavorites={
+										handleRemoveFromFavorites
+									}
+									key={folder.id}
+									Edit
+									RemoveFavorite
+								/>
+							)
+						);
+					})}
+				</>
+			)}
+			<div className="title">
+				Folders:
+				<img
+					src={add}
+					alt=""
+					className="plus"
+					onClick={() => {
+						!addMode && enableAddMode();
+					}}
+				/>
 			</div>
 			{storage.map((folder) => {
 				return folder.edit ? (
@@ -139,8 +188,13 @@ function Index() {
 						makeActive={makeFolderActive}
 						handleDelete={handleDelete}
 						handleDuplicate={handleDuplicate}
+						handleAddToFavorites={handleAddToFavorites}
 						enableEdit={enableEdit}
 						key={folder.id}
+						Delete
+						Edit
+						Duplicate
+						AddFavorite
 					/>
 				);
 			})}

@@ -17,6 +17,11 @@ function Task({
 	handleDuplicate,
 	enableEdit,
 	handleComplete,
+	Delete,
+	Edit,
+	Duplicate,
+	AddFavorite,
+	RemoveFavorite,
 }) {
 	const [showConfirm, setShowConfirm] = useState(false);
 	const [showOptions, setShowOptions] = useState(false);
@@ -59,10 +64,11 @@ function Task({
 					enableEdit={() => enableEdit(id)}
 					key={uniqid()}
 					moreRef={moreRef}
-					Delete
-					Edit
-					Duplicate
-					Favorites
+					Delete={Delete}
+					Edit={Edit}
+					Duplicate={Duplicate}
+					AddFavorite={AddFavorite}
+					RemoveFavorite={RemoveFavorite}
 				/>
 			)}
 			{showConfirm && (

@@ -4,12 +4,15 @@ function Options({
 	hideOptions,
 	enableEdit,
 	handleDuplicate,
+	handleAddToFavorites,
+	handleRemoveFromFavorites,
 	enableDelete,
 	moreRef,
 	Delete,
 	Edit,
 	Duplicate,
-	Favorites,
+	AddFavorite,
+	RemoveFavorite,
 }) {
 	const optionsRef = useRef();
 
@@ -47,7 +50,16 @@ function Options({
 					Duplicate
 				</div>
 			)}
-			{Favorites && <div className="option">Add to Favorites</div>}
+			{AddFavorite && (
+				<div className="option" onClick={handleAddToFavorites}>
+					Add to Favorites
+				</div>
+			)}
+			{RemoveFavorite && (
+				<div className="option" onClick={handleRemoveFromFavorites}>
+					Remove from Favorites
+				</div>
+			)}
 		</div>
 	);
 }

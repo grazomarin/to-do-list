@@ -13,7 +13,14 @@ function Folder({
 	makeActive,
 	handleDelete,
 	handleDuplicate,
+	handleAddToFavorites,
+	handleRemoveFromFavorites,
 	enableEdit,
+	Delete,
+	Edit,
+	Duplicate,
+	AddFavorite,
+	RemoveFavorite,
 }) {
 	const [showConfirm, setShowConfirm] = useState(false);
 	const [showOptions, setShowOptions] = useState(false);
@@ -69,12 +76,17 @@ function Folder({
 					enableDelete={toggleConfirm}
 					enableEdit={() => enableEdit(id)}
 					handleDuplicate={() => handleDuplicate(id)}
+					handleAddToFavorites={() => handleAddToFavorites(id)}
+					handleRemoveFromFavorites={() =>
+						handleRemoveFromFavorites(id)
+					}
 					key={uniqid()}
 					moreRef={moreRef}
-					Delete
-					Edit
-					Duplicate
-					Favorites
+					Delete={Delete}
+					Edit={Edit}
+					Duplicate={Duplicate}
+					AddFavorite={AddFavorite}
+					RemoveFavorite={RemoveFavorite}
 				/>
 			)}
 			{showConfirm && (

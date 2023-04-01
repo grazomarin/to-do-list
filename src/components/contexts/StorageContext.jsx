@@ -33,6 +33,7 @@ export const StorageProvider = ({ children }) => {
 					title: title,
 					tasks: [],
 					sections: [],
+					favorite: false,
 					active: true,
 					edit: false,
 					id: uniqid(),

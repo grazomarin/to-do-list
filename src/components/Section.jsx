@@ -286,7 +286,6 @@ function Section({ title, tasks, edit, id }) {
 							moreRef={moreRef}
 							Delete
 							Edit
-							Favorites
 						/>
 					)}
 					{showConfirm && (
@@ -323,6 +322,11 @@ function Section({ title, tasks, edit, id }) {
 							enableEdit={enableTaskEdit}
 							handleComplete={handleComplete}
 							key={task.id}
+							Delete
+							Edit
+							Duplicate
+							AddFavorite
+							RemoveFavorite={false}
 						/>
 					);
 				})}
