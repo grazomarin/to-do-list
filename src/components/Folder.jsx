@@ -71,6 +71,10 @@ function Folder({
 					handleDuplicate={() => handleDuplicate(id)}
 					key={uniqid()}
 					moreRef={moreRef}
+					Delete
+					Edit
+					Duplicate
+					Favorites
 				/>
 			)}
 			{showConfirm && (

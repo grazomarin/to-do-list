@@ -115,14 +115,12 @@ function Main() {
 					? {
 							...folder,
 							tasks: folder.tasks.reduce((updated, task) => {
-								if (task.id === taskId) {
-									updated.push(task, {
-										...task,
-										id: uniqid(),
-									});
-								} else {
-									updated.push(task);
-								}
+								task.id === taskId
+									? updated.push(task, {
+											...task,
+											id: uniqid(),
+									  })
+									: updated.push(task);
 								return updated;
 							}, []),
 					  }

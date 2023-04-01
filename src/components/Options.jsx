@@ -6,6 +6,10 @@ function Options({
 	handleDuplicate,
 	enableDelete,
 	moreRef,
+	Delete,
+	Edit,
+	Duplicate,
+	Favorites,
 }) {
 	const optionsRef = useRef();
 
@@ -28,16 +32,22 @@ function Options({
 
 	return (
 		<div className="options" ref={optionsRef}>
-			<div className="option" onClick={enableDelete}>
-				Delete
-			</div>
-			<div className="option" onClick={enableEdit}>
-				Edit
-			</div>
-			<div className="option" onClick={handleDuplicate}>
-				Duplicate
-			</div>
-			<div className="option">Add to Favorites</div>
+			{Delete && (
+				<div className="option" onClick={enableDelete}>
+					Delete
+				</div>
+			)}
+			{Edit && (
+				<div className="option" onClick={enableEdit}>
+					Edit
+				</div>
+			)}
+			{Duplicate && (
+				<div className="option" onClick={handleDuplicate}>
+					Duplicate
+				</div>
+			)}
+			{Favorites && <div className="option">Add to Favorites</div>}
 		</div>
 	);
 }

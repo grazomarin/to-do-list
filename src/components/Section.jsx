@@ -282,9 +282,11 @@ function Section({ title, tasks, edit, id }) {
 							hideOptions={hideOptions}
 							enableDelete={toggleConfirm}
 							enableEdit={() => enableSectionEdit(id)}
-							// handleDuplicate={() => handleDuplicate(id)}
 							key={uniqid()}
 							moreRef={moreRef}
+							Delete
+							Edit
+							Favorites
 						/>
 					)}
 					{showConfirm && (
