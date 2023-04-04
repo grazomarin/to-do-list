@@ -189,12 +189,14 @@ function Index() {
 						handleDelete={handleDelete}
 						handleDuplicate={handleDuplicate}
 						handleAddToFavorites={handleAddToFavorites}
+						handleRemoveFromFavorites={handleRemoveFromFavorites}
 						enableEdit={enableEdit}
 						key={folder.id}
 						Delete
 						Edit
 						Duplicate
-						AddFavorite
+						AddFavorite={folder.favorite ? false : true}
+						RemoveFavorite={folder.favorite ? true : false}
 					/>
 				);
 			})}
