@@ -81,11 +81,12 @@ html {
 	color: white;
 }
 
-.options {
+.options,
+.folderList {
 	position: absolute;
 	width: 180px;
 	background-color: $grey-l;
-	box-shadow: rgb(84, 84, 84) 0 0 3px 0px;
+	box-shadow: rgb(84, 84, 84) 0 0 2px 0px;
 	border-radius: $radius;
 	top: 50%;
 	left: calc(100% - $offset-xs);
@@ -93,7 +94,8 @@ html {
 	cursor: default;
 	z-index: 1000;
 
-	.option {
+	.option,
+	.folder_name {
 		font-size: $font-s;
 		padding: $offset-xs $offset-m;
 		cursor: pointer;
@@ -428,7 +430,8 @@ button {
 				font-weight: 600;
 				position: relative;
 
-				.options {
+				.options,
+				.folderList {
 					font-weight: 100;
 					transform: translate(-105%, 0);
 				}

@@ -1,21 +1,25 @@
 import React, { useState, useRef } from 'react';
 import { useStorage } from './contexts/StorageContext';
+import dots from '../assets/images/dots.svg';
 import TaskForm from './TaskForm';
 import Task from './Task';
 import Options from './Options';
 import ConfirmAction from './ConfirmAction';
-import dots from '../assets/images/dots.svg';
-import uniqid from 'uniqid';
 import TitleForm from './TitleForm';
+import FolderList from './FolderList';
+import uniqid from 'uniqid';
 
 function Section({ title, tasks, edit, id }) {
 	const [storage, setStorage] = useStorage();
 	const [addTaskMode, setAddTaskMode] = useState(false);
 	const [showConfirm, setShowConfirm] = useState(false);
 	const [showOptions, setShowOptions] = useState(false);
+	const [showFolderList, setShowFolderList] = useState(false);
 	const moreRef = useRef();
 	const displayOptions = () => setShowOptions(true);
 	const hideOptions = () => setShowOptions(false);
+	const displayFolderList = () => setShowFolderList(true);
+	const hideFolderList = () => setShowFolderList(false);
 	const toggleConfirm = () => setShowConfirm((prev) => !prev);
 
 	const enableAddTaskMode = () => setAddTaskMode(true);
@@ -82,6 +86,50 @@ function Section({ title, tasks, edit, id }) {
 					: folder
 			)
 		);
+	}
+
+	function handleSectionMove(folderId, sectionId) {
+		setStorage((folders) => {
+				// storing the section to transfer
+				let sectionToTransfer = {};
+			for (let i = 0; i < folders.length; i++) {
+				if (folders[i].active) {
+					for (let y = 0; y < folders[i].sections.length; y++) {
+						if (folders[i].sections[y].id === sectionId) {
+							sectionToTransfer = folders[i].sections[y];
+							break;
+						}
+					}
+					break;
+					}
+				}
+
+			return folders.map((folder) => {
+				//if destination folder is the same as active folder, don't do anything
+				if (folder.active && folder.id === folderId) return folder;
+
+				if (folder.active) {
+				// removing section to transfer from previous folder
+					return {
+						...folder,
+						sections: folder.sections.reduce((reduced, section) => {
+							if (section.id !== sectionId) reduced.push(section);
+							return reduced;
+						}, []),
+					};
+				}
+
+				if (folder.id === folderId) {
+				// moving it into a destination folder
+					return {
+						...folder,
+						sections: [...folder.sections, sectionToTransfer],
+					};
+				}
+
+				return folder;
+			});
+		});
 	}
 
 	function handleTaskSubmit(title, description, dueDate, sectionId) {
@@ -275,17 +323,32 @@ function Section({ title, tasks, edit, id }) {
 						ref={moreRef}
 						src={dots}
 						alt=""
-						onClick={displayOptions}
+						onClick={() => {
+							hideFolderList();
+							displayOptions();
+						}}
 					/>
 					{showOptions && (
 						<Options
 							hideOptions={hideOptions}
 							enableDelete={toggleConfirm}
 							enableEdit={() => enableSectionEdit(id)}
+							displayFolderList={displayFolderList}
 							key={uniqid()}
 							moreRef={moreRef}
 							Delete
 							Edit
+							MoveSection
+						/>
+					)}
+					{showFolderList && (
+						<FolderList
+							hideFolderList={hideFolderList}
+							handleSectionMove={(folderId) =>
+								handleSectionMove(folderId, id)
+							}
+							key={uniqid()}
+							moreRef={moreRef}
 						/>
 					)}
 					{showConfirm && (

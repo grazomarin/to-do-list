@@ -194,7 +194,6 @@ function Main() {
 									Edit
 									Duplicate
 									AddFavorite
-									RemoveFavorite={false}
 								/>
 							);
 						})}
@@ -238,9 +237,6 @@ function Main() {
 									edit={section.edit}
 									id={section.id}
 									key={section.id}
-									Delete
-									Edit
-									Duplicate
 								/>
 							);
 						})}

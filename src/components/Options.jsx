@@ -6,6 +6,7 @@ function Options({
 	handleDuplicate,
 	handleAddToFavorites,
 	handleRemoveFromFavorites,
+	displayFolderList,
 	enableDelete,
 	moreRef,
 	Delete,
@@ -13,6 +14,7 @@ function Options({
 	Duplicate,
 	AddFavorite,
 	RemoveFavorite,
+	MoveSection,
 }) {
 	const optionsRef = useRef();
 
@@ -58,6 +60,11 @@ function Options({
 			{RemoveFavorite && (
 				<div className="option" onClick={handleRemoveFromFavorites}>
 					Remove from Favorites
+				</div>
+			)}
+			{MoveSection && (
+				<div className="option" onClick={displayFolderList}>
+					Move Section
 				</div>
 			)}
 		</div>
