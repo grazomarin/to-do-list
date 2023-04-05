@@ -111,6 +111,19 @@ form {
 	flex-flow: column;
 	gap: $offset-xs;
 
+	.input {
+		display: flex;
+		flex-flow: column;
+		gap: $offset-xs;
+
+		&.inline {
+			display: grid;
+			grid-auto-flow: column;
+			grid-template-columns: 1fr min-content;
+			width: 100%;
+		}
+	}
+
 	.input-cont {
 		display: flex;
 		align-items: center;
@@ -443,6 +456,7 @@ button {
 				gap: $offset-s;
 
 				margin: $offset-s;
+				margin-right: 0;
 			}
 
 			&:hover {

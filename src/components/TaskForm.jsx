@@ -55,82 +55,84 @@ function TaskForm({
 
 	return (
 		<form>
-			<div className="input-cont">
-				<input
-					type="text"
-					name="title"
-					ref={inputRef}
-					value={title}
-					onInput={(e) => setTitle(e.target.value)}
-					placeholder="Title"
-				/>
-				<textarea
-					name="description"
-					id="description"
-					rows="3"
-					value={description}
-					onInput={(e) => setDescription(e.target.value)}
-					placeholder="Details..."
-				></textarea>
-			</div>
-			<div className="buttons">
-				<DatePicker
-					startDate={dueDate}
-					selected={dueDate}
-					onChange={(date) => setDueDate(date)}
-					showTimeSelect
-					dateFormat="MMM dd, p"
-					minDate={new Date()}
-					minTime={new Date()}
-					maxTime={setHours(setMinutes(new Date(), 59), 23)}
-					customInput={<DateSelector />}
-					isClearable
-					fixedHeight
-					monthsShown={1}
-				/>
-				<button
-					className="submit"
-					type="submit"
-					onClick={(e) => {
-						e.preventDefault();
-						if (title) {
+			<div className="input">
+				<div className="input-cont">
+					<input
+						type="text"
+						name="title"
+						ref={inputRef}
+						value={title}
+						onInput={(e) => setTitle(e.target.value)}
+						placeholder="Title"
+					/>
+					<textarea
+						name="description"
+						id="description"
+						rows="3"
+						value={description}
+						onInput={(e) => setDescription(e.target.value)}
+						placeholder="Details..."
+					></textarea>
+				</div>
+				<div className="buttons">
+					<DatePicker
+						startDate={dueDate}
+						selected={dueDate}
+						onChange={(date) => setDueDate(date)}
+						showTimeSelect
+						dateFormat="MMM dd, p"
+						minDate={new Date()}
+						minTime={new Date()}
+						maxTime={setHours(setMinutes(new Date(), 59), 23)}
+						customInput={<DateSelector />}
+						isClearable
+						fixedHeight
+						monthsShown={1}
+					/>
+					<button
+						className="submit"
+						type="submit"
+						onClick={(e) => {
+							e.preventDefault();
+							if (title) {
+								taskId
+									? handleEdit(
+											taskId,
+											title,
+											description,
+											formatDate(dueDate),
+											sectionId
+									  )
+									: handleSubmit(
+											title,
+											description,
+											formatDate(dueDate),
+											sectionId
+									  );
+								handleCancel();
+								resetValues();
+							} else throwError();
+						}}
+					>
+						Submit
+					</button>
+					<button
+						className="cancel"
+						type="reset"
+						onClick={() => {
 							taskId
 								? handleEdit(
 										taskId,
-										title,
-										description,
-										formatDate(dueDate),
-										sectionId
+										oldTitle,
+										oldDescription,
+										oldDate
 								  )
-								: handleSubmit(
-										title,
-										description,
-										formatDate(dueDate),
-										sectionId
-								  );
-							handleCancel();
-							resetValues();
-						} else throwError();
-					}}
-				>
-					Submit
-				</button>
-				<button
-					className="cancel"
-					type="reset"
-					onClick={() => {
-						taskId
-							? handleEdit(
-									taskId,
-									oldTitle,
-									oldDescription,
-									oldDate
-							  )
-							: handleCancel();
-					}}
-				>
-					Cancel
-				</button>
+								: handleCancel();
+						}}
+					>
+						Cancel
+					</button>
+				</div>
 			</div>
 			{displayError && <div className="error">Enter a valid title!</div>}
 		</form>

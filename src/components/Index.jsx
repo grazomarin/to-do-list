@@ -176,7 +176,7 @@ function Index() {
 						oldTitle={folder.title}
 						id={folder.id}
 						key={folder.id}
-						bullet
+						Bullet
 					/>
 				) : (
 					<Folder
@@ -204,7 +204,7 @@ function Index() {
 				<TitleForm
 					handleCancel={disableAddMode}
 					handleSubmit={handleSubmit}
-					bullet
+					Bullet
 				/>
 			)}
 		</div>

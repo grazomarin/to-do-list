@@ -216,6 +216,7 @@ function Main() {
 								<TitleForm
 									handleSubmit={handleSectionSubmit}
 									handleCancel={disableAddSectionMode}
+									Inline
 								/>
 							) : (
 								<div

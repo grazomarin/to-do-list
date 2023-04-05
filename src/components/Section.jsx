@@ -314,6 +314,7 @@ function Section({ title, tasks, edit, id }) {
 					handleEdit={handleSectionEdit}
 					oldTitle={title}
 					id={id}
+					Inline
 				/>
 			) : (
 				<div className="section_title">
