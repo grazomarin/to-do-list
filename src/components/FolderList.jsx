@@ -2,7 +2,7 @@ import React, { useState, useRef, useEffect } from 'react';
 import { useStorage } from './contexts/StorageContext';
 import uniqid from 'uniqid';
 
-function FolderList({ hideFolderList, handleMoveSection, moreRef }) {
+function FolderList({ hideFolderList, handleSectionMove, moreRef }) {
 	const [storage, setStorage] = useStorage();
 
 	const folderListRef = useRef();
@@ -32,7 +32,7 @@ function FolderList({ hideFolderList, handleMoveSection, moreRef }) {
 						className="folder_name"
 						onClick={() => {
 							hideFolderList();
-							handleMoveSection(folder.id);
+							handleSectionMove(folder.id);
 						}}
 						key={uniqid()}
 					>

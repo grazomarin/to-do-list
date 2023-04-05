@@ -26,9 +26,9 @@ export const StorageProvider = ({ children }) => {
 	]);
 
 	function appendFolder(title) {
-		setStorage((prev) => {
+		setStorage((folders) => {
 			return [
-				...prev,
+				...folders,
 				{
 					title: title,
 					tasks: [],
@@ -43,8 +43,8 @@ export const StorageProvider = ({ children }) => {
 	}
 
 	function deleteFolder(id) {
-		setStorage((prev) => {
-			return prev.reduce((reduced, folder) => {
+		setStorage((folders) => {
+			return folders.reduce((reduced, folder) => {
 				if (folder.id !== id) reduced.push(folder);
 				return reduced;
 			}, []);
@@ -52,8 +52,8 @@ export const StorageProvider = ({ children }) => {
 	}
 
 	function appendTask(title, description, dueDate) {
-		setStorage((prev) => {
-			return prev.map((folder) => {
+		setStorage((folders) => {
+			return folders.map((folder) => {
 				if (folder.active) {
 					folder.tasks = [
 						...folder.tasks,
@@ -73,8 +73,8 @@ export const StorageProvider = ({ children }) => {
 	}
 
 	function deleteTask(taskId) {
-		setStorage((prev) => {
-			return prev.map((folder) => {
+		setStorage((folders) => {
+			return folders.map((folder) => {
 				if (folder.active) {
 					folder.tasks = folder.tasks.reduce((reduced, task) => {
 						if (task.id !== taskId) reduced.push(task);

@@ -34,8 +34,8 @@ function Main() {
 	}
 
 	function handleComplete(taskId) {
-		setStorage((prev) =>
-			prev.map((folder) => {
+		setStorage((folders) =>
+			folders.map((folder) => {
 				if (folder.active) {
 					return {
 						...folder,
@@ -56,8 +56,8 @@ function Main() {
 	}
 
 	function enableEdit(taskId) {
-		setStorage((prev) =>
-			prev.map((folder) =>
+		setStorage((folders) =>
+			folders.map((folder) =>
 				folder.active
 					? {
 							...folder,
@@ -85,8 +85,8 @@ function Main() {
 	}
 
 	function handleEdit(taskId, title, description, dueDate) {
-		setStorage((prev) =>
-			prev.map((folder) =>
+		setStorage((folders) =>
+			folders.map((folder) =>
 				folder.active
 					? {
 							...folder,
@@ -109,8 +109,8 @@ function Main() {
 	}
 
 	function handleDuplicate(taskId) {
-		setStorage((prev) =>
-			prev.map((folder) =>
+		setStorage((folders) =>
+			folders.map((folder) =>
 				folder.active
 					? {
 							...folder,
@@ -137,8 +137,8 @@ function Main() {
 	}
 
 	function handleSectionSubmit(title) {
-		setStorage((prev) =>
-			prev.map((folder) =>
+		setStorage((folders) =>
+			folders.map((folder) =>
 				folder.active
 					? {
 							...folder,

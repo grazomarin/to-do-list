@@ -26,8 +26,8 @@ function Section({ title, tasks, edit, id }) {
 	const disableAddTaskMode = () => setAddTaskMode(false);
 
 	function handleSectionDelete(sectionId) {
-		setStorage((prev) =>
-			prev.map((folder) =>
+		setStorage((folders) =>
+			folders.map((folder) =>
 				folder.active
 					? {
 							...folder,
@@ -46,8 +46,8 @@ function Section({ title, tasks, edit, id }) {
 	}
 
 	function enableSectionEdit(sectionId) {
-		setStorage((prev) =>
-			prev.map((folder) =>
+		setStorage((folders) =>
+			folders.map((folder) =>
 				folder.active
 					? {
 							...folder,
@@ -72,8 +72,8 @@ function Section({ title, tasks, edit, id }) {
 	}
 
 	function handleSectionEdit(sectionId, title) {
-		setStorage((prev) =>
-			prev.map((folder) =>
+		setStorage((folders) =>
+			folders.map((folder) =>
 				folder.active
 					? {
 							...folder,
@@ -90,8 +90,8 @@ function Section({ title, tasks, edit, id }) {
 
 	function handleSectionMove(folderId, sectionId) {
 		setStorage((folders) => {
-				// storing the section to transfer
-				let sectionToTransfer = {};
+			// storing the section to transfer
+			let sectionToTransfer = {};
 			for (let i = 0; i < folders.length; i++) {
 				if (folders[i].active) {
 					for (let y = 0; y < folders[i].sections.length; y++) {
@@ -101,15 +101,15 @@ function Section({ title, tasks, edit, id }) {
 						}
 					}
 					break;
-					}
 				}
+			}
 
 			return folders.map((folder) => {
 				//if destination folder is the same as active folder, don't do anything
 				if (folder.active && folder.id === folderId) return folder;
 
 				if (folder.active) {
-				// removing section to transfer from previous folder
+					// removing section to transfer from previous folder
 					return {
 						...folder,
 						sections: folder.sections.reduce((reduced, section) => {
@@ -120,7 +120,7 @@ function Section({ title, tasks, edit, id }) {
 				}
 
 				if (folder.id === folderId) {
-				// moving it into a destination folder
+					// moving it into a destination folder
 					return {
 						...folder,
 						sections: [...folder.sections, sectionToTransfer],
@@ -133,8 +133,8 @@ function Section({ title, tasks, edit, id }) {
 	}
 
 	function handleTaskSubmit(title, description, dueDate, sectionId) {
-		setStorage((prev) =>
-			prev.map((folder) =>
+		setStorage((folders) =>
+			folders.map((folder) =>
 				folder.active
 					? {
 							...folder,
@@ -163,8 +163,8 @@ function Section({ title, tasks, edit, id }) {
 	}
 
 	function handleComplete(taskId) {
-		setStorage((prev) =>
-			prev.map((folder) =>
+		setStorage((folders) =>
+			folders.map((folder) =>
 				folder.active
 					? {
 							...folder,
@@ -191,8 +191,8 @@ function Section({ title, tasks, edit, id }) {
 	}
 
 	function enableTaskEdit(taskId) {
-		setStorage((prev) =>
-			prev.map((folder) =>
+		setStorage((folders) =>
+			folders.map((folder) =>
 				folder.active
 					? {
 							...folder,
@@ -218,8 +218,8 @@ function Section({ title, tasks, edit, id }) {
 	}
 
 	function handleTaskEdit(taskId, title, description, dueDate) {
-		setStorage((prev) =>
-			prev.map((folder) =>
+		setStorage((folders) =>
+			folders.map((folder) =>
 				folder.active
 					? {
 							...folder,
@@ -249,8 +249,8 @@ function Section({ title, tasks, edit, id }) {
 	}
 
 	function handleTaskDelete(taskId) {
-		setStorage((prev) =>
-			prev.map((folder) =>
+		setStorage((folders) =>
+			folders.map((folder) =>
 				folder.active
 					? {
 							...folder,
@@ -276,8 +276,8 @@ function Section({ title, tasks, edit, id }) {
 	}
 
 	function handleTaskDuplicate(taskId) {
-		setStorage((prev) =>
-			prev.map((folder) =>
+		setStorage((folders) =>
+			folders.map((folder) =>
 				folder.active
 					? {
 							...folder,

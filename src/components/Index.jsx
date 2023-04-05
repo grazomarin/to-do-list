@@ -32,8 +32,8 @@ function Index() {
 	}
 
 	function makeFoldersInactive() {
-		setStorage((prev) =>
-			prev.map((folder) => ({
+		setStorage((folders) =>
+			folders.map((folder) => ({
 				...folder,
 				active: false,
 			}))
@@ -43,8 +43,8 @@ function Index() {
 	function makeFolderActive(folderId) {
 		if (isTheSameFolderClicked(folderId)) return;
 		makeFoldersInactive();
-		setStorage((prev) => {
-			return prev.map((folder) => {
+		setStorage((folders) => {
+			return folders.map((folder) => {
 				folder.id === folderId && (folder.active = true);
 				return folder;
 			});
@@ -61,8 +61,8 @@ function Index() {
 	}
 
 	function enableEdit(folderId) {
-		setStorage((prev) => {
-			return prev.map((folder) => {
+		setStorage((folders) => {
+			return folders.map((folder) => {
 				folder.edit = false;
 				folder.id === folderId && (folder.edit = true);
 				return folder;
@@ -72,8 +72,8 @@ function Index() {
 
 	function handleEdit(folderId, title) {
 		makeFoldersInactive();
-		setStorage((prev) => {
-			return prev.map((folder) => {
+		setStorage((folders) => {
+			return folders.map((folder) => {
 				return folder.id === folderId
 					? {
 							title: title,
@@ -90,8 +90,8 @@ function Index() {
 	}
 
 	function handleDuplicate(folderId) {
-		setStorage((prev) =>
-			prev.reduce((updated, folder) => {
+		setStorage((folders) =>
+			folders.reduce((updated, folder) => {
 				folder.id === folderId
 					? updated.push(folder, {
 							...folder,
@@ -114,16 +114,16 @@ function Index() {
 	}
 
 	function handleAddToFavorites(folderId) {
-		setStorage((prev) =>
-			prev.map((folder) =>
+		setStorage((folders) =>
+			folders.map((folder) =>
 				folder.id === folderId ? { ...folder, favorite: true } : folder
 			)
 		);
 	}
 
 	function handleRemoveFromFavorites(folderId) {
-		setStorage((prev) =>
-			prev.map((folder) =>
+		setStorage((folders) =>
+			folders.map((folder) =>
 				folder.id === folderId ? { ...folder, favorite: false } : folder
 			)
 		);
