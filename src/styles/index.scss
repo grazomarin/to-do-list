@@ -73,6 +73,32 @@ html {
 	stroke: $black;
 }
 
+.arrow {
+	position: absolute;
+	width: 16px;
+	height: 16px;
+	align-self: center;
+	left: -$offset-l;
+
+	&.folded {
+		transform: rotate(270deg);
+	}
+
+	&:hover {
+		cursor: pointer;
+	}
+}
+
+.bullet {
+	width: 7px;
+	height: 7px;
+	margin-right: $offset-s;
+	background-color: $blue-d;
+	border-radius: 50%;
+	justify-self: center;
+	align-self: center;
+}
+
 .error {
 	background-color: $red;
 	width: 150px;
@@ -162,16 +188,6 @@ form {
 			border-radius: $radius;
 		}
 	}
-}
-
-.bullet {
-	width: 7px;
-	height: 7px;
-	margin-right: $offset-s;
-	background-color: $blue-d;
-	border-radius: 50%;
-	justify-self: center;
-	align-self: center;
 }
 
 .overlay {
@@ -450,7 +466,7 @@ button {
 		}
 
 		.section {
-			margin-bottom: $offset-m;
+			margin-left: $offset-l;
 
 			&_title {
 				display: flex;
@@ -471,8 +487,7 @@ button {
 				flex-direction: column;
 				gap: $offset-s;
 
-				margin: $offset-s;
-				margin-right: 0;
+				margin: $offset-s 0;
 			}
 
 			&:hover {

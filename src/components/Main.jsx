@@ -143,13 +143,14 @@ function Main() {
 					? {
 							...folder,
 							sections: [
-								...folder.sections,
 								{
 									title: title,
 									edit: false,
 									tasks: [],
+									folded: false,
 									id: uniqid(),
 								},
+								...folder.sections,
 							],
 					  }
 					: folder
@@ -236,6 +237,7 @@ function Main() {
 									title={section.title}
 									tasks={section.tasks}
 									edit={section.edit}
+									folded={section.folded}
 									id={section.id}
 									key={section.id}
 								/>

@@ -8,8 +8,9 @@ import ConfirmAction from './ConfirmAction';
 import TitleForm from './TitleForm';
 import FolderList from './FolderList';
 import uniqid from 'uniqid';
+import arrow from '../assets/images/arrow.svg';
 
-function Section({ title, tasks, edit, id }) {
+function Section({ title, tasks, edit, id, folded }) {
 	const [storage, setStorage] = useStorage();
 	const [addTaskMode, setAddTaskMode] = useState(false);
 	const [showConfirm, setShowConfirm] = useState(false);
@@ -306,6 +307,23 @@ function Section({ title, tasks, edit, id }) {
 		);
 	}
 
+	function updateSectionFold(value) {
+		setStorage((folders) =>
+			folders.map((folder) =>
+				folder.active
+					? {
+							...folder,
+							sections: folder.sections.map((section) =>
+								section.id === id
+									? { ...section, folded: value }
+									: section
+							),
+					  }
+					: folder
+			)
+		);
+	}
+
 	return (
 		<div className="section">
 			{edit ? (
@@ -318,6 +336,12 @@ function Section({ title, tasks, edit, id }) {
 				/>
 			) : (
 				<div className="section_title">
+					<img
+						className={`arrow ${folded ? 'folded' : ''}`}
+						src={arrow}
+						alt=""
+						onClick={() => updateSectionFold(!folded)}
+					/>
 					{title}
 					<img
 						className="more"
@@ -362,53 +386,58 @@ function Section({ title, tasks, edit, id }) {
 				</div>
 			)}
 
-			<div className="section-tasks">
-				{tasks.map((task) => {
-					return task.edit ? (
-						<TaskForm
-							oldTitle={task.title}
-							oldDescription={task.description}
-							oldDate={task.dueDate}
-							taskId={task.id}
-							handleCancel={() => {}}
-							handleEdit={handleTaskEdit}
-							key={task.id}
-						/>
-					) : (
-						<Task
-							title={task.title}
-							description={task.description}
-							dueDate={task.dueDate}
-							completed={task.completed}
-							id={task.id}
-							handleDelete={handleTaskDelete}
-							handleDuplicate={handleTaskDuplicate}
-							enableEdit={enableTaskEdit}
-							handleComplete={handleComplete}
-							key={task.id}
-							Delete
-							Edit
-							Duplicate
-							AddFavorite
-							RemoveFavorite={false}
-						/>
-					);
-				})}
+			{!folded && (
+				<div className="section-tasks">
+					{tasks.map((task) => {
+						return task.edit ? (
+							<TaskForm
+								oldTitle={task.title}
+								oldDescription={task.description}
+								oldDate={task.dueDate}
+								taskId={task.id}
+								handleCancel={() => {}}
+								handleEdit={handleTaskEdit}
+								key={task.id}
+							/>
+						) : (
+							<Task
+								title={task.title}
+								description={task.description}
+								dueDate={task.dueDate}
+								completed={task.completed}
+								id={task.id}
+								handleDelete={handleTaskDelete}
+								handleDuplicate={handleTaskDuplicate}
+								enableEdit={enableTaskEdit}
+								handleComplete={handleComplete}
+								key={task.id}
+								Delete
+								Edit
+								Duplicate
+								AddFavorite
+								RemoveFavorite={false}
+							/>
+						);
+					})}
 
-				<h3 className="add">
-					{addTaskMode ? (
-						<TaskForm
-							handleCancel={disableAddTaskMode}
-							handleSubmit={handleTaskSubmit}
-							sectionId={id}
-						/>
-					) : (
-						<div className="add_task" onClick={enableAddTaskMode}>
-							+ add task
-						</div>
-					)}
-				</h3>
-			</div>
+					<h3 className="add">
+						{addTaskMode ? (
+							<TaskForm
+								handleCancel={disableAddTaskMode}
+								handleSubmit={handleTaskSubmit}
+								sectionId={id}
+							/>
+						) : (
+							<div
+								className="add_task"
+								onClick={enableAddTaskMode}
+							>
+								+ add task
+							</div>
+						)}
+					</h3>
+				</div>
+			)}
 		</div>
 	);
 }
