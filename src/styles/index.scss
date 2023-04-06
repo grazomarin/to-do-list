@@ -83,6 +83,8 @@ html {
 
 .options,
 .folderList {
+	display: flex;
+	flex-flow: column;
 	position: absolute;
 	width: 180px;
 	background-color: $grey-l;
@@ -102,6 +104,20 @@ html {
 
 		&:hover {
 			background-color: $grey-d;
+		}
+	}
+}
+
+.folderList {
+	input {
+		padding: $offset-xxs $offset-s;
+		border-radius: $radius $radius 0 0;
+		border: none;
+		border-bottom: 2px solid $grey-d;
+		font-size: $font-s;
+
+		&:focus {
+			outline: none;
 		}
 	}
 }

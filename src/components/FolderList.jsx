@@ -4,8 +4,10 @@ import uniqid from 'uniqid';
 
 function FolderList({ hideFolderList, handleSectionMove, moreRef }) {
 	const [storage, setStorage] = useStorage();
+	const [searchValue, setSearchValue] = useState('');
 
 	const folderListRef = useRef();
+	const searchInputRef = useRef();
 
 	function handleClick(e) {
 		if (
@@ -18,16 +20,29 @@ function FolderList({ hideFolderList, handleSectionMove, moreRef }) {
 
 	useEffect(() => {
 		window.addEventListener('click', handleClick);
+		searchInputRef.current.focus();
 
 		return () => {
 			window.removeEventListener('click', handleClick);
 		};
 	}, []);
 
+	function escapeRegex(string) {
+		return string.replace(/[/\-\\^$*+?.()|[\]{}]/g, '\\$&');
+	}
+
 	return (
 		<div className="folderList" ref={folderListRef}>
+			<input
+				type="text"
+				value={searchValue.source}
+				onInput={(e) => setSearchValue(e.target.value)}
+				ref={searchInputRef}
+			/>
 			{storage.map((folder) => {
-				return (
+				return new RegExp(searchValue, 'i').test(
+					escapeRegex(folder.title)
+				) ? (
 					<div
 						className="folder_name"
 						onClick={() => {
@@ -38,7 +53,7 @@ function FolderList({ hideFolderList, handleSectionMove, moreRef }) {
 					>
 						{folder.title}
 					</div>
-				);
+				) : null;
 			})}
 		</div>
 	);
