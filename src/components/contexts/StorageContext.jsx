@@ -1,4 +1,4 @@
-import React, { useContext, useState, createContext } from 'react';
+import React, { useContext, useState, createContext, useEffect } from 'react';
 import uniqid from 'uniqid';
 
 const StorageContext = createContext();
@@ -14,16 +14,22 @@ export const useAppendTask = () => useContext(AppendTaskContext);
 export const useDeleteTask = () => useContext(DeleteTaskContext);
 
 export const StorageProvider = ({ children }) => {
-	const [storage, setStorage] = useState([
-		{
-			title: 'Index',
-			tasks: [],
-			sections: [],
-			active: true,
-			edit: false,
-			id: uniqid(),
-		},
-	]);
+	const [storage, setStorage] = useState(
+		JSON.parse(localStorage.getItem('data')) || [
+			{
+				title: 'Index',
+				tasks: [],
+				sections: [],
+				active: true,
+				edit: false,
+				id: uniqid(),
+			},
+		]
+	);
+
+	useEffect(() => {
+		localStorage.setItem('data', JSON.stringify(storage));
+	}, [storage]);
 
 	function appendFolder(title) {
 		setStorage((folders) => {
