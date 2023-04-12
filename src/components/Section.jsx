@@ -1,6 +1,5 @@
 import React, { useState, useRef } from 'react';
 import { useStorage } from './contexts/StorageContext';
-import dots from '../assets/images/dots.svg';
 import TaskForm from './TaskForm';
 import Task from './Task';
 import Options from './Options';
@@ -8,7 +7,8 @@ import ConfirmAction from './ConfirmAction';
 import TitleForm from './TitleForm';
 import FolderList from './FolderList';
 import uniqid from 'uniqid';
-import arrow from '../assets/images/arrow.svg';
+import MoreIcon from './icon_components/MoreIcon';
+import ArrowIcon from './icon_components/ArrowIcon';
 
 function Section({ title, tasks, edit, id, folded }) {
 	const [storage, setStorage] = useStorage();
@@ -336,23 +336,19 @@ function Section({ title, tasks, edit, id, folded }) {
 				/>
 			) : (
 				<div className="section_title">
-					<img
-						className={`arrow ${folded ? 'folded' : ''}`}
-						src={arrow}
-						alt=""
-						onClick={() => updateSectionFold(!folded)}
+					<ArrowIcon
+						folded={folded}
+						handleClick={() => updateSectionFold(!folded)}
 					/>
 					{title}
-					<img
-						className="more"
-						ref={moreRef}
-						src={dots}
-						alt=""
-						onClick={() => {
+					<MoreIcon
+						handleClick={() => {
 							hideFolderList();
 							displayOptions();
 						}}
+						ref={moreRef}
 					/>
+
 					{showOptions && (
 						<Options
 							hideOptions={hideOptions}

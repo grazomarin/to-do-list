@@ -1,4 +1,5 @@
 import React, { useEffect, useState, useRef } from 'react';
+import { useTheme } from './contexts/ThemeContext';
 
 function Options({
 	hideOptions,
@@ -17,6 +18,7 @@ function Options({
 	MoveSection,
 }) {
 	const optionsRef = useRef();
+	const [theme, setTheme] = useTheme();
 
 	function handleClick(e) {
 		if (
@@ -36,7 +38,10 @@ function Options({
 	}, []);
 
 	return (
-		<div className="options" ref={optionsRef}>
+		<div
+			className={`options ${theme === 'dark' ? 'dark' : ''}`}
+			ref={optionsRef}
+		>
 			{Delete && (
 				<div className="option" onClick={enableDelete}>
 					Delete

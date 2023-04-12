@@ -9,6 +9,7 @@ import TaskForm from './TaskForm';
 import uniqid from 'uniqid';
 import TitleForm from './TitleForm';
 import Section from './Section';
+import { useTheme } from './contexts/ThemeContext';
 
 function Main() {
 	const [storage, setStorage] = useStorage();
@@ -16,6 +17,7 @@ function Main() {
 	const deleteTask = useDeleteTask();
 	const [addTaskMode, setAddTaskMode] = useState(false);
 	const [addSectionMode, setAddSectionMode] = useState(false);
+	const [theme, setTheme] = useTheme();
 
 	const enableAddTaskMode = () => setAddTaskMode(true);
 	const disableAddTaskMode = () => setAddTaskMode(false);
@@ -25,7 +27,6 @@ function Main() {
 	useEffect(() => setAddTaskMode(false), [returnActiveFolder()]);
 
 	function handleTaskSubmit(title, description, dueDate) {
-		disableAddTaskMode();
 		appendTask(title, description, dueDate);
 	}
 
@@ -143,6 +144,7 @@ function Main() {
 					? {
 							...folder,
 							sections: [
+								...folder.sections,
 								{
 									title: title,
 									edit: false,
@@ -150,7 +152,6 @@ function Main() {
 									folded: false,
 									id: uniqid(),
 								},
-								...folder.sections,
 							],
 					  }
 					: folder
@@ -159,7 +160,7 @@ function Main() {
 	}
 
 	return (
-		<div className="main">
+		<div className={`main ${theme === 'dark' ? 'dark' : ''}`}>
 			{/* checks if there are any selected folders */}
 			{returnActiveFolder() ? (
 				// if yes renders tasks and form
@@ -202,8 +203,9 @@ function Main() {
 						<h3 className="add">
 							{addTaskMode ? (
 								<TaskForm
-									handleCancel={disableAddTaskMode}
 									handleSubmit={handleTaskSubmit}
+									handleCancel={disableAddTaskMode}
+									key={uniqid()}
 								/>
 							) : (
 								<div
@@ -218,6 +220,7 @@ function Main() {
 									handleSubmit={handleSectionSubmit}
 									handleCancel={disableAddSectionMode}
 									Inline
+									key={uniqid()}
 								/>
 							) : (
 								<div

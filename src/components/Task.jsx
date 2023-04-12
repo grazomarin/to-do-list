@@ -1,11 +1,10 @@
 import React, { useState, useRef } from 'react';
 import Options from './Options';
 import ConfirmAction from './ConfirmAction';
-import dots from '../assets/images/dots.svg';
-import checkbox from '../assets/images/checkbox.svg';
-import check from '../assets/images/check.svg';
+import MoreIcon from './icon_components/MoreIcon';
 import uniqid from 'uniqid';
 import CalendarIcon from './icon_components/CalendarIcon';
+import CheckBoxIcon from './icon_components/CheckboxIcon';
 
 function Task({
 	title,
@@ -33,10 +32,11 @@ function Task({
 
 	return (
 		<div className={`task ${completed ? 'completed' : ''}`}>
-			<div className="checkbox-cont" onClick={() => handleComplete(id)}>
-				<img src={checkbox} alt="" className="checkbox" />
-				{completed && <img src={check} alt="" className="check" />}
-			</div>
+			<CheckBoxIcon
+				completed={completed}
+				handleComplete={() => handleComplete(id)}
+			/>
+
 			<div className="info">
 				<div className="title">{title}</div>
 				{description && (
@@ -49,13 +49,7 @@ function Task({
 					</div>
 				)}
 			</div>
-			<img
-				className="more"
-				ref={moreRef}
-				src={dots}
-				alt=""
-				onClick={displayOptions}
-			/>
+			<MoreIcon handleClick={displayOptions} ref={moreRef} />
 			{showOptions && (
 				<Options
 					hideOptions={hideOptions}

@@ -1,9 +1,12 @@
 import React from 'react';
+import { useTheme } from '../contexts/ThemeContext';
 
 function CalendarIcon() {
+	const [theme, setTheme] = useTheme();
+
 	return (
 		<svg
-			className="calendar"
+			className={`calendar ${theme === 'dark' ? 'dark' : ''}`}
 			viewBox="0 0 24 24"
 			fill="none"
 			xmlns="http://www.w3.org/2000/svg"

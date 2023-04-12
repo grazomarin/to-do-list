@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
+import { useTheme } from './contexts/ThemeContext';
 
 function TitleForm({
 	handleCancel,
@@ -11,6 +12,7 @@ function TitleForm({
 }) {
 	const [title, setTitle] = useState(oldTitle || '');
 	const [displayError, setDisplayError] = useState(false);
+	const [theme, setTheme] = useTheme();
 	const resetValues = () => {
 		setTitle('');
 	};
@@ -26,7 +28,7 @@ function TitleForm({
 	}
 
 	return (
-		<form>
+		<form className={theme == 'dark' ? 'dark' : ''}>
 			<div className={`input ${Inline ? 'inline' : ''}`}>
 				<div className="input-cont">
 					{Bullet && <div className="bullet"></div>}
@@ -39,7 +41,7 @@ function TitleForm({
 						ref={inputRef}
 					/>
 				</div>
-				<div className="buttons">
+				<div className={`buttons ${theme == 'dark' ? 'dark' : ''}`}>
 					<button
 						className="submit"
 						onClick={(e) => {

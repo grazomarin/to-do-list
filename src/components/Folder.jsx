@@ -1,8 +1,8 @@
 import React, { useState, useRef } from 'react';
 import Options from './Options';
 import ConfirmAction from './ConfirmAction';
-import dots from '../assets/images/dots.svg';
 import uniqid from 'uniqid';
+import MoreIcon from './icon_components/MoreIcon';
 
 function Folder({
 	title,
@@ -62,14 +62,7 @@ function Folder({
 			<div className="tasksCount">
 				{returnNumOfCompletedTasks()}/{returnNumOfTotalTasks()}
 			</div>
-			<img
-				className="more"
-				ref={moreRef}
-				src={dots}
-				alt=""
-				onClick={displayOptions}
-			/>
-
+			<MoreIcon handleClick={displayOptions} ref={moreRef} />
 			{showOptions && (
 				<Options
 					hideOptions={hideOptions}

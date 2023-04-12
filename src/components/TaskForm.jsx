@@ -1,8 +1,8 @@
 import React, { useState, useRef, useEffect, forwardRef } from 'react';
 import DatePicker from 'react-datepicker';
 import { setHours, setMinutes, format, parse } from 'date-fns';
-import calendar from '../assets/images/calendar.svg';
 import CalendarIcon from './icon_components/CalendarIcon';
+import { useTheme } from './contexts/ThemeContext';
 
 function TaskForm({
 	oldTitle,
@@ -18,9 +18,10 @@ function TaskForm({
 	const [description, setDescription] = useState(oldDescription || '');
 	const [dueDate, setDueDate] = useState(parseDate(oldDate));
 	const [displayError, setDisplayError] = useState(false);
+	const [theme, setTheme] = useTheme();
 	const DateSelector = forwardRef(({ value, onClick }, ref) => (
 		<button
-			className="dateSelectorButton"
+			className={`dateSelectorButton ${theme == 'dark' ? 'dark' : ''}`}
 			onClick={onClick}
 			ref={ref}
 			type="button"
@@ -54,7 +55,7 @@ function TaskForm({
 	}
 
 	return (
-		<form>
+		<form className={theme == 'dark' ? 'dark' : ''}>
 			<div className="input">
 				<div className="input-cont">
 					<input
@@ -74,7 +75,7 @@ function TaskForm({
 						placeholder="Details..."
 					></textarea>
 				</div>
-				<div className="buttons">
+				<div className={`buttons ${theme == 'dark' ? 'dark' : ''}`}>
 					<DatePicker
 						startDate={dueDate}
 						selected={dueDate}

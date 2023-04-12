@@ -1,38 +1,95 @@
 @use 'variables';
 @import 'node_modules/react-datepicker/src/stylesheets/datepicker.scss';
 
-.react-datepicker-popper {
-	* {
-		font-family: 'Jost';
+form {
+	.react-datepicker-popper {
+		* {
+			font-family: 'Jost';
+		}
 	}
-}
 
-.react-datepicker__header {
-	background-color: rgb(240, 240, 240);
-}
-
-.react-datepicker__close-icon {
-	padding: 0;
-	position: relative;
-
-	&::after {
-		box-sizing: border-box;
-		width: 22px;
-		height: 22px;
-		font-size: 1rem;
-		text-align: center;
-		background-color: rgb(255, 102, 102);
-		color: rgb(33, 33, 33);
+	.react-datepicker__header {
+		background-color: rgb(240, 240, 240);
 	}
-}
 
-.react-datepicker__input-container {
-	display: flex;
-	justify-content: flex-start;
-	align-items: center;
-	gap: 10px;
-}
+	.react-datepicker__close-icon {
+		padding: 0;
+		position: relative;
 
-.react-datepicker__triangle {
-	display: none;
+		&::after {
+			box-sizing: border-box;
+			width: 22px;
+			height: 22px;
+			font-size: 1rem;
+			text-align: center;
+			background-color: rgb(255, 102, 102);
+			color: rgb(33, 33, 33);
+		}
+	}
+
+	.react-datepicker__input-container {
+		display: flex;
+		justify-content: flex-start;
+		align-items: center;
+		gap: 10px;
+	}
+
+	.react-datepicker__triangle {
+		display: none;
+	}
+
+	&.dark {
+		.react-datepicker {
+			* {
+				color: rgb(225, 225, 225);
+			}
+			background-color: rgb(40, 40, 40);
+
+			border-color: black;
+			* {
+				border-color: black !important;
+			}
+
+			&__header {
+				* {
+					color: rgb(225, 225, 225);
+				}
+				background-color: rgb(60, 60, 60);
+			}
+
+			&__time {
+				background-color: rgb(40, 40, 40);
+
+				&-list-item {
+					&:hover {
+						background-color: rgb(80, 80, 80) !important;
+					}
+
+					&--disabled {
+						color: rgb(80, 80, 80) !important;
+					}
+					&--selected,
+					&--keyboard-selected {
+						background-color: rgb(255, 102, 102) !important;
+					}
+				}
+			}
+
+			&__day {
+				&:hover {
+					background-color: rgb(80, 80, 80);
+				}
+
+				&--disabled {
+					color: rgb(80, 80, 80);
+				}
+
+				&--selected,
+				&--keyboard-selected,
+				&--today {
+					background-color: rgb(255, 102, 102) !important;
+				}
+			}
+		}
+	}
 }

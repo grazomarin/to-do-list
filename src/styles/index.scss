@@ -5,11 +5,15 @@ html {
 	font-family: $font;
 }
 
-#root {
+.container {
 	display: grid;
 	grid-template-columns: 300px 7fr;
 	grid-template-areas: 'index main';
 	height: 100vh;
+
+	&.dark {
+		background-color: $black-d;
+	}
 }
 
 .add {
@@ -60,17 +64,27 @@ html {
 	}
 }
 
-.more {
+.moreIcon {
 	visibility: hidden;
 	width: 24px;
 	margin-left: auto;
 	cursor: pointer;
+
+	&.dark {
+		* {
+			fill: $grey;
+		}
+	}
 }
 
 .calendar {
 	width: 20px;
 	height: 20px;
 	stroke: $black;
+
+	&.dark {
+		stroke: $grey;
+	}
 }
 
 .arrow {
@@ -79,13 +93,20 @@ html {
 	height: 16px;
 	align-self: center;
 	left: -$offset-l;
+	transform: rotate(180deg);
 
 	&.folded {
-		transform: rotate(270deg);
+		transform: rotate(90deg) !important;
 	}
 
 	&:hover {
 		cursor: pointer;
+	}
+
+	&.dark {
+		* {
+			fill: $grey;
+		}
 	}
 }
 
@@ -93,7 +114,7 @@ html {
 	width: 7px;
 	height: 7px;
 	margin-right: $offset-s;
-	background-color: $blue-d;
+	background-color: black;
 	border-radius: 50%;
 	justify-self: center;
 	align-self: center;
@@ -114,7 +135,7 @@ html {
 	position: absolute;
 	width: 180px;
 	background-color: $grey-l;
-	box-shadow: rgb(84, 84, 84) 0 0 2px 0px;
+	box-shadow: rgb(84, 84, 84) 0 0 3px 1px;
 	border-radius: $radius;
 	top: 50%;
 	left: calc(100% - $offset-xs);
@@ -130,6 +151,24 @@ html {
 
 		&:hover {
 			background-color: $grey-d;
+		}
+	}
+
+	&.dark {
+		background-color: $black-l;
+		box-shadow: $black-xd 0 0 4px 1px;
+
+		.option,
+		.folder_name {
+			&:hover {
+				background-color: $black-xl;
+			}
+		}
+
+		input {
+			color: $grey;
+			background-color: $black-xl;
+			border-color: $black;
 		}
 	}
 }
@@ -188,6 +227,19 @@ form {
 			border-radius: $radius;
 		}
 	}
+
+	&.dark {
+		input,
+		textarea {
+			background-color: $black;
+			border-color: $black-xd;
+			color: $grey;
+
+			&:focus {
+				outline: none;
+			}
+		}
+	}
 }
 
 .overlay {
@@ -216,6 +268,12 @@ form {
 	button {
 		border: none;
 	}
+
+	&.dark {
+		color: $grey;
+		background-color: $black-l;
+		box-shadow: $black-xd 0 0 $offset-xs 0;
+	}
 }
 
 .buttons {
@@ -238,6 +296,16 @@ form {
 	.cancel {
 		background-color: $red;
 	}
+
+	&.dark {
+		* {
+			color: $grey;
+		}
+
+		.submit {
+			background-color: $black-xxl;
+		}
+	}
 }
 
 button {
@@ -256,14 +324,35 @@ button {
 	width: auto;
 	padding: $offset-xxs $offset-s;
 	color: $black;
+
+	&.dark {
+		background-color: $black-l;
+		color: $grey;
+	}
 }
 
 .header {
-	font-size: $font-xs;
-	font-weight: 800;
+	display: flex;
+	align-items: end;
+	gap: $offset-xs;
 	position: absolute;
 	top: $offset-xs;
 	right: $offset-m;
+
+	.theme_icon {
+		height: 22px;
+		width: 22px;
+		cursor: pointer;
+	}
+
+	.title {
+		font-size: $font-s;
+		font-weight: 800;
+	}
+
+	&.dark {
+		color: $grey;
+	}
 }
 
 .index {
@@ -275,23 +364,29 @@ button {
 
 	background-color: $grey-xl;
 	padding: $offset-xl;
-	border: 2px solid $grey-l;
+	border-right: 2px solid $grey-l;
 
-	.title {
+	& > .title {
 		display: flex;
 		align-items: center;
 		justify-content: space-between;
 		font-size: $font-xl;
+		font-weight: 600;
 
-		.plus {
+		.addIcon {
 			display: none;
 		}
 	}
 
 	&:hover {
-		.plus {
+		.addIcon {
 			cursor: pointer;
 			display: block;
+			&.dark {
+				* {
+					fill: $grey;
+				}
+			}
 		}
 	}
 
@@ -332,7 +427,7 @@ button {
 		}
 
 		&:hover {
-			.more {
+			.moreIcon {
 				visibility: visible;
 			}
 		}
@@ -361,6 +456,23 @@ button {
 		text-align: center;
 		margin-left: calc(7px + $offset-xs);
 		width: calc(100% - $offset-s);
+	}
+
+	&.dark {
+		color: $grey;
+		background-color: $black;
+		border: none;
+
+		.bullet {
+			background-color: $grey-l;
+		}
+
+		.folder {
+			&.active {
+				background-color: $black-l;
+				border-color: $black-xd;
+			}
+		}
 	}
 }
 
@@ -453,7 +565,7 @@ button {
 				}
 			}
 
-			.more {
+			.moreIcon {
 				visibility: visible;
 				align-self: center;
 				justify-self: center;
@@ -491,7 +603,7 @@ button {
 			}
 
 			&:hover {
-				.more {
+				.moreIcon {
 					visibility: visible;
 				}
 			}
@@ -502,5 +614,52 @@ button {
 		margin: $offset-xl;
 		align-self: start;
 		justify-self: center;
+	}
+
+	&.dark {
+		color: $grey;
+
+		.task {
+			border-color: $black-xl;
+
+			.description {
+				color: $grey-xd !important;
+			}
+
+			.dueDate {
+				color: $grey-xd !important;
+			}
+
+			.checkbox-cont {
+				* {
+					stroke: $grey;
+				}
+				.check {
+					* {
+						fill: $grey;
+					}
+				}
+			}
+
+			&.completed {
+				.info {
+					* {
+						color: $black-xxl !important;
+					}
+				}
+			}
+		}
+
+		.add_section {
+			&:hover {
+				.text {
+					color: $grey;
+				}
+
+				.decoration {
+					background-color: $grey;
+				}
+			}
+		}
 	}
 }
