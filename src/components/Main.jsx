@@ -30,11 +30,11 @@ function Main() {
 		appendTask(title, description, dueDate);
 	}
 
-	function handleDelete(taskId) {
+	function handleTaskDelete(taskId) {
 		deleteTask(taskId);
 	}
 
-	function handleComplete(taskId) {
+	function handleTaskComplete(taskId) {
 		setStorage((folders) =>
 			folders.map((folder) => {
 				if (folder.active) {
@@ -56,7 +56,7 @@ function Main() {
 		);
 	}
 
-	function enableEdit(taskId) {
+	function enableTaskEdit(taskId) {
 		setStorage((folders) =>
 			folders.map((folder) =>
 				folder.active
@@ -85,7 +85,7 @@ function Main() {
 		);
 	}
 
-	function handleEdit(taskId, title, description, dueDate) {
+	function handleTaskEdit(taskId, title, description, dueDate) {
 		setStorage((folders) =>
 			folders.map((folder) =>
 				folder.active
@@ -109,7 +109,7 @@ function Main() {
 		);
 	}
 
-	function handleDuplicate(taskId) {
+	function handleTaskDuplicate(taskId) {
 		setStorage((folders) =>
 			folders.map((folder) =>
 				folder.active
@@ -177,7 +177,7 @@ function Main() {
 									oldDate={task.dueDate}
 									taskId={task.id}
 									handleCancel={() => {}}
-									handleEdit={handleEdit}
+									handleEdit={handleTaskEdit}
 									key={task.id}
 								/>
 							) : (
@@ -187,10 +187,10 @@ function Main() {
 									dueDate={task.dueDate}
 									id={task.id}
 									completed={task.completed}
-									handleDelete={handleDelete}
-									handleDuplicate={handleDuplicate}
-									enableEdit={enableEdit}
-									handleComplete={handleComplete}
+									handleDelete={handleTaskDelete}
+									handleDuplicate={handleTaskDuplicate}
+									enableEdit={enableTaskEdit}
+									handleComplete={handleTaskComplete}
 									key={task.id}
 									Delete
 									Edit
@@ -210,7 +210,10 @@ function Main() {
 							) : (
 								<div
 									className="add_task"
-									onClick={enableAddTaskMode}
+									onClick={() => {
+										enableAddTaskMode();
+										disableAddSectionMode();
+									}}
 								>
 									+ add task
 								</div>
@@ -225,7 +228,10 @@ function Main() {
 							) : (
 								<div
 									className="add_section"
-									onClick={enableAddSectionMode}
+									onClick={() => {
+										enableAddSectionMode();
+										disableAddTaskMode();
+									}}
 								>
 									<div className="decoration"></div>
 									<div className="text">Add Section</div>
