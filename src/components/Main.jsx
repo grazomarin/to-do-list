@@ -1,9 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import {
-	useAppendTask,
-	useDeleteTask,
-	useStorage,
-} from './contexts/StorageContext';
+import { useStorage } from './contexts/StorageContext';
 import Task from './Task';
 import TaskForm from './TaskForm';
 import uniqid from 'uniqid';
@@ -13,8 +9,6 @@ import { useTheme } from './contexts/ThemeContext';
 
 function Main() {
 	const [storage, setStorage] = useStorage();
-	const appendTask = useAppendTask();
-	const deleteTask = useDeleteTask();
 	const [addTaskMode, setAddTaskMode] = useState(false);
 	const [addSectionMode, setAddSectionMode] = useState(false);
 	const [theme, setTheme] = useTheme();
@@ -27,11 +21,42 @@ function Main() {
 	useEffect(() => setAddTaskMode(false), [returnActiveFolder()]);
 
 	function handleTaskSubmit(title, description, dueDate) {
-		appendTask(title, description, dueDate);
+		setStorage((folders) =>
+			folders.map((folder) =>
+				folder.active
+					? {
+							...folder,
+							tasks: [
+								...folder.tasks,
+								{
+									title: title,
+									description: description,
+									dueDate: dueDate,
+									completed: false,
+									edit: false,
+									id: uniqid(),
+								},
+							],
+					  }
+					: folder
+			)
+		);
 	}
 
 	function handleTaskDelete(taskId) {
-		deleteTask(taskId);
+		setStorage((folders) =>
+			folders.map((folder) =>
+				folder.active
+					? {
+							...folder,
+							tasks: folder.tasks.reduce((reduced, task) => {
+								if (task.id !== taskId) reduced.push(task);
+								return reduced;
+							}, []),
+					  }
+					: folder
+			)
+		);
 	}
 
 	function handleTaskComplete(taskId) {
@@ -165,7 +190,10 @@ function Main() {
 			{returnActiveFolder() ? (
 				// if yes renders tasks and form
 				<>
-					<div className="folder_title">
+					<div
+						className="folder_title"
+						style={{ color: returnActiveFolder().color }}
+					>
 						{returnActiveFolder().title}
 					</div>
 					<div className="tasks">

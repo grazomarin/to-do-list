@@ -6,6 +6,7 @@ import MoreIcon from './icon_components/MoreIcon';
 
 function Folder({
 	title,
+	color,
 	active,
 	tasks,
 	sections,
@@ -57,7 +58,7 @@ function Folder({
 			className={`folder ${active ? 'active' : ''}`}
 			onClick={() => makeActive(id)}
 		>
-			<div className="bullet"></div>
+			<div className="bullet" style={{ backgroundColor: color }}></div>
 			<span className="title">{title}</span>
 			<div className="tasksCount">
 				{returnNumOfCompletedTasks()}/{returnNumOfTotalTasks()}

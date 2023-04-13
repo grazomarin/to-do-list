@@ -1,9 +1,5 @@
 import React, { useState } from 'react';
-import {
-	useStorage,
-	useAppendFolder,
-	useDeleteFolder,
-} from './contexts/StorageContext';
+import { useStorage } from './contexts/StorageContext';
 import Folder from './Folder';
 import TitleForm from './TitleForm';
 import uniqid from 'uniqid';
@@ -13,17 +9,10 @@ import AddIcon from './icon_components/AddIcon';
 function Index() {
 	const [addMode, setAddMode] = useState(false);
 	const [storage, setStorage] = useStorage();
-	const appendFolder = useAppendFolder();
-	const deleteFolder = useDeleteFolder();
 	const [theme, setTheme] = useTheme();
 
-	function enableAddMode() {
-		setAddMode(true);
-	}
-
-	function disableAddMode() {
-		setAddMode(false);
-	}
+	const enableAddMode = () => setAddMode(true);
+	const disableAddMode = () => setAddMode(false);
 
 	function isTheSameFolderClicked(id) {
 		for (const folder of storage) {
@@ -53,13 +42,30 @@ function Index() {
 		});
 	}
 
-	function handleSubmit(title) {
+	function handleSubmitFolder(title, color) {
 		makeFoldersInactive();
-		appendFolder(title);
+		setStorage((folders) => [
+			...folders,
+			{
+				title: title,
+				tasks: [],
+				sections: [],
+				color: color,
+				favorite: false,
+				active: true,
+				edit: false,
+				id: uniqid(),
+			},
+		]);
 	}
 
-	function handleDelete(id) {
-		deleteFolder(id);
+	function handleDeleteFolder(folderId) {
+		setStorage((folders) =>
+			folders.reduce((reduced, folder) => {
+				if (folder.id !== folderId) reduced.push(folder);
+				return reduced;
+			}, [])
+		);
 	}
 
 	function enableEdit(folderId) {
@@ -72,7 +78,7 @@ function Index() {
 		});
 	}
 
-	function handleEdit(folderId, title) {
+	function handleEdit(folderId, title, color) {
 		makeFoldersInactive();
 		setStorage((folders) => {
 			return folders.map((folder) => {
@@ -82,6 +88,7 @@ function Index() {
 							tasks: [...folder.tasks],
 							sections: [...folder.sections],
 							favorite: folder.favorite,
+							color: color,
 							active: true,
 							edit: false,
 							id: folderId,
@@ -141,6 +148,7 @@ function Index() {
 							folder.favorite && (
 								<Folder
 									title={folder.title}
+									color={folder.color}
 									tasks={folder.tasks}
 									sections={folder.sections}
 									id={folder.id}
@@ -169,6 +177,7 @@ function Index() {
 						handleCancel={() => {}}
 						handleEdit={handleEdit}
 						oldTitle={folder.title}
+						oldColor={folder.color}
 						id={folder.id}
 						key={folder.id}
 						Bullet
@@ -176,12 +185,13 @@ function Index() {
 				) : (
 					<Folder
 						title={folder.title}
+						color={folder.color}
 						tasks={folder.tasks}
 						sections={folder.sections}
 						id={folder.id}
 						active={folder.active}
 						makeActive={makeFolderActive}
-						handleDelete={handleDelete}
+						handleDelete={handleDeleteFolder}
 						handleDuplicate={handleDuplicate}
 						handleAddToFavorites={handleAddToFavorites}
 						handleRemoveFromFavorites={handleRemoveFromFavorites}
@@ -198,7 +208,7 @@ function Index() {
 			{addMode && (
 				<TitleForm
 					handleCancel={disableAddMode}
-					handleSubmit={handleSubmit}
+					handleSubmit={handleSubmitFolder}
 					Bullet
 				/>
 			)}

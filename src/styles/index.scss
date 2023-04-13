@@ -110,16 +110,6 @@ html {
 	}
 }
 
-.bullet {
-	width: 7px;
-	height: 7px;
-	margin-right: $offset-s;
-	background-color: black;
-	border-radius: 50%;
-	justify-self: center;
-	align-self: center;
-}
-
 .error {
 	background-color: $red;
 	width: 150px;
@@ -187,6 +177,16 @@ html {
 	}
 }
 
+.bullet {
+	width: 10px;
+	height: 10px;
+	margin-right: $offset-s;
+	border-radius: 50%;
+	justify-self: center;
+	align-self: center;
+	flex: 0 0 10px;
+}
+
 form {
 	display: flex;
 	flex-flow: column;
@@ -196,6 +196,7 @@ form {
 		display: flex;
 		flex-flow: column;
 		gap: $offset-xs;
+		position: relative;
 
 		&.inline {
 			display: grid;
@@ -228,6 +229,38 @@ form {
 		}
 	}
 
+	.bullet-cont {
+		padding: $offset-xxs;
+		border-radius: 50%;
+		background-color: $grey-d;
+		margin-right: calc($offset-s - $offset-xxs);
+		margin-left: -$offset-xxs;
+		cursor: pointer;
+
+		.bullet {
+			margin: 0;
+		}
+	}
+
+	.circle-picker {
+		align-items: center;
+		justify-content: center;
+
+		width: auto !important;
+		background-color: $grey;
+		border: 1px solid $grey-xd;
+		border-radius: $radius;
+		box-shadow: $black-xd 0 0 3px 0px;
+		position: absolute;
+		top: 44px;
+		left: -$offset-xxs;
+		z-index: 1000;
+
+		& > span > div {
+			margin: $offset-xxs !important;
+		}
+	}
+
 	&.dark {
 		input,
 		textarea {
@@ -238,6 +271,16 @@ form {
 			&:focus {
 				outline: none;
 			}
+		}
+
+		.bullet-cont {
+			background-color: $black-xl;
+		}
+
+		.circle-picker {
+			background-color: $black-l;
+			border-color: $black-xd;
+			box-shadow: $black-xd 0 0 3px 0px;
 		}
 	}
 }
@@ -415,15 +458,11 @@ button {
 			box-sizing: border-box;
 			font-weight: 500;
 			background-color: $grey;
-			padding: 0 $offset-xxs 0;
-			margin: 0 (-$offset-xxs) 0;
+			padding: 0 $offset-xxs 0 $offset-s;
+			margin: 0 (-$offset-xxs) 0 (-$offset-s);
 
 			border: 1px solid $grey-d;
 			border-radius: $radius;
-
-			.bullet {
-				visibility: collapse;
-			}
 		}
 
 		&:hover {
@@ -462,10 +501,6 @@ button {
 		color: $grey;
 		background-color: $black;
 		border: none;
-
-		.bullet {
-			background-color: $grey-l;
-		}
 
 		.folder {
 			&.active {
