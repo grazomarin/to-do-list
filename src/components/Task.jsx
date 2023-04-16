@@ -10,6 +10,7 @@ function Task({
 	title,
 	description,
 	dueDate,
+	priority,
 	completed,
 	id,
 	handleDelete,
@@ -33,6 +34,7 @@ function Task({
 	return (
 		<div className={`task ${completed ? 'completed' : ''}`}>
 			<CheckBoxIcon
+				priority={priority}
 				completed={completed}
 				handleComplete={() => handleComplete(id)}
 			/>

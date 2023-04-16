@@ -11,7 +11,7 @@ function FolderList({ hideFolderList, handleSectionMove, moreRef }) {
 	const folderListRef = useRef();
 	const searchInputRef = useRef();
 
-	function handleClick(e) {
+	function handleWindowClick(e) {
 		if (
 			!folderListRef.current.contains(e.target) &&
 			folderListRef.current.className !== e.target?.className &&
@@ -21,12 +21,9 @@ function FolderList({ hideFolderList, handleSectionMove, moreRef }) {
 	}
 
 	useEffect(() => {
-		window.addEventListener('click', handleClick);
+		window.addEventListener('click', handleWindowClick);
 		searchInputRef.current.focus();
-
-		return () => {
-			window.removeEventListener('click', handleClick);
-		};
+		return () => window.removeEventListener('click', handleWindowClick);
 	}, []);
 
 	function escapeRegex(string) {

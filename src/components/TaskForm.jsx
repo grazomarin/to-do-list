@@ -1,5 +1,6 @@
 import React, { useState, useRef, useEffect, forwardRef } from 'react';
 import DatePicker from 'react-datepicker';
+import PriorityPicker from './PriorityPicker';
 import { setHours, setMinutes, format, parse } from 'date-fns';
 import CalendarIcon from './icon_components/CalendarIcon';
 import { useTheme } from './contexts/ThemeContext';
@@ -8,6 +9,7 @@ function TaskForm({
 	oldTitle,
 	oldDescription,
 	oldDate,
+	oldPriority,
 	taskId,
 	sectionId,
 	handleCancel,
@@ -17,6 +19,7 @@ function TaskForm({
 	const [title, setTitle] = useState(oldTitle || '');
 	const [description, setDescription] = useState(oldDescription || '');
 	const [dueDate, setDueDate] = useState(parseDate(oldDate));
+	const [priority, setPriority] = useState(oldPriority || '#808080');
 	const [displayError, setDisplayError] = useState(false);
 	const [theme, setTheme] = useTheme();
 	const DateSelector = forwardRef(({ value, onClick }, ref) => (
@@ -90,6 +93,10 @@ function TaskForm({
 						fixedHeight
 						monthsShown={1}
 					/>
+					<PriorityPicker
+						priority={priority}
+						handleClick={setPriority}
+					/>
 					<button
 						className="submit"
 						type="submit"
@@ -102,12 +109,14 @@ function TaskForm({
 											title,
 											description,
 											formatDate(dueDate),
-											sectionId
+											priority,
+											sectionId //if the form is called from section component, then sectionId is also submitted
 									  )
 									: handleSubmit(
 											title,
 											description,
 											formatDate(dueDate),
+											priority,
 											sectionId
 									  );
 								handleCancel();
@@ -126,7 +135,8 @@ function TaskForm({
 										taskId,
 										oldTitle,
 										oldDescription,
-										oldDate
+										oldDate,
+										oldPriority
 								  )
 								: handleCancel();
 						}}

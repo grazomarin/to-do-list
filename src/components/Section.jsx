@@ -133,7 +133,13 @@ function Section({ title, tasks, edit, id, folded }) {
 		});
 	}
 
-	function handleTaskSubmit(title, description, dueDate, sectionId) {
+	function handleTaskSubmit(
+		title,
+		description,
+		dueDate,
+		priority,
+		sectionId
+	) {
 		setStorage((folders) =>
 			folders.map((folder) =>
 				folder.active
@@ -149,6 +155,7 @@ function Section({ title, tasks, edit, id, folded }) {
 													title: title,
 													description: description,
 													dueDate: dueDate,
+													priority: priority,
 													completed: false,
 													edit: false,
 													id: uniqid(),
@@ -218,7 +225,7 @@ function Section({ title, tasks, edit, id, folded }) {
 		);
 	}
 
-	function handleTaskEdit(taskId, title, description, dueDate) {
+	function handleTaskEdit(taskId, title, description, priority, dueDate) {
 		setStorage((folders) =>
 			folders.map((folder) =>
 				folder.active
@@ -236,6 +243,7 @@ function Section({ title, tasks, edit, id, folded }) {
 															description:
 																description,
 															dueDate: dueDate,
+															priority: priority,
 															edit: false,
 													  }
 													: task
@@ -390,6 +398,7 @@ function Section({ title, tasks, edit, id, folded }) {
 								oldTitle={task.title}
 								oldDescription={task.description}
 								oldDate={task.dueDate}
+								oldPriority={task.priority}
 								taskId={task.id}
 								handleCancel={() => {}}
 								handleEdit={handleTaskEdit}
@@ -400,6 +409,7 @@ function Section({ title, tasks, edit, id, folded }) {
 								title={task.title}
 								description={task.description}
 								dueDate={task.dueDate}
+								priority={task.priority}
 								completed={task.completed}
 								id={task.id}
 								handleDelete={handleTaskDelete}

@@ -20,7 +20,7 @@ function Options({
 	const optionsRef = useRef();
 	const [theme, setTheme] = useTheme();
 
-	function handleClick(e) {
+	function handleWindowClick(e) {
 		if (
 			!optionsRef.current.contains(e.target) &&
 			optionsRef.current.className !== e.target?.className &&
@@ -30,11 +30,8 @@ function Options({
 	}
 
 	useEffect(() => {
-		window.addEventListener('click', handleClick);
-
-		return () => {
-			window.removeEventListener('click', handleClick);
-		};
+		window.addEventListener('click', handleWindowClick);
+		return () => window.removeEventListener('click', handleWindowClick);
 	}, []);
 
 	return (

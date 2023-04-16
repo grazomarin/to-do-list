@@ -6,7 +6,7 @@ function ArrowIcon({ folded, handleClick }) {
 
 	return (
 		<svg
-			className={`arrow ${folded ? 'folded' : ''} ${
+			className={`arrow_icon ${folded ? 'folded' : ''} ${
 				theme === 'dark' ? 'dark' : ''
 			}`}
 			onClick={handleClick}

@@ -6,7 +6,7 @@ function CalendarIcon() {
 
 	return (
 		<svg
-			className={`calendar ${theme === 'dark' ? 'dark' : ''}`}
+			className={`calendar_icon ${theme === 'dark' ? 'dark' : ''}`}
 			viewBox="0 0 24 24"
 			fill="none"
 			xmlns="http://www.w3.org/2000/svg"

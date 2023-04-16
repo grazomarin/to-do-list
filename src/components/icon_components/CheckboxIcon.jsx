@@ -1,15 +1,12 @@
 import React from 'react';
 import { useTheme } from '../contexts/ThemeContext';
 
-function CheckBoxIcon({ completed, handleComplete }) {
+function CheckBoxIcon({ priority, completed, handleComplete }) {
 	const [theme, setTheme] = useTheme();
 
 	return (
-		<div
-			className={`checkbox-cont ${theme === 'dark' ? 'dark' : ''}`}
-			onClick={handleComplete}
-		>
-			<svg className="checkbox" viewBox="-0.5 0 19 19" fill="#000000">
+		<div className="checkbox-cont" onClick={handleComplete}>
+			<svg className="checkbox_icon" viewBox="-0.5 0 19 19">
 				<g strokeWidth="0" />
 
 				<g strokeLinecap="round" strokeLinejoin="round" />
@@ -20,6 +17,7 @@ function CheckBoxIcon({ completed, handleComplete }) {
 						fill="none"
 						fillRule="evenodd"
 						sketch:type="MSPage"
+						style={{ stroke: priority }}
 					>
 						<rect
 							id="path"
@@ -31,13 +29,14 @@ function CheckBoxIcon({ completed, handleComplete }) {
 							width="13.5"
 							height="13.5"
 							rx="2"
+							style={{ stroke: priority }}
 						></rect>
 					</g>
 				</g>
 			</svg>
 			{completed && (
 				<svg
-					className="check"
+					className="check_icon"
 					viewBox="0 0 24 24"
 					fill="none"
 					stroke="#000000"
@@ -52,7 +51,7 @@ function CheckBoxIcon({ completed, handleComplete }) {
 							fillRule="evenodd"
 							clipRule="evenodd"
 							d="M19.7071 6.29289C20.0976 6.68342 20.0976 7.31658 19.7071 7.70711L10.4142 17C9.63316 17.7811 8.36683 17.781 7.58579 17L3.29289 12.7071C2.90237 12.3166 2.90237 11.6834 3.29289 11.2929C3.68342 10.9024 4.31658 10.9024 4.70711 11.2929L9 15.5858L18.2929 6.29289C18.6834 5.90237 19.3166 5.90237 19.7071 6.29289Z"
-							fill="#0F1729"
+							style={{ fill: priority, stroke: priority }}
 						/>
 					</g>
 				</svg>

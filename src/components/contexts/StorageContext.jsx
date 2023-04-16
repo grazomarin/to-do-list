@@ -12,6 +12,8 @@ export const StorageProvider = ({ children }) => {
 				title: 'Index',
 				tasks: [],
 				sections: [],
+				color: '#f44336',
+				favorite: false,
 				active: true,
 				edit: false,
 				id: uniqid(),

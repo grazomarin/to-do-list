@@ -6,7 +6,7 @@ function AddIcon({ handleClick }) {
 
 	return (
 		<svg
-			className={`addIcon ${theme === 'dark' ? 'dark' : ''}`}
+			className={`add_icon ${theme === 'dark' ? 'dark' : ''}`}
 			width="20"
 			height="20"
 			viewBox="0 0 370 370"

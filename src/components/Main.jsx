@@ -20,7 +20,7 @@ function Main() {
 
 	useEffect(() => setAddTaskMode(false), [returnActiveFolder()]);
 
-	function handleTaskSubmit(title, description, dueDate) {
+	function handleTaskSubmit(title, description, dueDate, priority) {
 		setStorage((folders) =>
 			folders.map((folder) =>
 				folder.active
@@ -32,6 +32,7 @@ function Main() {
 									title: title,
 									description: description,
 									dueDate: dueDate,
+									priority: priority,
 									completed: false,
 									edit: false,
 									id: uniqid(),
@@ -110,7 +111,7 @@ function Main() {
 		);
 	}
 
-	function handleTaskEdit(taskId, title, description, dueDate) {
+	function handleTaskEdit(taskId, title, description, dueDate, priority) {
 		setStorage((folders) =>
 			folders.map((folder) =>
 				folder.active
@@ -122,6 +123,7 @@ function Main() {
 											title: title,
 											description: description,
 											dueDate: dueDate,
+											priority: priority,
 											completed: task.completed,
 											edit: false,
 											id: task.id,
@@ -203,6 +205,7 @@ function Main() {
 									oldTitle={task.title}
 									oldDescription={task.description}
 									oldDate={task.dueDate}
+									oldPriority={task.priority}
 									taskId={task.id}
 									handleCancel={() => {}}
 									handleEdit={handleTaskEdit}
@@ -213,6 +216,7 @@ function Main() {
 									title={task.title}
 									description={task.description}
 									dueDate={task.dueDate}
+									priority={task.priority}
 									id={task.id}
 									completed={task.completed}
 									handleDelete={handleTaskDelete}
@@ -223,7 +227,6 @@ function Main() {
 									Delete
 									Edit
 									Duplicate
-									AddFavorite
 								/>
 							);
 						})}
