@@ -18,7 +18,13 @@ function Header() {
 				alt=""
 				onClick={toggleTheme}
 			/>
-			<div className="title">To Do List</div>
+			<a
+				className="title"
+				href="https://github.com/grazomarin/to-do-list"
+				target="_blank"
+			>
+				To Do List
+			</a>
 		</div>
 	);
 }
