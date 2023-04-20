@@ -18,7 +18,7 @@ function Options({
 	MoveSection,
 }) {
 	const optionsRef = useRef();
-	const [theme, setTheme] = useTheme();
+	const { theme } = useTheme();
 
 	function handleWindowClick(e) {
 		if (

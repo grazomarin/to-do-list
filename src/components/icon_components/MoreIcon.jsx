@@ -2,7 +2,7 @@ import React from 'react';
 import { useTheme } from '../contexts/ThemeContext';
 
 const MoreIcon = React.forwardRef(({ handleClick }, ref) => {
-	const [theme, setTheme] = useTheme();
+	const { theme } = useTheme();
 
 	return (
 		<svg

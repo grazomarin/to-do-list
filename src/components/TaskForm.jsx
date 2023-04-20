@@ -21,7 +21,7 @@ function TaskForm({
 	const [dueDate, setDueDate] = useState(parseDate(oldDate));
 	const [priority, setPriority] = useState(oldPriority || '#808080');
 	const [displayError, setDisplayError] = useState(false);
-	const [theme, setTheme] = useTheme();
+	const { theme } = useTheme();
 	const DateSelector = forwardRef(({ value, onClick }, ref) => (
 		<button
 			className={`dateSelectorButton ${theme == 'dark' ? 'dark' : ''}`}

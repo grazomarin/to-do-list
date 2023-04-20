@@ -4,7 +4,7 @@ import sun from '../assets/images/sun.svg';
 import { useTheme } from './contexts/ThemeContext';
 
 function Header() {
-	const [theme, setTheme] = useTheme();
+	const { theme, setTheme } = useTheme();
 
 	function toggleTheme() {
 		theme === 'light' ? setTheme('dark') : setTheme('light');

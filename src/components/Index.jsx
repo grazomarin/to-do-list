@@ -9,7 +9,7 @@ import AddIcon from './icon_components/AddIcon';
 function Index() {
 	const [addMode, setAddMode] = useState(false);
 	const [storage, setStorage] = useStorage();
-	const [theme, setTheme] = useTheme();
+	const { theme } = useTheme();
 
 	const enableAddMode = () => setAddMode(true);
 	const disableAddMode = () => setAddMode(false);

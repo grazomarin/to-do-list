@@ -2,7 +2,7 @@ import React from 'react';
 import { useTheme } from '../contexts/ThemeContext';
 
 function CalendarIcon() {
-	const [theme, setTheme] = useTheme();
+	const { theme } = useTheme();
 
 	return (
 		<svg

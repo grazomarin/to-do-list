@@ -2,7 +2,7 @@ import React from 'react';
 import { useTheme } from '../contexts/ThemeContext';
 
 function CheckBoxIcon({ priority, completed, handleComplete }) {
-	const [theme, setTheme] = useTheme();
+	const { theme } = useTheme();
 
 	return (
 		<div className="checkbox-cont" onClick={handleComplete}>

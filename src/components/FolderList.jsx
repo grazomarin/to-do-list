@@ -6,7 +6,7 @@ import { useTheme } from './contexts/ThemeContext';
 function FolderList({ hideFolderList, handleSectionMove, moreRef }) {
 	const [storage, setStorage] = useStorage();
 	const [searchValue, setSearchValue] = useState('');
-	const [theme, setTheme] = useTheme();
+	const { theme } = useTheme();
 
 	const folderListRef = useRef();
 	const searchInputRef = useRef();

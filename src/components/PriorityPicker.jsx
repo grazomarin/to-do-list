@@ -4,7 +4,7 @@ import { useTheme } from './contexts/ThemeContext';
 
 function PriorityPicker({ handleClick, priority }) {
 	const [showPicker, setShowPicker] = useState(false);
-	const [theme, setTheme] = useTheme();
+	const { theme } = useTheme();
 
 	const displayPicker = () => setShowPicker(true);
 	const hidePicker = () => setShowPicker(false);

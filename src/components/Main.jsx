@@ -11,7 +11,7 @@ function Main() {
 	const [storage, setStorage] = useStorage();
 	const [addTaskMode, setAddTaskMode] = useState(false);
 	const [addSectionMode, setAddSectionMode] = useState(false);
-	const [theme, setTheme] = useTheme();
+	const { theme } = useTheme();
 
 	const enableAddTaskMode = () => setAddTaskMode(true);
 	const disableAddTaskMode = () => setAddTaskMode(false);

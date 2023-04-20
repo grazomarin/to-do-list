@@ -3,7 +3,7 @@ import ReactDOM from 'react-dom';
 import { useTheme } from './contexts/ThemeContext';
 
 function ConfirmAction({ title, handleDelete, handleCancel }) {
-	const [theme, setTheme] = useTheme();
+	const { theme } = useTheme();
 
 	function handleClick(e) {
 		const parentClass = e.target.parentElement.className;

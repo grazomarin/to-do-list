@@ -12,7 +12,7 @@ export const ThemeProvider = ({ children }) => {
 	);
 
 	return (
-		<ThemeContext.Provider value={[theme, setTheme]}>
+		<ThemeContext.Provider value={{ theme: theme, setTheme: setTheme }}>
 			<div className={`container ${theme === 'dark' ? 'dark' : ''}`}>
 				{children}
 			</div>

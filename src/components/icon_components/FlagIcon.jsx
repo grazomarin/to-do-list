@@ -2,7 +2,7 @@ import React from 'react';
 import { useTheme } from '../contexts/ThemeContext';
 
 function FlagIcon({ color, handleClick }) {
-	const [theme, setTheme] = useTheme();
+	const { theme } = useTheme();
 
 	return (
 		<svg

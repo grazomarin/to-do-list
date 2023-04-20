@@ -11,7 +11,7 @@ function TitleForm({
 	Bullet,
 	Inline,
 }) {
-	const [theme, setTheme] = useTheme();
+	const { theme } = useTheme();
 	const [title, setTitle] = useState(oldTitle || '');
 	const [color, setColor] = useState(oldColor || '#f44336');
 	const [showError, setShowError] = useState(false);
