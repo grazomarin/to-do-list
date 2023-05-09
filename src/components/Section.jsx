@@ -10,7 +10,7 @@ import uniqid from 'uniqid';
 import MoreIcon from './icon_components/MoreIcon';
 import ArrowIcon from './icon_components/ArrowIcon';
 
-function Section({ title, tasks, edit, id, folded }) {
+export default function Section({ title, tasks, edit, id, folded }) {
 	const [storage, setStorage] = useStorage();
 	const [addTaskMode, setAddTaskMode] = useState(false);
 	const [showConfirm, setShowConfirm] = useState(false);
@@ -343,7 +343,7 @@ function Section({ title, tasks, edit, id, folded }) {
 					Inline
 				/>
 			) : (
-				<div className="section_title">
+				<div className="section--title">
 					<ArrowIcon
 						folded={folded}
 						handleClick={() => updateSectionFold(!folded)}
@@ -391,7 +391,7 @@ function Section({ title, tasks, edit, id, folded }) {
 			)}
 
 			{!folded && (
-				<div className="section-tasks">
+				<div className="section--tasks">
 					{tasks.map((task) => {
 						return task.edit ? (
 							<TaskForm
@@ -435,7 +435,7 @@ function Section({ title, tasks, edit, id, folded }) {
 							/>
 						) : (
 							<div
-								className="add_task"
+								className="add--task"
 								onClick={enableAddTaskMode}
 							>
 								+ add task
@@ -447,5 +447,3 @@ function Section({ title, tasks, edit, id, folded }) {
 		</div>
 	);
 }
-
-export default Section;

@@ -1,12 +1,9 @@
 import React from 'react';
-import { useTheme } from '../contexts/ThemeContext';
 
-function FlagIcon({ color, handleClick }) {
-	const { theme } = useTheme();
-
+export default function FlagIcon({ color, handleClick }) {
 	return (
 		<svg
-			className={`flag_icon ${theme === 'dark' ? 'dark' : ''}`}
+			className="flag-icon"
 			viewBox="0 0 24.00 24.00"
 			fill="none"
 			onClick={handleClick}
@@ -34,4 +31,3 @@ function FlagIcon({ color, handleClick }) {
 	);
 }
 
-export default FlagIcon;

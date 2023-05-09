@@ -1,0 +1,310 @@
+@use 'modules/index' as *;
+
+.light,
+.dark {
+	.add--section--decoration {
+		background-color: transparent;
+	}
+	.add--section--text {
+		color: transparent;
+	}
+
+	.error-message {
+		color: white;
+	}
+
+	.bullet-cont {
+		background-color: $grey-d;
+	}
+
+	.buttons {
+		&--cancel {
+			background-color: $red;
+		}
+	}
+
+	.overlay {
+		background-color: rgba(0, 0, 0, 0.2);
+	}
+}
+
+.light {
+	.add--section {
+		&:hover {
+			.add--section--text {
+				color: $black;
+			}
+			.add--section--decoration {
+				background-color: $black;
+			}
+		}
+	}
+
+	.calendar-icon {
+		stroke: $black;
+	}
+
+	.options,
+	.folder-list {
+		box-shadow: rgb(84, 84, 84) 0 0 3px 1px;
+
+		&--option,
+		&--folder-name {
+			&:hover {
+				background-color: $grey-d;
+			}
+		}
+	}
+
+	form {
+		.input-cont {
+			input,
+			textarea {
+				border-color: $grey-d;
+			}
+		}
+
+		.circle-picker {
+			background-color: $grey;
+			border-color: $grey-xd;
+			box-shadow: $black-xd 0 0 3px 0px;
+		}
+
+		.date-selector-button {
+			background-color: $grey-l;
+			color: $black;
+		}
+
+		.priority-cont {
+			&--preview {
+				background-color: $grey;
+			}
+
+			&--picker {
+				background-color: $grey;
+				.flag-icon {
+					&:hover {
+						background-color: $grey-d;
+					}
+				}
+			}
+		}
+	}
+
+	.buttons {
+		&--submit {
+			background-color: $grey;
+		}
+	}
+
+	.confirm {
+		background-color: $grey-xd;
+		box-shadow: rgb(84, 84, 84) 0 0 $offset-xs 0;
+	}
+
+	.header {
+		* {
+			color: black;
+		}
+	}
+
+	.index {
+		background-color: $grey-xl;
+		border-color: $grey-l;
+
+		.folder {
+			&__active {
+				@extend .folder;
+				background-color: $grey !important;
+				border-color: $grey-d;
+			}
+
+			&--task-count {
+				color: $grey-xd;
+			}
+		}
+	}
+
+	.main {
+		.task {
+			border-color: $grey-d;
+
+			&__completed {
+				@extend .task;
+				.task--info {
+					* {
+						color: $grey-d;
+						stroke: $grey-d;
+					}
+				}
+			}
+		}
+	}
+}
+
+.dark {
+	background-color: $black-d;
+
+	.add {
+		&--task {
+			color: $grey;
+		}
+
+		&--section:hover {
+			.add--section--text {
+				color: $grey;
+			}
+			.add--section--decoration {
+				background-color: $grey;
+			}
+		}
+	}
+
+	.more-icon {
+		* {
+			fill: $grey;
+		}
+	}
+
+	.calendar-icon {
+		stroke: $grey;
+	}
+
+	.arrow-icon {
+		&,
+		&__folded {
+			* {
+				fill: $grey;
+			}
+		}
+	}
+
+	.add-icon {
+		* {
+			fill: $grey;
+		}
+	}
+
+	.options,
+	.folder-list {
+		background-color: $black-l;
+		box-shadow: $black-xd 0 0 4px 1px;
+
+		&--option,
+		&--folder-name {
+			&:hover {
+				background-color: $black-xl;
+			}
+		}
+
+		input {
+			color: $grey;
+			background-color: $black-xl;
+			border-color: $black;
+		}
+	}
+
+	.folder-list {
+		input {
+			border-color: $grey-d;
+		}
+	}
+
+	form {
+		.date-selector-button {
+			background-color: $black-l;
+			color: $grey;
+		}
+
+		.circle-picker {
+			background-color: $black-l;
+			border-color: $black-xd;
+			box-shadow: $black-d 0 0 3px 0px;
+		}
+
+		.priority-cont {
+			&--preview,
+			&--picker {
+				background-color: $black;
+			}
+
+			&--picker {
+				.flag-icon {
+					&:hover {
+						background-color: $black-xxl;
+					}
+				}
+			}
+		}
+
+		input,
+		textarea {
+			background-color: $black;
+			border-color: $black-xd;
+			color: $grey;
+
+			&:focus {
+				outline: none;
+			}
+		}
+	}
+
+	.buttons {
+		&--submit,
+		&--cancel {
+			color: $grey;
+		}
+
+		&--submit {
+			background-color: $black-xl;
+		}
+	}
+
+	.confirm {
+		color: $grey;
+		background-color: $black-l;
+		box-shadow: $black-xd 0 0 $offset-xs 0;
+	}
+
+	.header {
+		* {
+			color: $grey;
+		}
+	}
+
+	.index {
+		color: $grey;
+		background-color: $black;
+		border: none;
+
+		.folder__active {
+			background-color: $black-l !important;
+			border-color: $black-xd;
+		}
+	}
+
+	.main {
+		color: $grey;
+
+		.task {
+			border-color: $black-xl;
+
+			&--info {
+				&--description,
+				&--due-date {
+					color: $grey-xd !important;
+				}
+			}
+
+			&__completed {
+				@extend .task;
+				.task--info {
+					* {
+						color: $black-xxl !important;
+						stroke: $black-xxl !important;
+					}
+				}
+			}
+		}
+	}
+}

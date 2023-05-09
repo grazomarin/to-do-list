@@ -6,7 +6,7 @@ import uniqid from 'uniqid';
 import CalendarIcon from './icon_components/CalendarIcon';
 import CheckBoxIcon from './icon_components/CheckboxIcon';
 
-function Task({
+export default function Task({
 	title,
 	description,
 	dueDate,
@@ -32,20 +32,20 @@ function Task({
 	const toggleConfirm = () => setShowConfirm((prev) => !prev);
 
 	return (
-		<div className={`task ${completed ? 'completed' : ''}`}>
+		<div className={`task${completed ? '__completed' : ''}`}>
 			<CheckBoxIcon
 				priority={priority}
 				completed={completed}
 				handleComplete={() => handleComplete(id)}
 			/>
 
-			<div className="info">
-				<div className="title">{title}</div>
+			<div className="task--info">
+				<div className="task--info--title">{title}</div>
 				{description && (
-					<div className="description">{description}</div>
+					<div className="task--info--description">{description}</div>
 				)}
 				{dueDate && (
-					<div className="dueDate">
+					<div className="task--info--due-date">
 						<CalendarIcon />
 						{dueDate}
 					</div>
@@ -77,5 +77,3 @@ function Task({
 		</div>
 	);
 }
-
-export default Task;

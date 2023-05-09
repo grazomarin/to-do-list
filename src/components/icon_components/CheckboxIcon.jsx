@@ -1,12 +1,10 @@
-import React from 'react';
-import { useTheme } from '../contexts/ThemeContext';
-
-function CheckBoxIcon({ priority, completed, handleComplete }) {
-	const { theme } = useTheme();
-
+export default function CheckBoxIcon({ priority, completed, handleComplete }) {
 	return (
 		<div className="checkbox-cont" onClick={handleComplete}>
-			<svg className="checkbox_icon" viewBox="-0.5 0 19 19">
+			<svg
+				className="checkbox-cont--checkbox-icon"
+				viewBox="-0.5 0 19 19"
+			>
 				<g strokeWidth="0" />
 
 				<g strokeLinecap="round" strokeLinejoin="round" />
@@ -36,7 +34,7 @@ function CheckBoxIcon({ priority, completed, handleComplete }) {
 			</svg>
 			{completed && (
 				<svg
-					className="check_icon"
+					className="checkbox-cont--check-icon"
 					viewBox="0 0 24 24"
 					fill="none"
 					stroke="#000000"
@@ -59,5 +57,3 @@ function CheckBoxIcon({ priority, completed, handleComplete }) {
 		</div>
 	);
 }
-
-export default CheckBoxIcon;

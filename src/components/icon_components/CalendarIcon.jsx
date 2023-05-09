@@ -1,12 +1,7 @@
-import React from 'react';
-import { useTheme } from '../contexts/ThemeContext';
-
-function CalendarIcon() {
-	const { theme } = useTheme();
-
+export default function CalendarIcon() {
 	return (
 		<svg
-			className={`calendar_icon ${theme === 'dark' ? 'dark' : ''}`}
+			className="calendar-icon"
 			viewBox="0 0 24 24"
 			fill="none"
 			xmlns="http://www.w3.org/2000/svg"
@@ -33,5 +28,3 @@ function CalendarIcon() {
 		</svg>
 	);
 }
-
-export default CalendarIcon;

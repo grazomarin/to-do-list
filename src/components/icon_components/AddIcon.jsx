@@ -1,12 +1,9 @@
 import React from 'react';
-import { useTheme } from '../contexts/ThemeContext';
 
 function AddIcon({ handleClick }) {
-	const { theme } = useTheme();
-
 	return (
 		<svg
-			className={`add_icon ${theme === 'dark' ? 'dark' : ''}`}
+			className="add-icon"
 			width="20"
 			height="20"
 			viewBox="0 0 370 370"

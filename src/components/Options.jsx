@@ -1,7 +1,6 @@
 import React, { useEffect, useState, useRef } from 'react';
-import { useTheme } from './contexts/ThemeContext';
 
-function Options({
+export default function Options({
 	hideOptions,
 	enableEdit,
 	handleDuplicate,
@@ -18,7 +17,6 @@ function Options({
 	MoveSection,
 }) {
 	const optionsRef = useRef();
-	const { theme } = useTheme();
 
 	function handleWindowClick(e) {
 		if (
@@ -35,42 +33,40 @@ function Options({
 	}, []);
 
 	return (
-		<div
-			className={`options ${theme === 'dark' ? 'dark' : ''}`}
-			ref={optionsRef}
-		>
+		<div className="options" ref={optionsRef}>
 			{Delete && (
-				<div className="option" onClick={enableDelete}>
+				<div className="options--option" onClick={enableDelete}>
 					Delete
 				</div>
 			)}
 			{Edit && (
-				<div className="option" onClick={enableEdit}>
+				<div className="options--option" onClick={enableEdit}>
 					Edit
 				</div>
 			)}
 			{Duplicate && (
-				<div className="option" onClick={handleDuplicate}>
+				<div className="options--option" onClick={handleDuplicate}>
 					Duplicate
 				</div>
 			)}
 			{AddFavorite && (
-				<div className="option" onClick={handleAddToFavorites}>
+				<div className="options--option" onClick={handleAddToFavorites}>
 					Add to Favorites
 				</div>
 			)}
 			{RemoveFavorite && (
-				<div className="option" onClick={handleRemoveFromFavorites}>
+				<div
+					className="options--option"
+					onClick={handleRemoveFromFavorites}
+				>
 					Remove from Favorites
 				</div>
 			)}
 			{MoveSection && (
-				<div className="option" onClick={displayFolderList}>
+				<div className="options--option" onClick={displayFolderList}>
 					Move Section
 				</div>
 			)}
 		</div>
 	);
 }
-
-export default Options;

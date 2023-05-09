@@ -1,11 +1,8 @@
 import React, { useEffect, useRef, useState } from 'react';
 import FlagIcon from './icon_components/FlagIcon';
-import { useTheme } from './contexts/ThemeContext';
 
-function PriorityPicker({ handleClick, priority }) {
+export default function PriorityPicker({ handleClick, priority }) {
 	const [showPicker, setShowPicker] = useState(false);
-	const { theme } = useTheme();
-
 	const displayPicker = () => setShowPicker(true);
 	const hidePicker = () => setShowPicker(false);
 
@@ -25,16 +22,13 @@ function PriorityPicker({ handleClick, priority }) {
 	});
 
 	return (
-		<div
-			className={`priorityPicker ${theme === 'dark' ? 'dark' : ''}`}
-			ref={pickerRef}
-		>
-			<div className="preview" onClick={displayPicker}>
+		<div className="priority-cont" ref={pickerRef}>
+			<div className="priority-cont--preview" onClick={displayPicker}>
 				<FlagIcon color={priority} handleClick={() => {}} />
 			</div>
 
 			{showPicker && (
-				<div className="picker">
+				<div className="priority-cont--picker">
 					<FlagIcon
 						color="#f44336"
 						handleClick={() => {
@@ -68,5 +62,3 @@ function PriorityPicker({ handleClick, priority }) {
 		</div>
 	);
 }
-
-export default PriorityPicker;

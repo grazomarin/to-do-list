@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { useTheme } from './contexts/ThemeContext';
 import { CirclePicker } from 'react-color';
-function TitleForm({
+
+export default function TitleForm({
 	handleCancel,
 	handleSubmit,
 	handleEdit,
@@ -11,7 +11,6 @@ function TitleForm({
 	Bullet,
 	Inline,
 }) {
-	const { theme } = useTheme();
 	const [title, setTitle] = useState(oldTitle || '');
 	const [color, setColor] = useState(oldColor || '#f44336');
 	const [showError, setShowError] = useState(false);
@@ -49,8 +48,8 @@ function TitleForm({
 	}
 
 	return (
-		<form className={theme == 'dark' ? 'dark' : ''}>
-			<div className={`input ${Inline ? 'inline' : ''}`}>
+		<form>
+			<div className={`input${Inline ? '__inline' : ''}`}>
 				<div className="input-cont">
 					{Bullet && (
 						<div
@@ -86,9 +85,9 @@ function TitleForm({
 						onChangeComplete={hideColorPicker}
 					/>
 				)}
-				<div className={`buttons ${theme == 'dark' ? 'dark' : ''}`}>
+				<div className="buttons">
 					<button
-						className="submit"
+						className="buttons--submit"
 						onClick={(e) => {
 							e.preventDefault();
 							if (title) {
@@ -103,7 +102,7 @@ function TitleForm({
 						Submit
 					</button>
 					<button
-						className="cancel"
+						className="buttons--cancel"
 						type="reset"
 						onClick={() => {
 							id
@@ -115,9 +114,9 @@ function TitleForm({
 					</button>
 				</div>
 			</div>
-			{showError && <div className="error">Enter a valid title!</div>}
+			{showError && (
+				<div className="error-message">Enter a valid title!</div>
+			)}
 		</form>
 	);
 }
-
-export default TitleForm;

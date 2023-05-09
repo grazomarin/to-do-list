@@ -3,13 +3,11 @@ import { useStorage } from './contexts/StorageContext';
 import Folder from './Folder';
 import TitleForm from './TitleForm';
 import uniqid from 'uniqid';
-import { useTheme } from './contexts/ThemeContext';
 import AddIcon from './icon_components/AddIcon';
 
-function Index() {
+export default function Index() {
 	const [addMode, setAddMode] = useState(false);
 	const [storage, setStorage] = useStorage();
-	const { theme } = useTheme();
 
 	const enableAddMode = () => setAddMode(true);
 	const disableAddMode = () => setAddMode(false);
@@ -139,10 +137,10 @@ function Index() {
 	}
 
 	return (
-		<div className={`index ${theme === 'dark' ? 'dark' : ''}`}>
+		<div className="index">
 			{areThereFavoriteFolders() && (
 				<>
-					<div className="title">Favorites:</div>
+					<div className="index--title">Favorites:</div>
 					{storage.map((folder) => {
 						return (
 							folder.favorite && (
@@ -167,7 +165,7 @@ function Index() {
 					})}
 				</>
 			)}
-			<div className="title">
+			<div className="index--title">
 				Folders:
 				<AddIcon handleClick={enableAddMode} />
 			</div>
@@ -215,5 +213,3 @@ function Index() {
 		</div>
 	);
 }
-
-export default Index;

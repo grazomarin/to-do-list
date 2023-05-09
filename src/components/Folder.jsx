@@ -4,7 +4,7 @@ import ConfirmAction from './ConfirmAction';
 import uniqid from 'uniqid';
 import MoreIcon from './icon_components/MoreIcon';
 
-function Folder({
+export default function Folder({
 	title,
 	color,
 	active,
@@ -55,12 +55,12 @@ function Folder({
 
 	return (
 		<div
-			className={`folder ${active ? 'active' : ''}`}
+			className={`folder${active ? '__active' : ''}`}
 			onClick={() => makeActive(id)}
 		>
 			<div className="bullet" style={{ backgroundColor: color }}></div>
-			<span className="title">{title}</span>
-			<div className="tasksCount">
+			<span className="folder--title">{title}</span>
+			<div className="folder--tasks-count">
 				{returnNumOfCompletedTasks()}/{returnNumOfTotalTasks()}
 			</div>
 			<MoreIcon handleClick={displayOptions} ref={moreRef} />
@@ -93,5 +93,3 @@ function Folder({
 		</div>
 	);
 }
-
-export default Folder;

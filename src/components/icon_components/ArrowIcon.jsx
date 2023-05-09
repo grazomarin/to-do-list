@@ -1,14 +1,9 @@
 import React from 'react';
-import { useTheme } from '../contexts/ThemeContext';
 
-function ArrowIcon({ folded, handleClick }) {
-	const { theme } = useTheme();
-
+export default function ArrowIcon({ folded, handleClick }) {
 	return (
 		<svg
-			className={`arrow_icon ${folded ? 'folded' : ''} ${
-				theme === 'dark' ? 'dark' : ''
-			}`}
+			className={`arrow-icon${folded ? '__folded' : ''} `}
 			onClick={handleClick}
 			viewBox="0 -4.5 20 20"
 			version="1.1"
@@ -36,5 +31,3 @@ function ArrowIcon({ folded, handleClick }) {
 		</svg>
 	);
 }
-
-export default ArrowIcon;

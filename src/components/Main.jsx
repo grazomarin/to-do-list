@@ -5,13 +5,11 @@ import TaskForm from './TaskForm';
 import uniqid from 'uniqid';
 import TitleForm from './TitleForm';
 import Section from './Section';
-import { useTheme } from './contexts/ThemeContext';
 
-function Main() {
+export default function Main() {
 	const [storage, setStorage] = useStorage();
 	const [addTaskMode, setAddTaskMode] = useState(false);
 	const [addSectionMode, setAddSectionMode] = useState(false);
-	const { theme } = useTheme();
 
 	const enableAddTaskMode = () => setAddTaskMode(true);
 	const disableAddTaskMode = () => setAddTaskMode(false);
@@ -187,18 +185,18 @@ function Main() {
 	}
 
 	return (
-		<div className={`main ${theme === 'dark' ? 'dark' : ''}`}>
+		<div className="main">
 			{/* checks if there are any selected folders */}
 			{returnActiveFolder() ? (
 				// if yes renders tasks and form
 				<>
 					<div
-						className="folder_title"
+						className="main--title"
 						style={{ color: returnActiveFolder().color }}
 					>
 						{returnActiveFolder().title}
 					</div>
-					<div className="tasks">
+					<div className="main--tasks">
 						{returnActiveFolder().tasks.map((task) => {
 							return task.edit ? (
 								<TaskForm
@@ -240,7 +238,7 @@ function Main() {
 								/>
 							) : (
 								<div
-									className="add_task"
+									className="add--task"
 									onClick={() => {
 										enableAddTaskMode();
 										disableAddSectionMode();
@@ -258,15 +256,17 @@ function Main() {
 								/>
 							) : (
 								<div
-									className="add_section"
+									className="add--section"
 									onClick={() => {
 										enableAddSectionMode();
 										disableAddTaskMode();
 									}}
 								>
-									<div className="decoration"></div>
-									<div className="text">Add Section</div>
-									<div className="decoration"></div>
+									<div className="add--section--decoration"></div>
+									<div className="add--section--text">
+										Add Section
+									</div>
+									<div className="add--section--decoration"></div>
 								</div>
 							)}
 						</h3>
@@ -287,9 +287,8 @@ function Main() {
 				</>
 			) : (
 				// if no asks to select a folder
-				<h2 className="notSelected">Select a Folder</h2>
+				<h2 className="not-selected">Select a Folder</h2>
 			)}
 		</div>
 	);
 }
-export default Main;

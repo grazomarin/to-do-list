@@ -3,9 +3,8 @@ import DatePicker from 'react-datepicker';
 import PriorityPicker from './PriorityPicker';
 import { setHours, setMinutes, format, parse } from 'date-fns';
 import CalendarIcon from './icon_components/CalendarIcon';
-import { useTheme } from './contexts/ThemeContext';
 
-function TaskForm({
+export default function TaskForm({
 	oldTitle,
 	oldDescription,
 	oldDate,
@@ -21,10 +20,9 @@ function TaskForm({
 	const [dueDate, setDueDate] = useState(parseDate(oldDate));
 	const [priority, setPriority] = useState(oldPriority || '#808080');
 	const [displayError, setDisplayError] = useState(false);
-	const { theme } = useTheme();
 	const DateSelector = forwardRef(({ value, onClick }, ref) => (
 		<button
-			className={`dateSelectorButton ${theme == 'dark' ? 'dark' : ''}`}
+			className="date-selector-button"
 			onClick={onClick}
 			ref={ref}
 			type="button"
@@ -58,7 +56,7 @@ function TaskForm({
 	}
 
 	return (
-		<form className={theme == 'dark' ? 'dark' : ''}>
+		<form>
 			<div className="input">
 				<div className="input-cont">
 					<input
@@ -78,7 +76,7 @@ function TaskForm({
 						placeholder="Details..."
 					></textarea>
 				</div>
-				<div className={`buttons ${theme == 'dark' ? 'dark' : ''}`}>
+				<div className="buttons">
 					<DatePicker
 						startDate={dueDate}
 						selected={dueDate}
@@ -98,7 +96,7 @@ function TaskForm({
 						handleClick={setPriority}
 					/>
 					<button
-						className="submit"
+						className="buttons--submit"
 						type="submit"
 						onClick={(e) => {
 							e.preventDefault();
@@ -127,7 +125,7 @@ function TaskForm({
 						Submit
 					</button>
 					<button
-						className="cancel"
+						className="buttons--cancel"
 						type="reset"
 						onClick={() => {
 							taskId
@@ -145,9 +143,9 @@ function TaskForm({
 					</button>
 				</div>
 			</div>
-			{displayError && <div className="error">Enter a valid title!</div>}
+			{displayError && (
+				<div className="error-message">Enter a valid title!</div>
+			)}
 		</form>
 	);
 }
-
-export default TaskForm;

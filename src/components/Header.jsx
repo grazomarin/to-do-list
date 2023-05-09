@@ -1,25 +1,18 @@
 import React, { useState } from 'react';
 import moon from '../assets/images/moon.svg';
 import sun from '../assets/images/sun.svg';
-import { useTheme } from './contexts/ThemeContext';
 
-function Header() {
-	const { theme, setTheme } = useTheme();
-
-	function toggleTheme() {
-		theme === 'light' ? setTheme('dark') : setTheme('light');
-	}
-
+export default function Header({ theme, toggleTheme }) {
 	return (
-		<div className={`header ${theme === 'dark' ? 'dark' : ''}`}>
+		<div className="header">
 			<img
-				className="theme_icon"
+				className="theme-icon"
 				src={theme === 'dark' ? sun : moon}
 				alt=""
 				onClick={toggleTheme}
 			/>
 			<a
-				className="title"
+				className="header--title"
 				href="https://github.com/grazomarin/to-do-list"
 				target="_blank"
 			>
@@ -28,5 +21,3 @@ function Header() {
 		</div>
 	);
 }
-
-export default Header;

@@ -1,12 +1,9 @@
 import React from 'react';
-import { useTheme } from '../contexts/ThemeContext';
 
 const MoreIcon = React.forwardRef(({ handleClick }, ref) => {
-	const { theme } = useTheme();
-
 	return (
 		<svg
-			className={`more_icon ${theme === 'dark' ? 'dark' : ''}`}
+			className="more-icon"
 			viewBox="0 0 24 24"
 			fill="none"
 			onClick={handleClick}

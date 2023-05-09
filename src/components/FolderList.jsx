@@ -1,12 +1,14 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { useStorage } from './contexts/StorageContext';
 import uniqid from 'uniqid';
-import { useTheme } from './contexts/ThemeContext';
 
-function FolderList({ hideFolderList, handleSectionMove, moreRef }) {
+export default function FolderList({
+	hideFolderList,
+	handleSectionMove,
+	moreRef,
+}) {
 	const [storage, setStorage] = useStorage();
 	const [searchValue, setSearchValue] = useState('');
-	const { theme } = useTheme();
 
 	const folderListRef = useRef();
 	const searchInputRef = useRef();
@@ -31,10 +33,7 @@ function FolderList({ hideFolderList, handleSectionMove, moreRef }) {
 	}
 
 	return (
-		<div
-			className={`folderList ${theme === 'dark' ? 'dark' : ''}`}
-			ref={folderListRef}
-		>
+		<div className="folder-list" ref={folderListRef}>
 			<input
 				type="text"
 				value={searchValue.source}
@@ -46,7 +45,7 @@ function FolderList({ hideFolderList, handleSectionMove, moreRef }) {
 					escapeRegex(folder.title)
 				) ? (
 					<div
-						className="folder_name"
+						className="folder-list--folder-name"
 						onClick={() => {
 							hideFolderList();
 							handleSectionMove(folder.id);
@@ -60,5 +59,3 @@ function FolderList({ hideFolderList, handleSectionMove, moreRef }) {
 		</div>
 	);
 }
-
-export default FolderList;
