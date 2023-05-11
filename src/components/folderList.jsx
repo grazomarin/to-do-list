@@ -1,5 +1,5 @@
 import React, { useState, useRef, useEffect } from 'react';
-import { useStorage } from './contexts/StorageContext';
+import { useStorage } from './contexts/storageContext';
 import uniqid from 'uniqid';
 
 export default function FolderList({

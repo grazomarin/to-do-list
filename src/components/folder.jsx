@@ -1,16 +1,11 @@
 import React, { useState, useRef } from 'react';
-import Options from './Options';
-import ConfirmAction from './ConfirmAction';
+import Options from './options';
+import ConfirmAction from './confirmAction';
 import uniqid from 'uniqid';
-import MoreIcon from './icon_components/MoreIcon';
+import MoreIcon from './icon_components/moreIcon';
 
 export default function Folder({
-	title,
-	color,
-	active,
-	tasks,
-	sections,
-	id,
+	folder,
 	makeActive,
 	handleDelete,
 	handleDuplicate,
@@ -33,21 +28,21 @@ export default function Folder({
 
 	function returnNumOfTotalTasks() {
 		let taskCount = 0;
-		taskCount += tasks.length;
-		for (let i = 0; i < sections.length; i++) {
-			taskCount += sections[i].tasks.length;
+		taskCount += folder.tasks.length;
+		for (let i = 0; i < folder.sections.length; i++) {
+			taskCount += folder.sections[i].tasks.length;
 		}
 		return taskCount;
 	}
 
 	function returnNumOfCompletedTasks() {
 		let completedCount = 0;
-		for (let i = 0; i < tasks.length; i++) {
-			tasks[i].completed ? completedCount++ : null;
+		for (let i = 0; i < folder.tasks.length; i++) {
+			folder.tasks[i].completed ? completedCount++ : null;
 		}
-		for (let i = 0; i < sections.length; i++) {
-			for (let y = 0; y < sections[i].tasks.length; y++) {
-				sections[i].tasks[y].completed ? completedCount++ : null;
+		for (let i = 0; i < folder.sections.length; i++) {
+			for (let y = 0; y < folder.sections[i].tasks.length; y++) {
+				folder.sections[i].tasks[y].completed ? completedCount++ : null;
 			}
 		}
 		return completedCount;
@@ -55,11 +50,14 @@ export default function Folder({
 
 	return (
 		<div
-			className={`folder${active ? '__active' : ''}`}
-			onClick={() => makeActive(id)}
+			className={`folder${folder.active ? '__active' : ''}`}
+			onClick={() => makeActive(folder.id)}
 		>
-			<div className="bullet" style={{ backgroundColor: color }}></div>
-			<span className="folder--title">{title}</span>
+			<div
+				className="bullet"
+				style={{ backgroundColor: folder.color }}
+			></div>
+			<span className="folder--title">{folder.title}</span>
 			<div className="folder--tasks-count">
 				{returnNumOfCompletedTasks()}/{returnNumOfTotalTasks()}
 			</div>
@@ -68,11 +66,11 @@ export default function Folder({
 				<Options
 					hideOptions={hideOptions}
 					enableDelete={toggleConfirm}
-					enableEdit={() => enableEdit(id)}
-					handleDuplicate={() => handleDuplicate(id)}
-					handleAddToFavorites={() => handleAddToFavorites(id)}
+					enableEdit={() => enableEdit(folder.id)}
+					handleDuplicate={() => handleDuplicate(folder.id)}
+					handleAddToFavorites={() => handleAddToFavorites(folder.id)}
 					handleRemoveFromFavorites={() =>
-						handleRemoveFromFavorites(id)
+						handleRemoveFromFavorites(folder.id)
 					}
 					key={uniqid()}
 					moreRef={moreRef}
@@ -85,8 +83,8 @@ export default function Folder({
 			)}
 			{showConfirm && (
 				<ConfirmAction
-					handleDelete={() => handleDelete(id)}
-					title={title}
+					handleDelete={() => handleDelete(folder.id)}
+					title={folder.title}
 					handleCancel={toggleConfirm}
 				/>
 			)}

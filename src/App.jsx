@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import WebFont from 'webfontloader';
-import { StorageProvider } from './components/contexts/StorageContext';
-import Header from './components/Header';
-import Index from './components/Index';
-import Main from './components/Main';
+import { StorageProvider } from './components/contexts/storageContext';
+import Header from './components/header';
+import Index from './components';
+import Tasks from './components/tasks';
 
 function App() {
 	const [theme, setTheme] = useState(
@@ -28,7 +28,7 @@ function App() {
 			<Header theme={theme} toggleTheme={toggleTheme} />
 			<StorageProvider>
 				<Index />
-				<Main />
+				<Tasks />
 			</StorageProvider>
 		</div>
 	);

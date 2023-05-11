@@ -2,17 +2,15 @@ import React, { useState, useEffect, useRef } from 'react';
 import { CirclePicker } from 'react-color';
 
 export default function TitleForm({
+	data,
 	handleCancel,
 	handleSubmit,
 	handleEdit,
-	oldTitle,
-	oldColor,
-	id,
 	Bullet,
 	Inline,
 }) {
-	const [title, setTitle] = useState(oldTitle || '');
-	const [color, setColor] = useState(oldColor || '#f44336');
+	const [title, setTitle] = useState(data?.title || '');
+	const [color, setColor] = useState(data?.color || '#f44336');
 	const [showError, setShowError] = useState(false);
 	const [showColorPicker, setShowColorPicker] = useState(false);
 
@@ -91,9 +89,9 @@ export default function TitleForm({
 						onClick={(e) => {
 							e.preventDefault();
 							if (title) {
-								id
-									? handleEdit(id, title, color)
-									: handleSubmit(title, color);
+								data?.id
+									? handleEdit(data.id, { title, color })
+									: handleSubmit({ title, color });
 								handleCancel();
 								resetValues();
 							} else throwError();
@@ -105,8 +103,11 @@ export default function TitleForm({
 						className="buttons--cancel"
 						type="reset"
 						onClick={() => {
-							id
-								? handleEdit(id, oldTitle, oldColor)
+							data?.id
+								? handleEdit(data.id, {
+										title: data.title,
+										color: data.color,
+								  })
 								: handleCancel();
 						}}
 					>

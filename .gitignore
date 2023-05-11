@@ -1,5 +1,6 @@
 node_modules
 TODO
+.unlighthouse
 .eslintrc.js
 .prettierrc.json
 .history
