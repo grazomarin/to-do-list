@@ -1,9 +1,9 @@
 import React, { useState } from 'react';
-import { useStorage } from './contexts/StorageContext';
-import Folder from './Folder';
-import TitleForm from './TitleForm';
+import { useStorage } from './contexts/storageContext';
+import Folder from './folder';
+import TitleForm from './titleForm';
 import uniqid from 'uniqid';
-import AddIcon from './icon_components/AddIcon';
+import AddIcon from './icon_components/addIcon';
 
 export default function Index() {
 	const [addMode, setAddMode] = useState(false);
@@ -40,15 +40,14 @@ export default function Index() {
 		});
 	}
 
-	function handleSubmitFolder(title, color) {
+	function handleSubmitFolder(data) {
 		makeFoldersInactive();
 		setStorage((folders) => [
 			...folders,
 			{
-				title: title,
+				...data,
 				tasks: [],
 				sections: [],
-				color: color,
 				favorite: false,
 				active: true,
 				edit: false,
@@ -76,23 +75,18 @@ export default function Index() {
 		});
 	}
 
-	function handleEdit(folderId, title, color) {
+	function handleEdit(folderId, updates) {
 		makeFoldersInactive();
 		setStorage((folders) => {
-			return folders.map((folder) => {
-				return folder.id === folderId
-					? {
-							title: title,
-							tasks: [...folder.tasks],
-							sections: [...folder.sections],
-							favorite: folder.favorite,
-							color: color,
+			return folders.map((folder) =>
+				folder.id === folderId
+					? Object.assign(folder, {
+							...updates,
 							active: true,
 							edit: false,
-							id: folderId,
-					  }
-					: folder;
-			});
+					  })
+					: folder
+			);
 		});
 	}
 
@@ -137,20 +131,15 @@ export default function Index() {
 	}
 
 	return (
-		<div className="index">
+		<div className='index'>
 			{areThereFavoriteFolders() && (
 				<>
-					<div className="index--title">Favorites:</div>
+					<div className='index--title'>Favorites:</div>
 					{storage.map((folder) => {
 						return (
 							folder.favorite && (
 								<Folder
-									title={folder.title}
-									color={folder.color}
-									tasks={folder.tasks}
-									sections={folder.sections}
-									id={folder.id}
-									active={folder.active}
+									folder={folder}
 									makeActive={makeFolderActive}
 									enableEdit={enableEdit}
 									handleRemoveFromFavorites={
@@ -165,7 +154,7 @@ export default function Index() {
 					})}
 				</>
 			)}
-			<div className="index--title">
+			<div className='index--title'>
 				Folders:
 				<AddIcon handleClick={enableAddMode} />
 			</div>
@@ -174,20 +163,13 @@ export default function Index() {
 					<TitleForm
 						handleCancel={() => {}}
 						handleEdit={handleEdit}
-						oldTitle={folder.title}
-						oldColor={folder.color}
-						id={folder.id}
+						data={folder}
 						key={folder.id}
 						Bullet
 					/>
 				) : (
 					<Folder
-						title={folder.title}
-						color={folder.color}
-						tasks={folder.tasks}
-						sections={folder.sections}
-						id={folder.id}
-						active={folder.active}
+						folder={folder}
 						makeActive={makeFolderActive}
 						handleDelete={handleDeleteFolder}
 						handleDuplicate={handleDuplicate}
@@ -195,11 +177,11 @@ export default function Index() {
 						handleRemoveFromFavorites={handleRemoveFromFavorites}
 						enableEdit={enableEdit}
 						key={folder.id}
+						AddFavorite={folder.favorite ? false : true}
+						RemoveFavorite={folder.favorite ? true : false}
 						Delete
 						Edit
 						Duplicate
-						AddFavorite={folder.favorite ? false : true}
-						RemoveFavorite={folder.favorite ? true : false}
 					/>
 				);
 			})}

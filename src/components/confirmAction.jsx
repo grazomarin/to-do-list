@@ -24,7 +24,7 @@ export default function ConfirmAction({ title, handleDelete, handleCancel }) {
 					<button className="buttons--submit" onClick={handleDelete}>
 						Confirm
 					</button>
-					<button className="buttons--submit" onClick={handleCancel}>
+					<button className="buttons--cancel" onClick={handleCancel}>
 						Cancel
 					</button>
 				</div>

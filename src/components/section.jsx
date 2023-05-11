@@ -1,16 +1,16 @@
 import React, { useState, useRef } from 'react';
-import { useStorage } from './contexts/StorageContext';
-import TaskForm from './TaskForm';
-import Task from './Task';
-import Options from './Options';
-import ConfirmAction from './ConfirmAction';
-import TitleForm from './TitleForm';
-import FolderList from './FolderList';
+import { useStorage } from './contexts/storageContext';
+import TaskForm from './taskForm';
+import Task from './task';
+import Options from './options';
+import ConfirmAction from './confirmAction';
+import TitleForm from './titleForm';
+import FolderList from './folderList';
 import uniqid from 'uniqid';
-import MoreIcon from './icon_components/MoreIcon';
-import ArrowIcon from './icon_components/ArrowIcon';
+import MoreIcon from './icon_components/moreIcon';
+import ArrowIcon from './icon_components/arrowIcon';
 
-export default function Section({ title, tasks, edit, id, folded }) {
+export default function Section({ section, id }) {
 	const [storage, setStorage] = useStorage();
 	const [addTaskMode, setAddTaskMode] = useState(false);
 	const [showConfirm, setShowConfirm] = useState(false);
@@ -72,7 +72,7 @@ export default function Section({ title, tasks, edit, id, folded }) {
 		);
 	}
 
-	function handleSectionEdit(sectionId, title) {
+	function handleSectionEdit(updates) {
 		setStorage((folders) =>
 			folders.map((folder) =>
 				folder.active
@@ -80,7 +80,10 @@ export default function Section({ title, tasks, edit, id, folded }) {
 							...folder,
 							sections: folder.sections.map((section) =>
 								section.id === sectionId
-									? { ...section, edit: false, title: title }
+									? Object.assign(section, {
+											...updates,
+											edit: false,
+									  })
 									: section
 							),
 					  }
@@ -133,29 +136,20 @@ export default function Section({ title, tasks, edit, id, folded }) {
 		});
 	}
 
-	function handleTaskSubmit(
-		title,
-		description,
-		dueDate,
-		priority,
-		sectionId
-	) {
+	function handleTaskSubmit(data) {
 		setStorage((folders) =>
 			folders.map((folder) =>
 				folder.active
 					? {
 							...folder,
 							sections: folder.sections.map((section) =>
-								section.id === sectionId
+								section.id === id
 									? {
 											...section,
 											tasks: [
-												...tasks,
+												...section.tasks,
 												{
-													title: title,
-													description: description,
-													dueDate: dueDate,
-													priority: priority,
+													...data,
 													completed: false,
 													edit: false,
 													id: uniqid(),
@@ -225,7 +219,7 @@ export default function Section({ title, tasks, edit, id, folded }) {
 		);
 	}
 
-	function handleTaskEdit(taskId, title, description, priority, dueDate) {
+	function handleTaskEdit(taskId, updates) {
 		setStorage((folders) =>
 			folders.map((folder) =>
 				folder.active
@@ -237,15 +231,10 @@ export default function Section({ title, tasks, edit, id, folded }) {
 											...section,
 											tasks: section.tasks.map((task) =>
 												task.id === taskId
-													? {
-															...task,
-															title: title,
-															description:
-																description,
-															dueDate: dueDate,
-															priority: priority,
+													? Object.assign(task, {
+															...updates,
 															edit: false,
-													  }
+													  })
 													: task
 											),
 									  }
@@ -267,7 +256,7 @@ export default function Section({ title, tasks, edit, id, folded }) {
 								section.id === id
 									? {
 											...section,
-											tasks: tasks.reduce(
+											tasks: section.tasks.reduce(
 												(reduced, task) => {
 													if (task.id !== taskId)
 														reduced.push(task);
@@ -333,22 +322,22 @@ export default function Section({ title, tasks, edit, id, folded }) {
 	}
 
 	return (
-		<div className="section">
-			{edit ? (
+		<div className='section'>
+			{section.edit ? (
 				<TitleForm
 					handleCancel={() => {}}
 					handleEdit={handleSectionEdit}
-					oldTitle={title}
+					data={section}
 					id={id}
 					Inline
 				/>
 			) : (
-				<div className="section--title">
+				<div className='section--title'>
 					<ArrowIcon
-						folded={folded}
-						handleClick={() => updateSectionFold(!folded)}
+						folded={section.folded}
+						handleClick={() => updateSectionFold(!section.folded)}
 					/>
-					{title}
+					{section.title}
 					<MoreIcon
 						handleClick={() => {
 							hideFolderList();
@@ -383,35 +372,26 @@ export default function Section({ title, tasks, edit, id, folded }) {
 					{showConfirm && (
 						<ConfirmAction
 							handleDelete={() => handleSectionDelete(id)}
-							title={title}
+							title={section.title}
 							handleCancel={toggleConfirm}
 						/>
 					)}
 				</div>
 			)}
 
-			{!folded && (
-				<div className="section--tasks">
-					{tasks.map((task) => {
+			{!section.folded && (
+				<div className='section--tasks'>
+					{section.tasks.map((task) => {
 						return task.edit ? (
 							<TaskForm
-								oldTitle={task.title}
-								oldDescription={task.description}
-								oldDate={task.dueDate}
-								oldPriority={task.priority}
-								taskId={task.id}
+								task={task}
 								handleCancel={() => {}}
 								handleEdit={handleTaskEdit}
 								key={task.id}
 							/>
 						) : (
 							<Task
-								title={task.title}
-								description={task.description}
-								dueDate={task.dueDate}
-								priority={task.priority}
-								completed={task.completed}
-								id={task.id}
+								task={task}
 								handleDelete={handleTaskDelete}
 								handleDuplicate={handleTaskDuplicate}
 								enableEdit={enableTaskEdit}
@@ -426,16 +406,15 @@ export default function Section({ title, tasks, edit, id, folded }) {
 						);
 					})}
 
-					<h3 className="add">
+					<h3 className='add'>
 						{addTaskMode ? (
 							<TaskForm
 								handleCancel={disableAddTaskMode}
 								handleSubmit={handleTaskSubmit}
-								sectionId={id}
 							/>
 						) : (
 							<div
-								className="add--task"
+								className='add--task'
 								onClick={enableAddTaskMode}
 							>
 								+ add task

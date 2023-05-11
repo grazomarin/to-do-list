@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState } from 'react';
-import FlagIcon from './icon_components/FlagIcon';
+import FlagIcon from './icon_components/flagIcon';
 
 export default function PriorityPicker({ handleClick, priority }) {
 	const [showPicker, setShowPicker] = useState(false);

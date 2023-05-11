@@ -1,25 +1,21 @@
 import React, { useState, useRef, useEffect, forwardRef } from 'react';
 import DatePicker from 'react-datepicker';
-import PriorityPicker from './PriorityPicker';
+import PriorityPicker from './priorityPicker';
 import { setHours, setMinutes, format, parse } from 'date-fns';
-import CalendarIcon from './icon_components/CalendarIcon';
+import CalendarIcon from './icon_components/calendarIcon';
 
 export default function TaskForm({
-	oldTitle,
-	oldDescription,
-	oldDate,
-	oldPriority,
-	taskId,
-	sectionId,
+	task,
 	handleCancel,
 	handleEdit,
 	handleSubmit,
 }) {
-	const [title, setTitle] = useState(oldTitle || '');
-	const [description, setDescription] = useState(oldDescription || '');
-	const [dueDate, setDueDate] = useState(parseDate(oldDate));
-	const [priority, setPriority] = useState(oldPriority || '#808080');
+	const [title, setTitle] = useState(task?.title || '');
+	const [description, setDescription] = useState(task?.description || '');
+	const [dueDate, setDueDate] = useState(parseDate(task?.date));
+	const [priority, setPriority] = useState(task?.priority || '#808080');
 	const [displayError, setDisplayError] = useState(false);
+
 	const DateSelector = forwardRef(({ value, onClick }, ref) => (
 		<button
 			className="date-selector-button"
@@ -101,22 +97,19 @@ export default function TaskForm({
 						onClick={(e) => {
 							e.preventDefault();
 							if (title) {
-								taskId
-									? handleEdit(
-											taskId,
+								task?.id
+									? handleEdit(task.id, {
 											title,
 											description,
-											formatDate(dueDate),
+											dueDate: formatDate(dueDate),
 											priority,
-											sectionId //if the form is called from section component, then sectionId is also submitted
-									  )
-									: handleSubmit(
+									  })
+									: handleSubmit({
 											title,
 											description,
-											formatDate(dueDate),
+											dueDate: formatDate(dueDate),
 											priority,
-											sectionId
-									  );
+									  });
 								handleCancel();
 								resetValues();
 							} else throwError();
@@ -128,15 +121,7 @@ export default function TaskForm({
 						className="buttons--cancel"
 						type="reset"
 						onClick={() => {
-							taskId
-								? handleEdit(
-										taskId,
-										oldTitle,
-										oldDescription,
-										oldDate,
-										oldPriority
-								  )
-								: handleCancel();
+							task?.id ? handleEdit(task) : handleCancel();
 						}}
 					>
 						Cancel

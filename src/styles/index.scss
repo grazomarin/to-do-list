@@ -2,15 +2,19 @@
 @import url('theme.scss');
 
 html {
-	height: 100vh;
 	font-family: $font;
+	height: 100vh;
+}
+
+body {
+	height: 100vh;
 }
 
 .container {
 	display: grid;
 	grid-template-columns: 300px 7fr;
 	grid-template-areas: 'index main';
-	height: 100vh;
+	min-height: 100vh;
 }
 
 .add {

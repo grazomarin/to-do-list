@@ -1,18 +1,13 @@
 import React, { useState, useRef } from 'react';
-import Options from './Options';
-import ConfirmAction from './ConfirmAction';
-import MoreIcon from './icon_components/MoreIcon';
+import Options from './options';
+import ConfirmAction from './confirmAction';
+import MoreIcon from './icon_components/moreIcon';
 import uniqid from 'uniqid';
-import CalendarIcon from './icon_components/CalendarIcon';
-import CheckBoxIcon from './icon_components/CheckboxIcon';
+import CalendarIcon from './icon_components/calendarIcon';
+import CheckBoxIcon from './icon_components/checkboxIcon';
 
 export default function Task({
-	title,
-	description,
-	dueDate,
-	priority,
-	completed,
-	id,
+	task,
 	handleDelete,
 	handleDuplicate,
 	enableEdit,
@@ -32,22 +27,24 @@ export default function Task({
 	const toggleConfirm = () => setShowConfirm((prev) => !prev);
 
 	return (
-		<div className={`task${completed ? '__completed' : ''}`}>
+		<div className={`task${task.completed ? '__completed' : ''}`}>
 			<CheckBoxIcon
-				priority={priority}
-				completed={completed}
-				handleComplete={() => handleComplete(id)}
+				priority={task.priority}
+				completed={task.completed}
+				handleComplete={() => handleComplete(task.id)}
 			/>
 
 			<div className="task--info">
-				<div className="task--info--title">{title}</div>
-				{description && (
-					<div className="task--info--description">{description}</div>
+				<div className="task--info--title">{task.title}</div>
+				{task.description && (
+					<div className="task--info--description">
+						{task.description}
+					</div>
 				)}
-				{dueDate && (
+				{task.dueDate && (
 					<div className="task--info--due-date">
 						<CalendarIcon />
-						{dueDate}
+						{task.dueDate}
 					</div>
 				)}
 			</div>
@@ -56,8 +53,8 @@ export default function Task({
 				<Options
 					hideOptions={hideOptions}
 					enableDelete={toggleConfirm}
-					handleDuplicate={() => handleDuplicate(id)}
-					enableEdit={() => enableEdit(id)}
+					handleDuplicate={() => handleDuplicate(task.id)}
+					enableEdit={() => enableEdit(task.id)}
 					key={uniqid()}
 					moreRef={moreRef}
 					Delete={Delete}
@@ -69,8 +66,8 @@ export default function Task({
 			)}
 			{showConfirm && (
 				<ConfirmAction
-					handleDelete={() => handleDelete(id)}
-					title={title}
+					handleDelete={() => handleDelete(task.id)}
+					title={task.title}
 					handleCancel={toggleConfirm}
 				/>
 			)}

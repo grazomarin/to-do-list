@@ -50,15 +50,15 @@ export default function TitleForm({
 	return (
 		<form>
 			<div className={`input${Inline ? '__inline' : ''}`}>
-				<div className="input-cont">
+				<div className='input-cont'>
 					{Bullet && (
 						<div
-							className="bullet-cont"
+							className='bullet-cont'
 							onClick={displayColorPicker}
 							ref={bulletRef}
 						>
 							<div
-								className="bullet"
+								className='bullet'
 								style={{
 									backgroundColor: color,
 								}}
@@ -66,17 +66,17 @@ export default function TitleForm({
 						</div>
 					)}
 					<input
-						type="text"
-						name="title"
+						type='text'
+						name='title'
 						value={title}
 						onInput={(e) => setTitle(e.target.value)}
-						placeholder="Title"
+						placeholder='Title'
 						ref={inputRef}
 					/>
 				</div>
 				{showColorPicker && (
 					<CirclePicker
-						triangle="hide"
+						triangle='hide'
 						color={color}
 						ref={colorPickerRef}
 						onChange={(newColor) => {
@@ -85,9 +85,9 @@ export default function TitleForm({
 						onChangeComplete={hideColorPicker}
 					/>
 				)}
-				<div className="buttons">
+				<div className='buttons'>
 					<button
-						className="buttons--submit"
+						className='buttons--submit'
 						onClick={(e) => {
 							e.preventDefault();
 							if (title) {
@@ -102,8 +102,8 @@ export default function TitleForm({
 						Submit
 					</button>
 					<button
-						className="buttons--cancel"
-						type="reset"
+						className='buttons--cancel'
+						type='reset'
 						onClick={() => {
 							id
 								? handleEdit(id, oldTitle, oldColor)
@@ -115,7 +115,7 @@ export default function TitleForm({
 				</div>
 			</div>
 			{showError && (
-				<div className="error-message">Enter a valid title!</div>
+				<div className='error-message'>Enter a valid title!</div>
 			)}
 		</form>
 	);
