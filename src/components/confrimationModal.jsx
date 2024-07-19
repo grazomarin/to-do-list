@@ -1,7 +1,11 @@
 import React, { useState, useEffect } from 'react';
 import ReactDOM from 'react-dom';
 
-export default function ConfirmAction({ title, handleDelete, handleCancel }) {
+export default function ConfirmationModal({
+	title,
+	handleDelete,
+	handleCancel,
+}) {
 	function handleClick(e) {
 		if (e.target.className === 'overlay') handleCancel();
 	}

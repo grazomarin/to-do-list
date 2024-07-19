@@ -1,15 +1,12 @@
 import React, { useState, useEffect } from 'react';
 import WebFont from 'webfontloader';
-import { StorageProvider } from './components/contexts/storageContext';
 import Header from './components/header';
 import Index from './components';
 import Tasks from './components/tasks';
 
 function App() {
 	const [theme, setTheme] = useState(
-		window.matchMedia('(prefers-color-scheme:dark)').matches
-			? 'dark'
-			: 'light'
+		window.matchMedia('(prefers-color-scheme:dark)').matches ? 'dark' : 'light'
 	);
 
 	const toggleTheme = () =>
@@ -26,10 +23,8 @@ function App() {
 	return (
 		<div className={`container ${theme}`}>
 			<Header theme={theme} toggleTheme={toggleTheme} />
-			<StorageProvider>
-				<Index />
-				<Tasks />
-			</StorageProvider>
+			<Index />
+			<Tasks />
 		</div>
 	);
 }

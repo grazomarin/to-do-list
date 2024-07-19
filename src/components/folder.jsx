@@ -1,93 +1,169 @@
-import React, { useState, useRef } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import Options from './options';
-import ConfirmAction from './confirmAction';
+import ConfiramtionModal from './confrimationModal';
 import uniqid from 'uniqid';
 import MoreIcon from './icon_components/moreIcon';
+import { CirclePicker } from 'react-color';
+import {
+	addFolder,
+	addFolderToFavorites,
+	deleteFolder,
+	duplicateFolder,
+	editFolder,
+	removeFolderFromFavorites,
+} from '../storage/storage';
+import { useDispatch } from 'react-redux';
+import ConfirmationModal from './confrimationModal';
 
 export default function Folder({
 	folder,
-	makeActive,
-	handleDelete,
-	handleDuplicate,
-	handleAddToFavorites,
-	handleRemoveFromFavorites,
 	enableEdit,
-	Delete,
-	Edit,
-	Duplicate,
-	AddFavorite,
-	RemoveFavorite,
+	setActiveFolderId,
+	active,
 }) {
-	const [showConfirm, setShowConfirm] = useState(false);
-	const [showOptions, setShowOptions] = useState(false);
-	const moreRef = useRef();
-	const displayOptions = () => setShowOptions(true);
-	const hideOptions = () => setShowOptions(false);
-
-	const toggleConfirm = () => setShowConfirm((prev) => !prev);
+	const dispatch = useDispatch();
+	const [showConfirmationModal, setShowConfirmationModal] = useState(false);
+	const { id } = folder;
 
 	function returnNumOfTotalTasks() {
-		let taskCount = 0;
-		taskCount += folder.tasks.length;
-		for (let i = 0; i < folder.sections.length; i++) {
-			taskCount += folder.sections[i].tasks.length;
-		}
-		return taskCount;
+		const totalUnsectionedTasks = folder.tasks.length;
+		const totalSectionedTasks = folder.sections.reduce((acc, section) => {
+			return acc + section.tasks.length;
+		}, 0);
+
+		return totalUnsectionedTasks + totalSectionedTasks;
 	}
 
 	function returnNumOfCompletedTasks() {
-		let completedCount = 0;
-		for (let i = 0; i < folder.tasks.length; i++) {
-			folder.tasks[i].completed ? completedCount++ : null;
-		}
-		for (let i = 0; i < folder.sections.length; i++) {
-			for (let y = 0; y < folder.sections[i].tasks.length; y++) {
-				folder.sections[i].tasks[y].completed ? completedCount++ : null;
-			}
-		}
-		return completedCount;
+		const completedUnsectionedTasks = folder.tasks.filter(
+			(task) => task.completed
+		).length;
+		const completedSectionedTasks = folder.sections.reduce((acc, section) => {
+			return acc + section.tasks.filter((task) => task.completed).length;
+		}, 0);
+
+		return completedUnsectionedTasks + completedSectionedTasks;
 	}
 
 	return (
 		<div
-			className={`folder${folder.active ? '__active' : ''}`}
-			onClick={() => makeActive(folder.id)}
+			className={active ? 'folder__active' : 'folder'}
+			onClick={() => {
+				if (!active) setActiveFolderId(folder.id);
+			}}
 		>
-			<div
-				className="bullet"
-				style={{ backgroundColor: folder.color }}
-			></div>
-			<span className="folder--title">{folder.title}</span>
-			<div className="folder--tasks-count">
+			<div className='bullet' style={{ backgroundColor: folder.color }}></div>
+			<span className='folder--title'>{folder.title}</span>
+			<div className='folder--tasks-count'>
 				{returnNumOfCompletedTasks()}/{returnNumOfTotalTasks()}
 			</div>
-			<MoreIcon handleClick={displayOptions} ref={moreRef} />
-			{showOptions && (
-				<Options
-					hideOptions={hideOptions}
-					enableDelete={toggleConfirm}
-					enableEdit={() => enableEdit(folder.id)}
-					handleDuplicate={() => handleDuplicate(folder.id)}
-					handleAddToFavorites={() => handleAddToFavorites(folder.id)}
-					handleRemoveFromFavorites={() =>
-						handleRemoveFromFavorites(folder.id)
-					}
-					key={uniqid()}
-					moreRef={moreRef}
-					Delete={Delete}
-					Edit={Edit}
-					Duplicate={Duplicate}
-					AddFavorite={AddFavorite}
-					RemoveFavorite={RemoveFavorite}
+			<Options>
+				<Options.Option text='Edit' handleClick={enableEdit} />
+				<Options.Option
+					text='Delete'
+					handleClick={() => setShowConfirmationModal(true)}
 				/>
-			)}
-			{showConfirm && (
-				<ConfirmAction
-					handleDelete={() => handleDelete(folder.id)}
+
+				<Options.Option
+					text='Duplicate'
+					handleClick={() => dispatch(duplicateFolder({ id }))}
+				/>
+				{folder.favorite ? (
+					<Options.Option
+						text='Remove from Favorites'
+						handleClick={() => dispatch(removeFolderFromFavorites({ id }))}
+					/>
+				) : (
+					<Options.Option
+						handleClick={() => dispatch(addFolderToFavorites({ id }))}
+						text='Add to Favorites'
+					/>
+				)}
+			</Options>
+			{showConfirmationModal && (
+				<ConfirmationModal
 					title={folder.title}
-					handleCancel={toggleConfirm}
+					handleDelete={() => dispatch(deleteFolder({ id }))}
+					handleCancel={() => setShowConfirmationModal(false)}
 				/>
 			)}
 		</div>
 	);
 }
+
+Folder.Form = ({ folder, disableForm }) => {
+	const dispatch = useDispatch();
+	const [title, setTitle] = useState(folder?.title || '');
+	const [color, setColor] = useState(folder?.color || '#f44336');
+	const [showError, setShowError] = useState(false);
+	const [displayColorPicker, setDisplayColorPicker] = useState(false);
+	const { id } = folder;
+
+	function handleSubmit(e) {
+		e.preventDefault();
+		if (isFormValid()) {
+			id
+				? dispatch(editFolder({ id, title, color }))
+				: dispatch(addFolder({ title, color }));
+			disableForm();
+		} else {
+			throwError();
+		}
+	}
+
+	function isFormValid() {
+		return title.trim() !== '';
+	}
+
+	function throwError() {
+		setShowError(true);
+		setTimeout(() => setShowError(false), 2000);
+	}
+
+	return (
+		<form action='none'>
+			<div className='input'>
+				<div className='input-cont'>
+					<div
+						className='bullet-cont'
+						onClick={() => setDisplayColorPicker((prev) => !prev)}
+					>
+						<div className='bullet' style={{ backgroundColor: color }} />
+					</div>
+					<input
+						type='text'
+						name='title'
+						value={title}
+						onInput={(e) => setTitle(e.target.value)}
+						placeholder='Title'
+					/>
+				</div>
+
+				{displayColorPicker && (
+					<CirclePicker
+						triangle='hide'
+						color={color}
+						onChange={(newColor) => setColor(newColor.hex)}
+						onChangeComplete={() => setDisplayColorPicker(false)}
+					/>
+				)}
+
+				<div className='buttons'>
+					<button className='buttons--submit' onClick={handleSubmit}>
+						{folder?.id ? 'Edit' : 'Add'}
+					</button>
+					<button
+						className='buttons--cancel'
+						type='reset'
+						onClick={() => {
+							disableForm();
+						}}
+					>
+						Cancel
+					</button>
+				</div>
+			</div>
+			{showError && <div className='error-message'>Enter a valid title!</div>}
+		</form>
+	);
+};

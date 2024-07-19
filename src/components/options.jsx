@@ -1,72 +1,39 @@
 import React, { useEffect, useState, useRef } from 'react';
+import MoreIcon from './icon_components/moreIcon';
 
-export default function Options({
-	hideOptions,
-	enableEdit,
-	handleDuplicate,
-	handleAddToFavorites,
-	handleRemoveFromFavorites,
-	displayFolderList,
-	enableDelete,
-	moreRef,
-	Delete,
-	Edit,
-	Duplicate,
-	AddFavorite,
-	RemoveFavorite,
-	MoveSection,
-}) {
-	const optionsRef = useRef();
-
-	function handleWindowClick(e) {
-		if (
-			!optionsRef.current.contains(e.target) &&
-			optionsRef.current.className !== e.target?.className &&
-			moreRef.current !== e.target
-		)
-			hideOptions();
-	}
+function Options({ children }) {
+	const [showOptions, setShowOptions] = useState(false);
 
 	useEffect(() => {
-		window.addEventListener('click', handleWindowClick);
-		return () => window.removeEventListener('click', handleWindowClick);
-	}, []);
+		function handleClick(e) {
+			if (e.target.className !== 'more-icon') setShowOptions();
+		}
+
+		window.addEventListener('click', handleClick);
+
+		return () => {
+			window.removeEventListener('click', handleClick);
+		};
+	});
 
 	return (
-		<div className="options" ref={optionsRef}>
-			{Delete && (
-				<div className="options--option" onClick={enableDelete}>
-					Delete
-				</div>
-			)}
-			{Edit && (
-				<div className="options--option" onClick={enableEdit}>
-					Edit
-				</div>
-			)}
-			{Duplicate && (
-				<div className="options--option" onClick={handleDuplicate}>
-					Duplicate
-				</div>
-			)}
-			{AddFavorite && (
-				<div className="options--option" onClick={handleAddToFavorites}>
-					Add to Favorites
-				</div>
-			)}
-			{RemoveFavorite && (
-				<div
-					className="options--option"
-					onClick={handleRemoveFromFavorites}
-				>
-					Remove from Favorites
-				</div>
-			)}
-			{MoveSection && (
-				<div className="options--option" onClick={displayFolderList}>
-					Move Section
-				</div>
-			)}
-		</div>
+		<>
+			<MoreIcon
+				handleClick={async () => {
+					await setTimeout(() => setShowOptions(true), 0);
+				}}
+			/>
+			{showOptions && <div className='options'>{children}</div>}
+		</>
 	);
 }
+
+Options.Option = ({ text, handleClick }) => {
+	return (
+		<div className='options--option' onClick={() => handleClick()}>
+			{text}
+		</div>
+	);
+};
+
+export default Options;
