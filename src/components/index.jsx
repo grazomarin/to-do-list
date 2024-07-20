@@ -46,6 +46,7 @@ export default function Index() {
 					<Folder.Form
 						folder={folder}
 						disableForm={() => setEditFolderId(null)}
+						key={folder.id}
 					/>
 				) : (
 					<Folder

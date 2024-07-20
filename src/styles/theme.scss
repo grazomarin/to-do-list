@@ -140,6 +140,10 @@
 			}
 		}
 	}
+
+	.not-selected {
+		color: black;
+	}
 }
 
 .dark {
@@ -306,5 +310,9 @@
 				}
 			}
 		}
+	}
+
+	.not-selected {
+		color: $grey;
 	}
 }

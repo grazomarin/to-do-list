@@ -70,8 +70,52 @@ const todoSlice = createSlice({
 			);
 			folder.favorite = true;
 		},
+		addTask: (state, action) => {
+			const folder = state.folders.find(
+				(folder) => folder.id === state.activeFolderId
+			);
+			folder.tasks.push({
+				...action.payload,
+				isCompleted: false,
+				id: uniqid(),
+			});
+		},
+		editTask: (state, action) => {
+			const folder = state.folders.find(
+				(folder) => folder.id === state.activeFolderId
+			);
+			const task = folder.tasks.find((task) => task.id === action.payload.id);
+			task.title = action.payload.title;
+			task.priorityColor = action.payload.priorityColor;
+			task.description = action.payload.description;
+			task.dueDateString = action.payload.dueDateString;
+		},
+		toggleIsCompleteTask: (state, action) => {
+			const folder = state.folders.find(
+				(folder) => folder.id === state.activeFolderId
+			);
+			const task = folder.tasks.find((task) => task.id === action.payload.id);
+			task.isCompleted = !task.isCompleted;
+		},
+		deleteTask: (state, action) => {
+			const folder = state.folders.find(
+				(folder) => folder.id === state.activeFolderId
+			);
+			folder.tasks = folder.tasks.filter(
+				(task) => task.id !== action.payload.id
+			);
+		},
+		duplicateTask: (state, action) => {
+			const folder = state.folders.find(
+				(folder) => folder.id === state.activeFolderId
+			);
+			const task = folder.tasks.find((task) => task.id === action.payload.id);
+			folder.tasks.push({ ...task, id: uniqid() });
+		},
 	},
 });
+
+// TODO add transfer Folders feature
 
 export const {
 	setActiveFolderId,
@@ -81,6 +125,11 @@ export const {
 	duplicateFolder,
 	removeFolderFromFavorites,
 	addFolderToFavorites,
+	addTask,
+	editTask,
+	toggleIsCompleteTask,
+	deleteTask,
+	duplicateTask,
 } = todoSlice.actions;
 
 const store = configureStore({

@@ -97,13 +97,12 @@ Folder.Form = ({ folder, disableForm }) => {
 	const [color, setColor] = useState(folder?.color || '#f44336');
 	const [showError, setShowError] = useState(false);
 	const [displayColorPicker, setDisplayColorPicker] = useState(false);
-	const { id } = folder;
 
 	function handleSubmit(e) {
 		e.preventDefault();
 		if (isFormValid()) {
-			id
-				? dispatch(editFolder({ id, title, color }))
+			folder
+				? dispatch(editFolder({ id: folder.id, title, color }))
 				: dispatch(addFolder({ title, color }));
 			disableForm();
 		} else {
@@ -155,9 +154,7 @@ Folder.Form = ({ folder, disableForm }) => {
 					<button
 						className='buttons--cancel'
 						type='reset'
-						onClick={() => {
-							disableForm();
-						}}
+						onClick={disableForm}
 					>
 						Cancel
 					</button>

@@ -5,23 +5,17 @@ function Options({ children }) {
 	const [showOptions, setShowOptions] = useState(false);
 
 	useEffect(() => {
-		function handleClick(e) {
-			if (e.target.className !== 'more-icon') setShowOptions();
-		}
-
+		const handleClick = () => setShowOptions(false);
 		window.addEventListener('click', handleClick);
-
-		return () => {
-			window.removeEventListener('click', handleClick);
-		};
+		return () => window.removeEventListener('click', handleClick);
 	});
 
 	return (
 		<>
 			<MoreIcon
-				handleClick={async () => {
-					await setTimeout(() => setShowOptions(true), 0);
-				}}
+				handleClick={async () =>
+					await setTimeout(() => setShowOptions(true), 0)
+				}
 			/>
 			{showOptions && <div className='options'>{children}</div>}
 		</>

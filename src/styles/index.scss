@@ -550,10 +550,9 @@ button {
 			}
 		}
 	}
+}
 
-	.not-selected {
-		margin: $offset-xl;
-		align-self: start;
-		justify-self: center;
-	}
+.not-selected {
+	margin: $offset-xl;
+	align-self: start;
 }
