@@ -35,11 +35,9 @@ export default function Folder({
 	}
 
 	function returnNumOfCompletedTasks() {
-		const completedUnsectionedTasks = folder.tasks.filter(
-			(task) => task.completed
-		).length;
+		const completedUnsectionedTasks = folder.tasks.filter((task) => task.isCompleted).length;
 		const completedSectionedTasks = folder.sections.reduce((acc, section) => {
-			return acc + section.tasks.filter((task) => task.completed).length;
+			return acc + section.tasks.filter((task) => task.isCompleted).length;
 		}, 0);
 
 		return completedUnsectionedTasks + completedSectionedTasks;
