@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import Options from './options';
 import ConfirmationModal from './confrimationModal';
 import CalendarIcon from './icon_components/calendarIcon';
@@ -6,27 +6,18 @@ import CheckBoxIcon from './icon_components/checkboxIcon';
 import PriorityPicker from './priorityPicker';
 import CustomDatePicker from './customDatePicker';
 import FormButtons from './formButtons';
-import { useDispatch } from 'react-redux';
 import { format, parse } from 'date-fns';
-import {
-	addTask,
-	editTask,
-	toggleIsCompleteTask,
-	duplicateTask,
-	deleteTask,
-} from '../storage/storage';
 
-function Task({ task, enableEdit }) {
+function Task({ task, enableEdit, toggleCompleteTask, duplicateTask, deleteTask }) {
 	const [showConfirmationModal, setShowConfirmationModal] = useState(false);
-	const dispatch = useDispatch();
 	const { id } = task;
 
 	return (
-		<div className={task.completed ? 'task__completed' : 'task'}>
+		<div className={task.isCompleted ? 'task__completed' : 'task'}>
 			<CheckBoxIcon
 				priorityColor={task.priorityColor}
 				completed={task.isCompleted}
-				handleComplete={() => dispatch(toggleIsCompleteTask({ id }))}
+				handleComplete={() => toggleCompleteTask(id)}
 			/>
 
 			<div className='task--info'>
@@ -43,13 +34,13 @@ function Task({ task, enableEdit }) {
 			<Options>
 				<Options.Option text='Edit' handleClick={enableEdit} />
 				<Options.Option text='Delete' handleClick={() => setShowConfirmationModal(true)} />
-				<Options.Option text='Duplicate' handleClick={() => dispatch(duplicateTask({ id }))} />
+				<Options.Option text='Duplicate' handleClick={() => duplicateTask({ id })} />
 			</Options>
 
 			{showConfirmationModal && (
 				<ConfirmationModal
 					title={task.title}
-					handleDelete={() => dispatch(deleteTask({ id }))}
+					handleDelete={() => deleteTask(id)}
 					handleCancel={() => setShowConfirmationModal(false)}
 				/>
 			)}
@@ -57,8 +48,7 @@ function Task({ task, enableEdit }) {
 	);
 }
 
-Task.Form = ({ task, disableForm }) => {
-	const dispatch = useDispatch();
+Task.Form = function TaskForm({ task, disableForm, addTask, editTask }) {
 	const [title, setTitle] = useState(task?.title || '');
 	const [description, setDescription] = useState(task?.description || '');
 	const [dueDate, setDueDate] = useState(toFormattedDate(task?.dueDateString));
@@ -83,26 +73,23 @@ Task.Form = ({ task, disableForm }) => {
 	}
 
 	function handleSubmit(e) {
+		console.log(toFormattedDateString(dueDate));
 		e.preventDefault();
 		if (isFormValid()) {
 			task
-				? dispatch(
-						editTask({
-							id: task.id,
-							title,
-							priorityColor,
-							description,
-							dueDateString: toFormattedDateString(dueDate),
-						})
-				  )
-				: dispatch(
-						addTask({
-							title,
-							priorityColor,
-							description,
-							dueDateString: toFormattedDateString(dueDate),
-						})
-				  );
+				? editTask({
+						id: task.id,
+						title,
+						priorityColor,
+						description,
+						dueDateString: toFormattedDateString(dueDate),
+				  })
+				: addTask({
+						title,
+						priorityColor,
+						description,
+						dueDateString: toFormattedDateString(dueDate),
+				  });
 			disableForm();
 		} else {
 			throwError();
