@@ -11,6 +11,16 @@ function saveState(state) {
 	localStorage.setItem('userdata', JSON.stringify(state));
 }
 
+function passInActiveFolder(reducer) {
+	return (state, action) => {
+		const { activeFolderId } = state;
+		const activeFolder = state.folders.find(
+			(folder) => folder.id === activeFolderId
+		);
+		return reducer(state, action, activeFolder);
+	};
+}
+
 const todoSlice = createSlice({
 	name: 'todo',
 	initialState: {
@@ -70,52 +80,83 @@ const todoSlice = createSlice({
 			);
 			folder.favorite = true;
 		},
-		addTask: (state, action) => {
-			const folder = state.folders.find(
-				(folder) => folder.id === state.activeFolderId
-			);
-			folder.tasks.push({
-				...action.payload,
+		addTask: passInActiveFolder((state, action, activeFolder) => {
+			let storage;
+			if (action.payload.sectionId) {
+				storage = activeFolder.sections.find(
+					(section) => section.id === action.payload.sectionId
+				);
+			} else {
+				storage = activeFolder;
+			}
+			storage.tasks.push({
+				title: action.payload.title,
+				priorityColor: action.payload.priorityColor,
+				description: action.payload.description,
+				dueDateString: action.payload.dueDateString,
 				isCompleted: false,
 				id: uniqid(),
 			});
-		},
-		editTask: (state, action) => {
-			const folder = state.folders.find(
-				(folder) => folder.id === state.activeFolderId
+		}),
+		editTask: passInActiveFolder((state, action, activeFolder) => {
+			let task;
+			if (action.payload.sectionId) {
+				const section = activeFolder.sections.find(
+					(section) => section.id === action.payload.sectionId
 			);
-			const task = folder.tasks.find((task) => task.id === action.payload.id);
+				task = section.tasks.find((task) => task.id === action.payload.id);
+			} else {
+				task = activeFolder.tasks.find((task) => task.id === action.payload.id);
+			}
 			task.title = action.payload.title;
 			task.priorityColor = action.payload.priorityColor;
 			task.description = action.payload.description;
 			task.dueDateString = action.payload.dueDateString;
-		},
-		toggleIsCompleteTask: (state, action) => {
-			const folder = state.folders.find(
-				(folder) => folder.id === state.activeFolderId
+		}),
+		toggleCompleteTask: passInActiveFolder((state, action, activeFolder) => {
+			let task;
+			if (action.payload.sectionId) {
+				const section = activeFolder.sections.find(
+					(section) => section.id === action.payload.sectionId
 			);
-			const task = folder.tasks.find((task) => task.id === action.payload.id);
+				task = section.tasks.find((task) => task.id === action.payload.id);
+			} else {
+				task = activeFolder.tasks.find((task) => task.id === action.payload.id);
+			}
 			task.isCompleted = !task.isCompleted;
-		},
-		deleteTask: (state, action) => {
-			const folder = state.folders.find(
-				(folder) => folder.id === state.activeFolderId
-			);
-			folder.tasks = folder.tasks.filter(
+		}),
+		deleteTask: passInActiveFolder((state, action, activeFolder) => {
+			if (action.payload.sectionId) {
+				const section = activeFolder.sections.find(
+					(section) => section.id === action.payload.sectionId
+				);
+				section.tasks = section.tasks.filter(
+					(task) => task.id !== action.payload.id
+				);
+			} else {
+				activeFolder.tasks = activeFolder.tasks.filter(
 				(task) => task.id !== action.payload.id
 			);
-		},
-		duplicateTask: (state, action) => {
-			const folder = state.folders.find(
-				(folder) => folder.id === state.activeFolderId
-			);
-			const task = folder.tasks.find((task) => task.id === action.payload.id);
-			folder.tasks.push({ ...task, id: uniqid() });
-		},
+			}
+		}),
+		duplicateTask: passInActiveFolder((state, action, activeFolder) => {
+			let task;
+			let taskIndex;
+			let data;
+			if (action.payload.sectionId) {
+				const section = activeFolder.sections.find(
+					(section) => section.id === action.payload.sectionId
+				);
+				data = section.tasks;
+			} else {
+				data = activeFolder.tasks;
+			}
+			task = data.find((task) => task.id === action.payload.id);
+			taskIndex = data.findIndex((task) => task.id === action.payload.id);
+			data.splice(taskIndex + 1, 0, { ...task, id: uniqid() });
+		}),
 	},
 });
-
-// TODO add transfer Folders feature
 
 export const {
 	setActiveFolderId,
@@ -127,7 +168,7 @@ export const {
 	addFolderToFavorites,
 	addTask,
 	editTask,
-	toggleIsCompleteTask,
+	toggleCompleteTask,
 	deleteTask,
 	duplicateTask,
 } = todoSlice.actions;
