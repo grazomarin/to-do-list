@@ -1,9 +1,15 @@
 import { forwardRef } from 'react';
 import CalendarIcon from './icon_components/calendarIcon';
 import DatePicker from 'react-datepicker';
-import { setHours, setMinutes } from 'date-fns';
 
 function CustomDatePicker({ dueDate, setDueDate }) {
+	const filterPassedTime = (time) => {
+		const currentDate = new Date();
+		const selectedDate = new Date(time);
+
+		return currentDate.getTime() < selectedDate.getTime();
+	};
+
 	return (
 		<DatePicker
 			startDate={dueDate}
@@ -11,9 +17,7 @@ function CustomDatePicker({ dueDate, setDueDate }) {
 			onChange={(date) => setDueDate(date)}
 			showTimeSelect
 			dateFormat='MMM dd, p'
-			minDate={new Date()}
-			minTime={new Date()}
-			maxTime={setHours(setMinutes(new Date(), 59), 23)}
+			filterTime={filterPassedTime}
 			customInput={<CustomDatePicker.customInput />}
 			isClearable
 			fixedHeight
@@ -21,7 +25,7 @@ function CustomDatePicker({ dueDate, setDueDate }) {
 	);
 }
 
-CustomDatePicker.customInput = forwardRef(({ value, onClick }, ref) => {
+CustomDatePicker.customInput = forwardRef(function DatePickerCustomInput ({ value, onClick }, ref)  {
 	return (
 		<button
 			className='date-selector-button'
