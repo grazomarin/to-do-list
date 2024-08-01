@@ -5,6 +5,7 @@ import CalendarIcon from './icon_components/calendarIcon';
 import CheckBoxIcon from './icon_components/checkboxIcon';
 import PriorityPicker from './priorityPicker';
 import CustomDatePicker from './customDatePicker';
+import FormButtons from './formButtons';
 import { useDispatch } from 'react-redux';
 import { format, parse } from 'date-fns';
 import {
@@ -30,9 +31,7 @@ function Task({ task, enableEdit }) {
 
 			<div className='task--info'>
 				<div className='task--info--title'>{task.title}</div>
-				{task.description && (
-					<div className='task--info--description'>{task.description}</div>
-				)}
+				{task.description && <div className='task--info--description'>{task.description}</div>}
 				{task.dueDateString && (
 					<div className='task--info--due-date'>
 						<CalendarIcon />
@@ -43,14 +42,8 @@ function Task({ task, enableEdit }) {
 
 			<Options>
 				<Options.Option text='Edit' handleClick={enableEdit} />
-				<Options.Option
-					text='Delete'
-					handleClick={() => setShowConfirmationModal(true)}
-				/>
-				<Options.Option
-					text='Duplicate'
-					handleClick={() => dispatch(duplicateTask({ id }))}
-				/>
+				<Options.Option text='Delete' handleClick={() => setShowConfirmationModal(true)} />
+				<Options.Option text='Duplicate' handleClick={() => dispatch(duplicateTask({ id }))} />
 			</Options>
 
 			{showConfirmationModal && (
@@ -69,9 +62,7 @@ Task.Form = ({ task, disableForm }) => {
 	const [title, setTitle] = useState(task?.title || '');
 	const [description, setDescription] = useState(task?.description || '');
 	const [dueDate, setDueDate] = useState(toFormattedDate(task?.dueDateString));
-	const [priorityColor, setPriorityColor] = useState(
-		task?.priorityColor || '#808080'
-	);
+	const [priorityColor, setPriorityColor] = useState(task?.priorityColor || '#808080');
 	const [showError, setShowError] = useState(false);
 
 	function toFormattedDateString(date) {
@@ -135,30 +126,12 @@ Task.Form = ({ task, disableForm }) => {
 						rows='3'
 						value={description}
 						onInput={(e) => setDescription(e.target.value)}
-						placeholder='Details...'
-					></textarea>
+						placeholder='Details...'></textarea>
 				</div>
-				<div className='buttons'>
+				<FormButtons handleSubmit={handleSubmit} disableForm={disableForm} data={task}>
 					<CustomDatePicker dueDate={dueDate} setDueDate={setDueDate} />
-					<PriorityPicker
-						priorityColor={priorityColor}
-						setPriorityColor={setPriorityColor}
-					/>
-					<button
-						className='buttons--submit'
-						type='submit'
-						onClick={handleSubmit}
-					>
-						{task ? 'Edit' : 'Add'}
-					</button>
-					<button
-						className='buttons--cancel'
-						type='reset'
-						onClick={disableForm}
-					>
-						Cancel
-					</button>
-				</div>
+					<PriorityPicker priorityColor={priorityColor} setPriorityColor={setPriorityColor} />
+				</FormButtons>
 			</div>
 			{showError && <div className='error-message'>Enter a valid title!</div>}
 		</form>

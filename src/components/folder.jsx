@@ -147,18 +147,7 @@ Folder.Form = ({ folder, disableForm }) => {
 					/>
 				)}
 
-				<div className='buttons'>
-					<button className='buttons--submit' onClick={handleSubmit}>
-						{folder?.id ? 'Edit' : 'Add'}
-					</button>
-					<button
-						className='buttons--cancel'
-						type='reset'
-						onClick={disableForm}
-					>
-						Cancel
-					</button>
-				</div>
+				<FormButtons handleSubmit={handleSubmit} disableForm={disableForm} data={folder} />
 			</div>
 			{showError && <div className='error-message'>Enter a valid title!</div>}
 		</form>
