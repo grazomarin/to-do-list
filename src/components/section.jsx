@@ -1,422 +1,108 @@
-import React, { useState, useRef } from 'react';
-import { useStorage } from './contexts/storageContext';
-import TaskForm from './taskForm';
+import { useState } from 'react';
 import Task from './task';
 import Options from './options';
-import ConfirmAction from './confirmAction';
-import TitleForm from './titleForm';
-import FolderList from './folderList';
-import uniqid from 'uniqid';
-import MoreIcon from './icon_components/moreIcon';
+import FolderPicker from './folderList';
 import ArrowIcon from './icon_components/arrowIcon';
+import {
+	addSection,
+	addTask,
+	deleteSection,
+	deleteTask,
+	duplicateTask,
+	editSection,
+	editTask,
+	foldSection,
+	moveSection,
+	toggleCompleteTask,
+} from '../storage/storage';
+import FormButtons from './formButtons';
+import { useDispatch } from 'react-redux';
+import ConfirmationModal from './confrimationModal';
 
-export default function Section({ section, id }) {
-	const [storage, setStorage] = useStorage();
-	const [addTaskMode, setAddTaskMode] = useState(false);
-	const [showConfirm, setShowConfirm] = useState(false);
-	const [showOptions, setShowOptions] = useState(false);
-	const [showFolderList, setShowFolderList] = useState(false);
-	const moreRef = useRef();
-	const displayOptions = () => setShowOptions(true);
-	const hideOptions = () => setShowOptions(false);
-	const displayFolderList = () => setShowFolderList(true);
-	const hideFolderList = () => setShowFolderList(false);
-	const toggleConfirm = () => setShowConfirm((prev) => !prev);
-
-	const enableAddTaskMode = () => setAddTaskMode(true);
-	const disableAddTaskMode = () => setAddTaskMode(false);
-
-	function handleSectionDelete(sectionId) {
-		setStorage((folders) =>
-			folders.map((folder) =>
-				folder.active
-					? {
-							...folder,
-							sections: folder.sections.reduce(
-								(reduced, section) => {
-									if (section.id !== sectionId)
-										reduced.push(section);
-									return reduced;
-								},
-								[]
-							),
-					  }
-					: folder
-			)
-		);
-	}
-
-	function enableSectionEdit(sectionId) {
-		setStorage((folders) =>
-			folders.map((folder) =>
-				folder.active
-					? {
-							...folder,
-							tasks: folder.tasks.map((task) => {
-								return { ...task, edit: false };
-							}),
-							sections: folder.sections.map((section) =>
-								section.id === sectionId
-									? {
-											...section,
-											tasks: section.tasks.map((task) => {
-												return { ...task, edit: false };
-											}),
-											edit: true,
-									  }
-									: section
-							),
-					  }
-					: folder
-			)
-		);
-	}
-
-	function handleSectionEdit(updates) {
-		setStorage((folders) =>
-			folders.map((folder) =>
-				folder.active
-					? {
-							...folder,
-							sections: folder.sections.map((section) =>
-								section.id === sectionId
-									? Object.assign(section, {
-											...updates,
-											edit: false,
-									  })
-									: section
-							),
-					  }
-					: folder
-			)
-		);
-	}
-
-	function handleSectionMove(folderId, sectionId) {
-		setStorage((folders) => {
-			// storing the section to transfer
-			let sectionToTransfer = {};
-			for (let i = 0; i < folders.length; i++) {
-				if (folders[i].active) {
-					for (let y = 0; y < folders[i].sections.length; y++) {
-						if (folders[i].sections[y].id === sectionId) {
-							sectionToTransfer = folders[i].sections[y];
-							break;
-						}
-					}
-					break;
-				}
-			}
-
-			return folders.map((folder) => {
-				//if destination folder is the same as active folder, don't do anything
-				if (folder.active && folder.id === folderId) return folder;
-
-				if (folder.active) {
-					// removing section to transfer from previous folder
-					return {
-						...folder,
-						sections: folder.sections.reduce((reduced, section) => {
-							if (section.id !== sectionId) reduced.push(section);
-							return reduced;
-						}, []),
-					};
-				}
-
-				if (folder.id === folderId) {
-					// moving it into a destination folder
-					return {
-						...folder,
-						sections: [...folder.sections, sectionToTransfer],
-					};
-				}
-
-				return folder;
-			});
-		});
-	}
-
-	function handleTaskSubmit(data) {
-		setStorage((folders) =>
-			folders.map((folder) =>
-				folder.active
-					? {
-							...folder,
-							sections: folder.sections.map((section) =>
-								section.id === id
-									? {
-											...section,
-											tasks: [
-												...section.tasks,
-												{
-													...data,
-													completed: false,
-													edit: false,
-													id: uniqid(),
-												},
-											],
-									  }
-									: section
-							),
-					  }
-					: folder
-			)
-		);
-	}
-
-	function handleComplete(taskId) {
-		setStorage((folders) =>
-			folders.map((folder) =>
-				folder.active
-					? {
-							...folder,
-							sections: folder.sections.map((section) =>
-								section.id === id
-									? {
-											...section,
-											tasks: section.tasks.map((task) =>
-												task.id === taskId
-													? {
-															...task,
-															completed:
-																!task.completed,
-													  }
-													: task
-											),
-									  }
-									: section
-							),
-					  }
-					: folder
-			)
-		);
-	}
-
-	function enableTaskEdit(taskId) {
-		setStorage((folders) =>
-			folders.map((folder) =>
-				folder.active
-					? {
-							...folder,
-							tasks: folder.tasks.map((task) => {
-								return { ...task, edit: false };
-							}),
-							sections: folder.sections.map((section) =>
-								section.id === id
-									? {
-											...section,
-											tasks: section.tasks.map((task) =>
-												task.id === taskId
-													? { ...task, edit: true }
-													: { ...task, edit: false }
-											),
-									  }
-									: { ...section, edit: false }
-							),
-					  }
-					: folder
-			)
-		);
-	}
-
-	function handleTaskEdit(taskId, updates) {
-		setStorage((folders) =>
-			folders.map((folder) =>
-				folder.active
-					? {
-							...folder,
-							sections: folder.sections.map((section) =>
-								section.id === id
-									? {
-											...section,
-											tasks: section.tasks.map((task) =>
-												task.id === taskId
-													? Object.assign(task, {
-															...updates,
-															edit: false,
-													  })
-													: task
-											),
-									  }
-									: section
-							),
-					  }
-					: folder
-			)
-		);
-	}
-
-	function handleTaskDelete(taskId) {
-		setStorage((folders) =>
-			folders.map((folder) =>
-				folder.active
-					? {
-							...folder,
-							sections: folder.sections.map((section) =>
-								section.id === id
-									? {
-											...section,
-											tasks: section.tasks.reduce(
-												(reduced, task) => {
-													if (task.id !== taskId)
-														reduced.push(task);
-													return reduced;
-												},
-												[]
-											),
-									  }
-									: section
-							),
-					  }
-					: folder
-			)
-		);
-	}
-
-	function handleTaskDuplicate(taskId) {
-		setStorage((folders) =>
-			folders.map((folder) =>
-				folder.active
-					? {
-							...folder,
-							sections: folder.sections.map((section) =>
-								section.id === id
-									? {
-											...section,
-											tasks: section.tasks.reduce(
-												(reduced, task) => {
-													task.id === taskId
-														? reduced.push(task, {
-																...task,
-																id: uniqid(),
-														  })
-														: reduced.push(task);
-													return reduced;
-												},
-												[]
-											),
-									  }
-									: section
-							),
-					  }
-					: folder
-			)
-		);
-	}
-
-	function updateSectionFold(value) {
-		setStorage((folders) =>
-			folders.map((folder) =>
-				folder.active
-					? {
-							...folder,
-							sections: folder.sections.map((section) =>
-								section.id === id
-									? { ...section, folded: value }
-									: section
-							),
-					  }
-					: folder
-			)
-		);
-	}
+function Section({ section, edit, setEditSectionId }) {
+	const [showConfirmationModal, setShowConfirmationModal] = useState(false);
+	const [showFolderPicker, setShowFolderPicker] = useState(false);
+	const [isTaskFormActive, setIsTaskFormActive] = useState(false);
+	const [editTaskId, setEditTaskId] = useState(null);
+	const dispatch = useDispatch();
+	const { id, folded, title, tasks } = section;
 
 	return (
 		<div className='section'>
-			{section.edit ? (
-				<TitleForm
-					handleCancel={() => {}}
-					handleEdit={handleSectionEdit}
-					data={section}
-					id={id}
-					Inline
-				/>
+			{edit ? (
+				<Section.Form section={section} disableForm={() => setEditSectionId(null)} />
 			) : (
 				<div className='section--title'>
-					<ArrowIcon
-						folded={section.folded}
-						handleClick={() => updateSectionFold(!section.folded)}
-					/>
-					{section.title}
-					<MoreIcon
-						handleClick={() => {
-							hideFolderList();
-							displayOptions();
-						}}
-						ref={moreRef}
-					/>
-
-					{showOptions && (
-						<Options
-							hideOptions={hideOptions}
-							enableDelete={toggleConfirm}
-							enableEdit={() => enableSectionEdit(id)}
-							displayFolderList={displayFolderList}
-							key={uniqid()}
-							moreRef={moreRef}
-							Delete
-							Edit
-							MoveSection
+					<ArrowIcon folded={folded} handleClick={() => dispatch(foldSection({ id }))} />
+					{title}
+					<Options>
+						<Options.Option text='Edit' handleClick={() => setEditSectionId(id)} />
+						<Options.Option text='Move' handleClick={() => setShowFolderPicker(true)} />
+						<Options.Option text='Delete' handleClick={() => setShowConfirmationModal(true)} />
+					</Options>
+					{showFolderPicker && (
+						<FolderPicker
+							setShowFolderPicker={setShowFolderPicker}
+							handleSectionMove={(folderId) => dispatch(moveSection({ id, folderId }))}
 						/>
 					)}
-					{showFolderList && (
-						<FolderList
-							hideFolderList={hideFolderList}
-							handleSectionMove={(folderId) =>
-								handleSectionMove(folderId, id)
-							}
-							key={uniqid()}
-							moreRef={moreRef}
-						/>
-					)}
-					{showConfirm && (
-						<ConfirmAction
-							handleDelete={() => handleSectionDelete(id)}
-							title={section.title}
-							handleCancel={toggleConfirm}
+					{showConfirmationModal && (
+						<ConfirmationModal
+							title={title}
+							handleDelete={() => dispatch(deleteSection({ id }))}
+							handleCancel={() => setShowConfirmationModal(false)}
 						/>
 					)}
 				</div>
 			)}
-
-			{!section.folded && (
+			{!folded && (
 				<div className='section--tasks'>
-					{section.tasks.map((task) => {
-						return task.edit ? (
-							<TaskForm
+					{tasks.map((task) => {
+						return task.id === editTaskId ? (
+							<Task.Form
 								task={task}
-								handleCancel={() => {}}
-								handleEdit={handleTaskEdit}
+								disableForm={() => setEditTaskId(null)}
+								addTask={(task) => dispatch(addTask({ ...task, sectionId: id }))}
+								editTask={(task) => dispatch(editTask({ ...task, sectionId: id }))}
 								key={task.id}
 							/>
 						) : (
 							<Task
 								task={task}
-								handleDelete={handleTaskDelete}
-								handleDuplicate={handleTaskDuplicate}
-								enableEdit={enableTaskEdit}
-								handleComplete={handleComplete}
+								enableEdit={() => setEditTaskId(task.id)}
+								toggleCompleteTask={(taskId) =>
+									dispatch(toggleCompleteTask({ id: taskId, sectionId: id }))
+								}
+								duplicateTask={(taskId) => dispatch(duplicateTask({ id: taskId, sectionId: id }))}
+								deleteTask={(taskId) => dispatch(deleteTask({ id: taskId, sectionId: id }))}
 								key={task.id}
-								Delete
-								Edit
-								Duplicate
-								AddFavorite
-								RemoveFavorite={false}
 							/>
 						);
 					})}
 
 					<h3 className='add'>
-						{addTaskMode ? (
-							<TaskForm
-								handleCancel={disableAddTaskMode}
-								handleSubmit={handleTaskSubmit}
+						{isTaskFormActive ? (
+							<Task.Form
+								disableForm={() => setIsTaskFormActive(false)}
+								addTask={(task) =>
+									dispatch(
+										addTask({
+											...task,
+											sectionId: id,
+										})
+									)
+								}
+								editTask={(task) =>
+									dispatch(
+										editTask({
+											...task,
+											sectionId: id,
+										})
+									)
+								}
 							/>
 						) : (
-							<div
-								className='add--task'
-								onClick={enableAddTaskMode}
-							>
+							<div className='add--task' onClick={() => setIsTaskFormActive(true)}>
 								+ add task
 							</div>
 						)}
@@ -426,3 +112,48 @@ export default function Section({ section, id }) {
 		</div>
 	);
 }
+
+Section.Form = function SectionForm({ section, disableForm }) {
+	const [title, setTitle] = useState(section?.title || '');
+	const [showError, setShowError] = useState(false);
+	const dispatch = useDispatch();
+
+	function isFormValid() {
+		return title.trim() !== '';
+	}
+
+	function throwError() {
+		setShowError(true);
+		setTimeout(() => setShowError(false), 2000);
+	}
+
+	function handleSubmit(e) {
+		e.preventDefault();
+		if (isFormValid()) {
+			section ? dispatch(editSection({ id: section.id, title })) : dispatch(addSection({ title }));
+			disableForm();
+		} else {
+			throwError();
+		}
+	}
+
+	return (
+		<form>
+			<div className='input__inline'>
+				<div className='input-cont'>
+					<input
+						type='text'
+						name='title'
+						value={title}
+						onInput={(e) => setTitle(e.target.value)}
+						placeholder='Title'
+					/>
+				</div>
+				<FormButtons handleSubmit={handleSubmit} disableForm={disableForm} data={section} />
+			</div>
+			{showError && <div className='error'>Title cannot be empty</div>}
+		</form>
+	);
+};
+
+export default Section;

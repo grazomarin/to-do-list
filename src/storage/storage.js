@@ -103,7 +103,7 @@ const todoSlice = createSlice({
 			if (action.payload.sectionId) {
 				const section = activeFolder.sections.find(
 					(section) => section.id === action.payload.sectionId
-			);
+				);
 				task = section.tasks.find((task) => task.id === action.payload.id);
 			} else {
 				task = activeFolder.tasks.find((task) => task.id === action.payload.id);
@@ -118,7 +118,7 @@ const todoSlice = createSlice({
 			if (action.payload.sectionId) {
 				const section = activeFolder.sections.find(
 					(section) => section.id === action.payload.sectionId
-			);
+				);
 				task = section.tasks.find((task) => task.id === action.payload.id);
 			} else {
 				task = activeFolder.tasks.find((task) => task.id === action.payload.id);
@@ -135,8 +135,8 @@ const todoSlice = createSlice({
 				);
 			} else {
 				activeFolder.tasks = activeFolder.tasks.filter(
-				(task) => task.id !== action.payload.id
-			);
+					(task) => task.id !== action.payload.id
+				);
 			}
 		}),
 		duplicateTask: passInActiveFolder((state, action, activeFolder) => {
@@ -155,6 +155,43 @@ const todoSlice = createSlice({
 			taskIndex = data.findIndex((task) => task.id === action.payload.id);
 			data.splice(taskIndex + 1, 0, { ...task, id: uniqid() });
 		}),
+		addSection: passInActiveFolder((state, action, activeFolder) => {
+			activeFolder.sections.push({
+				title: action.payload.title,
+				tasks: [],
+				folded: false,
+				id: uniqid(),
+			});
+		}),
+		editSection: passInActiveFolder((state, action, activeFolder) => {
+			const section = activeFolder.sections.find(
+				(section) => section.id === action.payload.id
+			);
+			section.title = action.payload.title;
+		}),
+		deleteSection: passInActiveFolder((state, action, activeFolder) => {
+			activeFolder.sections = activeFolder.sections.filter(
+				(section) => section.id !== action.payload.id
+			);
+		}),
+		foldSection: passInActiveFolder((state, action, activeFolder) => {
+			const section = activeFolder.sections.find(
+				(section) => section.id === action.payload.id
+			);
+			section.folded = !section.folded;
+		}),
+		moveSection: passInActiveFolder((state, action, activeFolder) => {
+			const section = activeFolder.sections.find(
+				(section) => section.id === action.payload.id
+			);
+			activeFolder.sections = activeFolder.sections.filter(
+				(section) => section.id !== action.payload.id
+			);
+			const newFolder = state.folders.find(
+				(folder) => folder.id === action.payload.folderId
+			);
+			newFolder.sections.push(section);
+		}),
 	},
 });
 
@@ -171,6 +208,11 @@ export const {
 	toggleCompleteTask,
 	deleteTask,
 	duplicateTask,
+	addSection,
+	editSection,
+	deleteSection,
+	foldSection,
+	moveSection,
 } = todoSlice.actions;
 
 const store = configureStore({
