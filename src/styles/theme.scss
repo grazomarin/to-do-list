@@ -45,7 +45,7 @@
 	}
 
 	.options,
-	.folder-list {
+	.folder-picker {
 		box-shadow: rgb(84, 84, 84) 0 0 3px 1px;
 
 		&--option,
@@ -108,7 +108,7 @@
 		}
 	}
 
-	.index {
+	.folder-list {
 		background-color: $grey-xl;
 		border-color: $grey-l;
 
@@ -190,7 +190,7 @@
 	}
 
 	.options,
-	.folder-list {
+	.folder-picker {
 		background-color: $black-l;
 		box-shadow: $black-xd 0 0 4px 1px;
 
@@ -208,7 +208,7 @@
 		}
 	}
 
-	.folder-list {
+	.folder-picker {
 		input {
 			border-color: $grey-d;
 		}
@@ -276,7 +276,7 @@
 		}
 	}
 
-	.index {
+	.folder-list {
 		color: $grey;
 		background-color: $black;
 		border: none;

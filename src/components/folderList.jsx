@@ -1,61 +1,52 @@
-import React, { useState, useRef, useEffect } from 'react';
-import { useStorage } from './contexts/storageContext';
+import { useState, useRef, useEffect } from 'react';
 import uniqid from 'uniqid';
+import { useSelector } from 'react-redux';
 
-export default function FolderList({
-	hideFolderList,
-	handleSectionMove,
-	moreRef,
-}) {
-	const [storage, setStorage] = useStorage();
+function FolderPicker({ setShowFolderPicker, handleSectionMove }) {
+	const folders = useSelector((state) => state.todo.folders);
 	const [searchValue, setSearchValue] = useState('');
 
 	const folderListRef = useRef();
 	const searchInputRef = useRef();
 
-	function handleWindowClick(e) {
-		if (
-			!folderListRef.current.contains(e.target) &&
-			folderListRef.current.className !== e.target?.className &&
-			moreRef.current !== e.target
-		)
-			hideFolderList();
-	}
-
 	useEffect(() => {
-		window.addEventListener('click', handleWindowClick);
-		searchInputRef.current.focus();
-		return () => window.removeEventListener('click', handleWindowClick);
+		function handleClick(e) {
+			if (
+				!folderListRef.current.contains(e.target) &&
+				e.target.className !== folderListRef.current.className &&
+				e.target.className !== 'options--option'
+			)
+				setShowFolderPicker(false);
+		}
+
+		window.addEventListener('click', handleClick);
+		return () => window.removeEventListener('click', handleClick);
 	}, []);
 
-	function escapeRegex(string) {
-		return string.replace(/[/\-\\^$*+?.()|[\]{}]/g, '\\$&');
-	}
-
 	return (
-		<div className="folder-list" ref={folderListRef}>
+		<div className='folder-picker' ref={folderListRef}>
 			<input
-				type="text"
+				type='text'
 				value={searchValue.source}
 				onInput={(e) => setSearchValue(e.target.value)}
 				ref={searchInputRef}
 			/>
-			{storage.map((folder) => {
-				return new RegExp(searchValue, 'i').test(
-					escapeRegex(folder.title)
-				) ? (
+			{folders
+				.filter((folder) => new RegExp(searchValue, 'i').test(folder.title))
+				.map((folder) => (
 					<div
-						className="folder-list--folder-name"
+						className='folder-picker--folder-name'
 						onClick={() => {
-							hideFolderList();
 							handleSectionMove(folder.id);
+							setShowFolderPicker(false);
 						}}
 						key={uniqid()}
 					>
 						{folder.title}
 					</div>
-				) : null;
-			})}
+				))}
 		</div>
 	);
 }
+
+export default FolderPicker;

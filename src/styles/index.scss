@@ -13,8 +13,7 @@ body {
 .container {
 	display: grid;
 	grid-template-columns: 300px 7fr;
-	grid-template-areas: 'index main';
-	min-height: 100vh;
+	grid-template-areas: 'folder-list main';
 }
 
 .add {
@@ -91,7 +90,7 @@ body {
 }
 
 .options,
-.folder-list {
+.folder-picker {
 	display: flex;
 	flex-flow: column;
 	position: absolute;
@@ -112,7 +111,7 @@ body {
 	}
 }
 
-.folder-list {
+.folder-picker {
 	input {
 		padding: $offset-xxs $offset-s;
 		border-radius: $radius $radius 0 0;
@@ -330,12 +329,12 @@ button {
 	}
 }
 
-.index {
+.folder-list {
 	display: flex;
 	flex-flow: column;
 	grid-auto-flow: row;
 	gap: $offset-s;
-	grid-area: index;
+	grid-area: 'folder-list';
 
 	padding: $offset-xl;
 	border-right: 2px solid;
@@ -529,7 +528,7 @@ button {
 				position: relative;
 
 				.options,
-				.folder-list {
+				.folder-picker {
 					font-weight: 100;
 					transform: translate(-105%, 0);
 				}

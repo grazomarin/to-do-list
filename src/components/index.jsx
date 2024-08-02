@@ -16,7 +16,7 @@ export default function Index() {
 		if (favoriteFolders.length == 0) return null;
 		return (
 			<>
-				<div className='index--title'>Favorites:</div>
+				<div className='folder-list--title'>Favorites:</div>
 				{favoriteFolders.map((folder) => {
 					return (
 						<Folder
@@ -35,9 +35,9 @@ export default function Index() {
 	}
 
 	return (
-		<div className='index'>
+		<div className='folder-list'>
 			{loadFavoriteFolders()}
-			<div className='index--title'>
+			<div className='folder-list--title'>
 				Folders:
 				<AddIcon handleClick={() => setIsFolderFormActive(true)} />
 			</div>
