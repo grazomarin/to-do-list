@@ -3,11 +3,6 @@
 
 html {
 	font-family: $font;
-	height: 100vh;
-}
-
-body {
-	height: 100vh;
 }
 
 .container {
@@ -314,7 +309,7 @@ button {
 	gap: $offset-xs;
 	position: absolute;
 	top: $offset-xs;
-	right: $offset-m;
+	right: $offset-l * 2;
 
 	.theme-icon {
 		height: 22px;
@@ -336,6 +331,7 @@ button {
 	gap: $offset-s;
 	grid-area: 'folder-list';
 
+	height: 100vh;
 	padding: $offset-xl;
 	border-right: 2px solid;
 
@@ -428,6 +424,9 @@ button {
 	grid-template-rows: min-content 1fr;
 	grid-area: main;
 	gap: $offset-s;
+
+	height: 100vh;
+	overflow-y: auto;
 
 	.input-cont {
 		flex-flow: column;
