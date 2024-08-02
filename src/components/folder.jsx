@@ -1,8 +1,5 @@
-import React, { useState, useRef, useEffect } from 'react';
+import { useState } from 'react';
 import Options from './options';
-import ConfiramtionModal from './confrimationModal';
-import uniqid from 'uniqid';
-import MoreIcon from './icon_components/moreIcon';
 import { CirclePicker } from 'react-color';
 import {
 	addFolder,
@@ -14,13 +11,9 @@ import {
 } from '../storage/storage';
 import { useDispatch } from 'react-redux';
 import ConfirmationModal from './confrimationModal';
+import FormButtons from './formButtons';
 
-export default function Folder({
-	folder,
-	enableEdit,
-	setActiveFolderId,
-	active,
-}) {
+export default function Folder({ folder, enableEdit, setActiveFolderId, active }) {
 	const dispatch = useDispatch();
 	const [showConfirmationModal, setShowConfirmationModal] = useState(false);
 	const { id } = folder;
@@ -48,8 +41,7 @@ export default function Folder({
 			className={active ? 'folder__active' : 'folder'}
 			onClick={() => {
 				if (!active) setActiveFolderId(folder.id);
-			}}
-		>
+			}}>
 			<div className='bullet' style={{ backgroundColor: folder.color }}></div>
 			<span className='folder--title'>{folder.title}</span>
 			<div className='folder--tasks-count'>
@@ -57,15 +49,7 @@ export default function Folder({
 			</div>
 			<Options>
 				<Options.Option text='Edit' handleClick={enableEdit} />
-				<Options.Option
-					text='Delete'
-					handleClick={() => setShowConfirmationModal(true)}
-				/>
-
-				<Options.Option
-					text='Duplicate'
-					handleClick={() => dispatch(duplicateFolder({ id }))}
-				/>
+				<Options.Option text='Duplicate' handleClick={() => dispatch(duplicateFolder({ id }))} />
 				{folder.favorite ? (
 					<Options.Option
 						text='Remove from Favorites'
@@ -77,6 +61,7 @@ export default function Folder({
 						text='Add to Favorites'
 					/>
 				)}
+				<Options.Option text='Delete' handleClick={() => setShowConfirmationModal(true)} />
 			</Options>
 			{showConfirmationModal && (
 				<ConfirmationModal
@@ -89,7 +74,7 @@ export default function Folder({
 	);
 }
 
-Folder.Form = ({ folder, disableForm }) => {
+Folder.Form = function FolderForm({ folder, disableForm }) {
 	const dispatch = useDispatch();
 	const [title, setTitle] = useState(folder?.title || '');
 	const [color, setColor] = useState(folder?.color || '#f44336');
@@ -121,10 +106,7 @@ Folder.Form = ({ folder, disableForm }) => {
 		<form action='none'>
 			<div className='input'>
 				<div className='input-cont'>
-					<div
-						className='bullet-cont'
-						onClick={() => setDisplayColorPicker((prev) => !prev)}
-					>
+					<div className='bullet-cont' onClick={() => setDisplayColorPicker((prev) => !prev)}>
 						<div className='bullet' style={{ backgroundColor: color }} />
 					</div>
 					<input

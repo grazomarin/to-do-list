@@ -1,3 +1,4 @@
+/* eslint-disable react/no-unknown-property */
 export default function CheckBoxIcon({
 	priorityColor,
 	completed,

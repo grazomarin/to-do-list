@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import { useEffect } from 'react';
 import ReactDOM from 'react-dom';
 
 export default function ConfirmationModal({
@@ -6,11 +6,11 @@ export default function ConfirmationModal({
 	handleDelete,
 	handleCancel,
 }) {
-	function handleClick(e) {
-		if (e.target.className === 'overlay') handleCancel();
-	}
-
 	useEffect(() => {
+		function handleClick(e) {
+			if (e.target.className === 'overlay') handleCancel();
+		}
+
 		window.addEventListener('click', handleClick);
 		return () => {
 			window.removeEventListener('click', handleClick);
@@ -23,7 +23,7 @@ export default function ConfirmationModal({
 				<h2>
 					Are you sure you want to delete <b>{title}</b>?
 				</h2>
-				<div className='buttons'>
+						<div className='buttons'>
 					<button className='buttons--submit' onClick={handleDelete}>
 						Confirm
 					</button>

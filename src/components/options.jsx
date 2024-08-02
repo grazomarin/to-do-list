@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useRef } from 'react';
+import { useEffect, useState, } from 'react';
 import MoreIcon from './icon_components/moreIcon';
 
 function Options({ children }) {
@@ -22,9 +22,9 @@ function Options({ children }) {
 	);
 }
 
-Options.Option = ({ text, handleClick }) => {
+Options.Option = function Option ({ text, handleClick })  {
 	return (
-		<div className='options--option' onClick={() => handleClick()}>
+			<div className='options--option' onClick={() => handleClick()}>
 			{text}
 		</div>
 	);

@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import FlagIcon from './icon_components/flagIcon';
 
 export default function PriorityPicker({ priorityColor, setPriorityColor }) {
@@ -12,26 +12,17 @@ export default function PriorityPicker({ priorityColor, setPriorityColor }) {
 
 	return (
 		<div className='priority-cont'>
-			<div
-				className='priority-cont--preview'
-				onClick={() => setShowPicker(true)}
-			>
+			<div className='priority-cont--preview' onClick={() => setShowPicker(true)}>
 				<FlagIcon
 					color={priorityColor}
-					handleClick={async () =>
-						await setTimeout(() => setShowPicker(true), 0)
-					}
+					handleClick={async () => await setTimeout(() => setShowPicker(true), 0)}
 				/>
 			</div>
 
 			{showPicker && (
 				<div className='priority-cont--picker'>
 					{['#f44336', '#ff9800', '#03a9f4', '#808080'].map((color) => (
-						<FlagIcon
-							color={color}
-							handleClick={() => setPriorityColor(color)}
-							key={color}
-						/>
+						<FlagIcon color={color} handleClick={() => setPriorityColor(color)} key={color} />
 					))}
 				</div>
 			)}

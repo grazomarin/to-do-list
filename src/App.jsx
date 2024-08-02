@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import WebFont from 'webfontloader';
 import Header from './components/header';
 import Index from './components';
@@ -9,8 +9,7 @@ function App() {
 		window.matchMedia('(prefers-color-scheme:dark)').matches ? 'dark' : 'light'
 	);
 
-	const toggleTheme = () =>
-		setTheme((prevTheme) => (prevTheme === 'dark' ? 'light' : 'dark'));
+	const toggleTheme = () => setTheme((prevTheme) => (prevTheme === 'dark' ? 'light' : 'dark'));
 
 	useEffect(() => {
 		WebFont.load({
@@ -20,6 +19,8 @@ function App() {
 		});
 	}, []);
 
+	// TODO make header and folder title stick to the top
+	// TODO arrange tasks and sections by date
 	return (
 		<div className={`container ${theme}`}>
 			<Header theme={theme} toggleTheme={toggleTheme} />

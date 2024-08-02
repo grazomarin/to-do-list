@@ -1,14 +1,8 @@
-import React from 'react';
 
 function MoreIcon({ handleClick }) {
 	return (
-		<div>
-			<svg
-				className='more-icon'
-				viewBox='0 0 24 24'
-				fill='none'
-				onClick={handleClick}
-			>
+		<div className='more-icon' onClick={handleClick}>
+			<svg viewBox='0 0 24 24' fill='none'>
 				<path
 					d='M14 5C14 6.10457 13.1046 7 12 7C10.8954 7 10 6.10457 10 5C10 3.89543 10.8954 3 12 3C13.1046 3 14 3.89543 14 5Z'
 					fill='#000000'
