@@ -5,46 +5,72 @@
 - React
 - Sass
 - Vite
+- Redux / Redux Toolkit **(NEW)**
 
 ## About
 
-This is a feature-packed interactive To-Do App. What's so special about it? Let me list all the features of the app that would answer your question:
-We've got three main components in this app. Tasks, Sections, and Folders. You can create as many folders as you want, which can hold Sections and Tasks. Each Section is sort of a sub-folder to group your tasks, and tasks are just tasks, lol
-### 1. Features for Tasks
-  * Create tasks (duh)
-  * Add task title
-  * Add task details
-  * Add task due date
-  * Add task priority (changes the appearance of the task)
-  * Check off tasks
-  * Duplicate tasks
-  * Edit tasks after creating them
-  * Delete Tasks
-### 2. Features for Sections
-  * Create sections
-  * Add a section title
-  * Fold sections
-  * Edit sections
-  * __Move sections to other folders__ (really proud of this one)
-  * Delete sections
-### 3. Features for Folders
-  * Create folders
-  * Add folder title
-  * Change folder color (changes the appearance of the folder)
-  * Edit folder
-  * Duplicate folder
-  * Make folder favorite (separates favorite folder from the rest)
-  * Folder shows number of total tasks and number of tasks completed
+This is a feature-rich interactive To-Do App. It allows users to structure their tasks, set tasks' priority ratings and add due dates and much much more. No ads, no subscriptions, no monetization.
+
+The app structure revolves around 3 main components: Tasks, Sections, and Folders. Users can create as many folders as they want, which can hold Sections and Tasks. Each Section is a sub-folder to group your tasks, but Tasks can also exist outside of Sections
+
+## Features
+
+### Task Features
+
+- Create tasks
+- Add task title
+- Add task details
+- Add task due date
+- Add task priority (changes the appearance of the task)
+- Check off tasks
+- Duplicate tasks
+- Edit tasks after creating them
+- Delete Tasks
+
+### Section Features
+
+- Create sections
+- Add a section title
+- Fold sections
+- Edit sections
+- Move sections to other folders
+- Delete sections
+
+### Folder Features
+
+- Create folders
+- Add folder title
+- Change folder color (changes the appearance of the folder)
+- Edit folder
+- Duplicate folder
+- Favorite a folder (favorite folders are pinned to the top)
+- Displays number of task completed and the number of total tasks
+
 ### Quality of Life Features
-  * Light and Dark themes (you may have either a light or dark theme at startup; that's because I wrote the code in a way that it assigns a theme according to your browser preference)
 
-### For Nerds
-For the front end, basic React is used, no type checking for now, and for the storage, I am using React Context (yikes). I am aware that is not the ideal way to store the data, but the app is small, so it shouldn't be a big performance issue. However, I am still going to implement Redux in the near future.
+- Light and Dark themes (you may have either a light or dark theme at startup; that's because the app adjusts the theme based to your browser preference)
 
-### Future Plans
-* Implement Redux
-* Implement TypeScript
-* Add email notifications as task reminders (far future)
+## Technical Side of the App
 
+Front-end: React, SASS \
+Back-end: technically doesn't exist, but data is persisted with Local Storage and Redux Toolkit
 
-### ===> [Live Demo](https://grazomarin.github.io/to-do-list/) <===
+## Future Plans
+
+- Adding more features
+  - sorting tasks
+  - transfering tasks to other folders
+  - and other quality of life features
+- Implementing TypeScript
+- Implementing tests
+  - Probably using React Testing Library
+- Adding notifications as task reminders
+- Making the website a mobile and a desktop app
+- Adding ability to login
+- Implementing a database
+
+#
+
+### [Live Demo](https://grazomarin.github.io/to-do-list/)
+
+#
